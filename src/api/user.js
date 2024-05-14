@@ -30,3 +30,18 @@ export function queryUser(params) {
     params: params
   })
 }
+
+export function createOrUpdate(data) {
+  return request({
+    url: '/user/saveOrUpdate',
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteUserById(id) {
+  return request({
+    url: '/user/delete/' + id,
+    method: 'delete'
+  })
+}
