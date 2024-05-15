@@ -181,9 +181,9 @@ export default {
       const xs = this.list.map(x => x.date)
       console.log(xs)
 
-      queryCandidateSalePlan(this.salePlan.oldSkuId).then(res => {
-        this.candidateSalePlan = res.data
-      })
+      // queryCandidateSalePlan(this.salePlan.oldSkuId).then(res => {
+      //   this.candidateSalePlan = res.data
+      // })
       const actualData = this.list.map(x => x.quantity)
       const predictData = this.list.map(x => x.predictQuantity)
       const storageData = this.list.map(x => x.storageQuantity)
