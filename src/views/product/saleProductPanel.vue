@@ -165,6 +165,8 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$refs)
+    console.log(Object.keys(this.$refs))
   },
   methods: {
     async getList() {
@@ -181,9 +183,6 @@ export default {
       const xs = this.list.map(x => x.date)
       console.log(xs)
 
-      // queryCandidateSalePlan(this.salePlan.oldSkuId).then(res => {
-      //   this.candidateSalePlan = res.data
-      // })
       const actualData = this.list.map(x => x.quantity)
       const predictData = this.list.map(x => x.predictQuantity)
       const storageData = this.list.map(x => x.storageQuantity)
@@ -193,9 +192,11 @@ export default {
       const predictDataSeriesConfig = this.getChartSerialDataConfig(predictData, '预估销售', 'rgb(137, 189, 27)', false)
       const fittingPredictDataSeriesConfig = this.getChartSerialDataConfig(fittingData, '三次拟合', 'rgb(0, 136, 212)', false)
       const storageDataSeriesConfig = this.getChartSerialDataConfig(storageData, '库存数据', 'rgb(219,50,51)', false)
-      this.$refs.saleDataChart.initChart(xs, [actualDataSeriesConfig, predictDataSeriesConfig, fittingPredictDataSeriesConfig])
-      this.$refs.storageDataChart.initChart(xs, [storageDataSeriesConfig])
-      this.$forceUpdate()
+
+      this.$nextTick(() => {
+        this.$refs.saleDataChart.initChart(xs, [actualDataSeriesConfig, predictDataSeriesConfig, fittingPredictDataSeriesConfig])
+        this.$refs.storageDataChart.initChart(xs, [storageDataSeriesConfig])
+      })
     },
 
     async fitting() {
@@ -357,7 +358,7 @@ body {
 
 .metric-item {
   float:left;
-  width: 85px;
+  width: 120px;
   margin: 5px 5px;
   font-size: 12px;
   height: 25px;

@@ -28,36 +28,52 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="序号" width="65" type="index" :index="Nindex" />
-      <el-table-column prop="skuId" align="left" label="货号" />
-      <el-table-column prop="styleId" align="left" label="款式" />
-      <el-table-column prop="color" align="left" label="颜色" />
-      <el-table-column prop="colorName" align="left" label="颜色名" />
-      <el-table-column prop="fullName" align="left" label="全名称" />
-      <el-table-column prop="enName" align="left" label="英文名" />
-      <el-table-column prop="gbCode" align="left" label="国标码" />
-      <el-table-column prop="listingDate" align="left" label="上市日期" />
-      <el-table-column prop="supplier" align="left" label="供货商" />
-      <el-table-column prop="boxId" align="left" label="箱号" />
-      <el-table-column prop="standardPrice" align="left" label="标准价" />
-      <el-table-column prop="fabric_code" align="left" label="面料编码" />
-      <el-table-column prop="fabric_composition" align="left" label="面料组成" />
-      <el-table-column prop="auxiliary_material_code" align="left" label="面料编码" />
-      <el-table-column prop="auxiliary_material_composition" align="left" label="面料组成" />
-      <el-table-column prop="brand" align="left" label="品牌名称" />
-      <el-table-column prop="year" align="left" label="年" />
-      <el-table-column prop="season" align="left" label="季" />
-      <el-table-column prop="category" align="left" label="类别" />
-      <el-table-column prop="productCategory" align="left" label="商品类别" />
-      <el-table-column prop="productLine" align="left" label="产品线" />
-      <el-table-column prop="series" align="left" label="系列" />
-      <el-table-column prop="productType" align="left" label="商品类别" />
-      <el-table-column prop="subCategory" align="left" label="商品子类" />
-      <el-table-column prop="thirdCategory" align="left" label="三次类目" />
-      <el-table-column prop="producer" align="left" label="产地" />
-      <el-table-column prop="businessCategory" align="left" label="产地" />
-      <el-table-column prop="collection" align="left" label="collection" />
-      <el-table-column prop="gender" align="left" label="性别" />
-      <el-table-column prop="unit" align="left" label="单位" />
+      <el-table-column label="基础属性">
+        <el-table-column prop="skuId" align="left" label="货号" />
+        <el-table-column prop="styleId" align="left" label="款式" />
+        <el-table-column prop="color" align="left" label="颜色" />
+        <el-table-column prop="colorName" align="left" label="颜色名" />
+        <el-table-column prop="fullName" align="left" label="全名称" />
+        <el-table-column prop="listingDate" align="left" label="上市日期" />
+        <el-table-column prop="supplier" align="left" label="供货商" />
+        <el-table-column prop="standardPrice" align="left" label="标准价" />
+        <el-table-column prop="year" align="left" label="年" />
+        <el-table-column prop="season" align="left" label="季" />
+        <el-table-column prop="gender" align="left" label="性别" />
+      </el-table-column>
+      <el-table-column label="关联指标">
+        <el-table-column v-for="name in list[0].salePlanSaleDataVo.metricNames" :key="name" :label="name">
+          <template slot-scope="{row}">
+            {{ row.salePlanSaleDataVo.metrics[name] }}
+          </template>
+        </el-table-column>
+      </el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="{row}">
+          <el-table :data="[row]">
+            <el-table-column prop="enName" align="left" label="英文名" />
+            <el-table-column prop="gbCode" align="left" label="国标码" />
+            <el-table-column prop="boxId" align="left" label="箱号" />
+            <el-table-column prop="fabric_code" align="left" label="面料编码" />
+            <el-table-column prop="fabric_composition" align="left" label="面料组成" />
+            <el-table-column prop="auxiliary_material_code" align="left" label="面料编码" />
+            <el-table-column prop="auxiliary_material_composition" align="left" label="面料组成" />
+            <el-table-column prop="brand" align="left" label="品牌名称" />
+            <el-table-column prop="category" align="left" label="类别" />
+            <el-table-column prop="productCategory" align="left" label="商品类别" />
+            <el-table-column prop="productLine" align="left" label="产品线" />
+            <el-table-column prop="series" align="left" label="系列" />
+            <el-table-column prop="productType" align="left" label="商品类别" />
+            <el-table-column prop="subCategory" align="left" label="商品子类" />
+            <el-table-column prop="thirdCategory" align="left" label="三次类目" />
+            <el-table-column prop="producer" align="left" label="产地" />
+            <el-table-column prop="businessCategory" align="left" label="产地" />
+            <el-table-column prop="collection" align="left" label="collection" />
+            <el-table-column prop="gender" align="left" label="性别" />
+            <el-table-column prop="unit" align="left" label="单位" />
+          </el-table>
+        </template>
+      </el-table-column>
 
     </el-table>
     <el-pagination
