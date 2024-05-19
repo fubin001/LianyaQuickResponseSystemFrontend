@@ -75,10 +75,10 @@
             @click.native.prevent="handleLogin"
           >登录</el-button>
         </div>
-        <div>
-          <span>请使用手机号</span>
-          <span style="color: #2b80cc" @click="goRegister">注册</span>
-        </div>
+<!--        <div>-->
+<!--          <span>请使用手机号</span>-->
+<!--          <span style="color: #2b80cc" @click="goRegister">注册</span>-->
+<!--        </div>-->
       </el-col>
       <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div><br></div></el-col>
       <el-col

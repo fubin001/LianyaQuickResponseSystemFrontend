@@ -9,7 +9,7 @@ export function querySaleDataBySalePlanById(id) {
 
 export function querySkuProductSaleDate(skuId) {
   return request({
-    url: '/saleData/getSkuProductSaleData?skuId=' + skuId,
+    url: '/skuData/getSkuProductSaleData?skuId=' + skuId,
     method: 'get'
   })
 }

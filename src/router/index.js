@@ -130,6 +130,12 @@ export const constantRoutes = [
         name: '销售商品',
         meta: { title: '销售商品', icon: 'edit' }
       },
+      {
+        path: '/skuProduct/feedback',
+        component: () => import('@/views/product/feedback'),
+        name: '反馈订单',
+        meta: { title: '反馈订单', icon: 'edit' }
+      },
       // {
       //   path: '/product/salePlan',
       //   component: () => import('@/views/product/salePlan'),
