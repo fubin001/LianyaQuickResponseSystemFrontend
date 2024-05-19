@@ -77,7 +77,7 @@
         </div>
         <div>
           <span>请使用手机号</span>
-          <span style="color: #2b80cc" @click="goRegister">注册</span>
+          <span style="color: #2b80cc" @click="goLogin">注册</span>
         </div>
       </el-col>
       <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div><br></div></el-col>
@@ -95,11 +95,9 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import SocialSign from './components/SocialSignin'
 
 export default {
-  name: 'Login',
-  components: { SocialSign },
+  name: 'Register',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -162,11 +160,6 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    goRegister() {
-      console.log(123)
-      this.$router.push({ path: '/register' })
-      // this.$router.push(`/login`);
-    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
