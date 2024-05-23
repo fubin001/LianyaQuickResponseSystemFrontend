@@ -31,7 +31,6 @@
             label-position="left"
           >
             <el-form-item prop="username">
-
               <el-input
                 ref="username"
                 v-model="loginForm.userNo"
@@ -80,7 +79,7 @@
           <span style="color: #2b80cc" @click="goRegister">注册</span>
         </div>
       </el-col>
-      <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div><br></div></el-col>
+      <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="3"><div><br></div></el-col>
       <el-col
         :xs="11"
         :sm="11"
@@ -247,7 +246,6 @@ $cursor: #fff;
     height: 47px;
     width: 85%;
     padding-left: 10%;
-    // color: #fff;
 
     input {
       background: transparent;
