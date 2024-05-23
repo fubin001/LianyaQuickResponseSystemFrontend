@@ -76,6 +76,9 @@
       }
     }
 
+    .is-active{
+      // background-color: pink;
+    }
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
     }
@@ -224,3 +227,5 @@
     }
   }
 }
+
+

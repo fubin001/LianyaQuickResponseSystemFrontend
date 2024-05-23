@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14656461",
+      "name": "品牌设计",
+      "font_class": "pinpaisheji",
+      "unicode": "e73f",
+      "unicode_decimal": 59199
+    },
+    {
       "icon_id": "637790",
       "name": "密码",
       "font_class": "mima",

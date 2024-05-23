@@ -31,7 +31,6 @@
             label-position="left"
           >
             <el-form-item prop="username">
-
               <el-input
                 ref="username"
                 v-model="loginForm.userNo"
@@ -64,6 +63,39 @@
                 />
               </span>
             </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                :key="passwordType"
+                ref="password"
+                v-model="loginForm.confirmPassword"
+                :type="passwordType"
+                placeholder="请确认密码"
+                prefix-icon="iconfont icon-mima"
+                name="password"
+                tabindex="2"
+                autocomplete="on"
+                @keyup.native="checkCapslock"
+                @blur="capsTooltip = false"
+                @keyup.enter.native="handleLogin"
+              />
+              <span class="show-pwd" @click="showPwd">
+                <svg-icon
+                  :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+                />
+              </span>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                :key="passwordType"
+                ref="password"
+                v-model="loginForm.password"
+                :type="passwordType"
+                placeholder="请输入品牌"
+                prefix-icon="iconfont icon-pinpaisheji"
+                tabindex="2"
+                autocomplete="on"
+              />
+            </el-form-item>
           </el-form>
         </div>
 
@@ -72,12 +104,12 @@
             :loading="loading"
             type="primary"
             style="width: 60%; margin-bottom: 30px"
-            @click.native.prevent="handleLogin"
-          >登录</el-button>
+            @click.native.prevent="handleRegister"
+          >注册</el-button>
         </div>
         <div>
-          <span>请使用手机号</span>
-          <span style="color: #2b80cc" @click="goLogin">注册</span>
+          <span>请使用账号密码</span>
+          <span style="color: #2b80cc" @click="$router.push({ path: '/loginr' })">登录</span>
         </div>
       </el-col>
       <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div><br></div></el-col>
@@ -160,6 +192,9 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    handleRegister(){
+      // 注册接口
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
@@ -172,29 +207,6 @@ export default {
       }
       this.$nextTick(() => {
         this.$refs.password.focus()
-      })
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true
-          console.log(this.$store)
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({
-                path: this.redirect || '/',
-                query: this.otherQuery
-              })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
       })
     },
     getOtherQuery(query) {
@@ -237,19 +249,18 @@ $cursor: #fff;
   }
   .el-input {
     display: inline-block;
-    height: 47px;
-    width: 85%;
+    height: 40px;
+    width: 90%;
     padding-left: 10%;
-    // color: #fff;
 
     input {
       background: transparent;
       border: 0px;
       -webkit-appearance: none;
       border-radius: 0px;
-      padding: 12px 5px 12px 15px;
+      padding: 5px 5px 15px 15px;
       color: $light_gray;
-      height: 47px;
+      height: 40px;
       caret-color: $cursor;
 
       &:-webkit-autofill {
