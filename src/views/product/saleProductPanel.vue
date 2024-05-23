@@ -7,25 +7,28 @@
           <el-divider />
           <div style="width: 100%;height: 55px">
             <div class="metric-item2">
-              <div class="metric-name2">货号</div>:<div style="float:right" class="metric-value2">{{ this.salePlan.skuId }}</div>
+              <div class="metric-name2">策略模型</div>:<div style="float:right" class="metric-value2">{{ this.skuProduct.predictModel }}</div>
             </div>
             <div class="metric-item2">
-              <div class="metric-name2">商品名</div>:<div style="float:right" class="metric-value2">{{ this.salePlan.name }}</div>
+              <div class="metric-name2">快反周期</div>:<div style="float:right" class="metric-value2">{{ this.skuProduct.feedbackDay }}天</div>
             </div>
             <div class="metric-item2">
-              <div class="metric-name2">上市时间</div>:<div style="float:right" class="metric-value2">{{ this.salePlan.launchDate }}</div>
+              <div class="metric-name2">货号</div>:<div style="float:right" class="metric-value2">{{ this.skuProduct.skuId }}</div>
             </div>
             <div class="metric-item2">
-              <div class="metric-name2">颜色</div>:<div style="float:right" class="metric-value2">{{ this.salePlan.color }}</div>
+              <div class="metric-name2">商品名</div>:<div style="float:right" class="metric-value2">{{ this.skuProduct.fullName }}</div>
             </div>
             <div class="metric-item2">
-              <div class="metric-name2">款式</div>:<div style="float:right" class="metric-value2">{{ this.salePlan.styleId }}</div>
+              <div class="metric-name2">上市时间</div>:<div style="float:right" class="metric-value2">{{ this.skuProduct.listingDate }}</div>
+            </div>
+            <div class="metric-item2">
+              <div class="metric-name2">款式</div>:<div style="float:right" class="metric-value2">{{ this.skuProduct.styleId }}</div>
             </div>
           </div>
           <el-divider />
           <div style="width: 100%;height: 100px">
-            <div v-for="(metricValue, metricName) in metrics " :key="metricName" class="metric-item">
-              <div class="metric-name">{{ metricName }}</div>:<div style="float:right" class="metric-value">{{ metricValue }}</div>
+            <div v-for="metric in metrics" :key="metric.metricName" class="metric-item2">
+              <div class="metric-name2">{{ metric.metricName }}</div>:<div style="float:right" class="metric-value2">{{ metric.metricValue }}</div>
             </div>
           </div>
         </div>
@@ -52,18 +55,19 @@
           </div>
           <el-table ref="dragTable" :key="key" v-loading="listLoading" style="width: 100%" :data="list" border fit highlight-current-row @cell-click="handleRowClick">
             <el-table-column align="left" label="ID" type="index" width="65" />
-            <el-table-column v-if="timeUint === 0" align="left" label="日期" prop="date">
+            <!--            <el-table-column v-if="timeUint === 0" align="left" label="日期" prop="date">-->
+            <!--              <template slot-scope="{row}">-->
+            <!--                {{ row.date }}-->
+            <!--                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>-->
+            <!--              </template>-->
+            <!--            </el-table-column>-->
+            <el-table-column align="left" label="月-周" prop="date" width="70">
               <template slot-scope="{row}">
-                {{ row.date }}
-                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>
+                {{ row.month + '-W' + row.week }}
+                <!--                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>-->
               </template>
             </el-table-column>
-            <el-table-column v-else-if="timeUint === 1" align="left" label="日期" prop="date" width="150px">
-              <template slot-scope="{row}">
-                {{ row.month + '-W' + row.week }}{{ '(' + row.date + ')' }}
-                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>
-              </template>
-            </el-table-column>
+            <el-table-column align="left" label="日期" prop="date" width="100" />
             <el-table-column align="left" label="实际销售" prop="actualData" width="100px">
               <template slot-scope="{row}">
                 <span v-if="row.date === editRowDate">
@@ -88,7 +92,6 @@
             <el-table-column align="left" label="预估销售" prop="predictQuantity" width="100px" />
             <el-table-column align="left" label="库存数量" prop="storageQuantity" width="100px" />
             <el-table-column align="left" label="三次拟合" prop="fittingPredictQuantity" width="100px" />
-            <el-table-column align="left" label="快反追加" width="100px" />
           </el-table>
         </div>
       </div>
@@ -151,7 +154,8 @@ export default {
       editRowDate: null,
       salePlanForm: {},
       salePlanId: null,
-      candidateSalePlan: []
+      candidateSalePlan: [],
+      skuProduct: {}
     }
   },
   created() {
@@ -175,18 +179,28 @@ export default {
       }
       this.listLoading = true
       const { data } = await querySkuProductSaleDate(this.listQuery.salePlanId)
+      console.log(data)
       this.list = data.saleDataList
-      this.salePlan = data.salePlan
-      this.timeUint = this.salePlan?.saleTimeUnit ?? 0
-      this.metrics = data.metrics
+      this.skuProduct = data.skuProduct
+      this.timeUint = this.skuProduct?.saleTimeUnit ?? 0
+      this.metrics = data.metricValueList
       this.listLoading = false
       const xs = this.list.map(x => x.date)
       console.log(xs)
 
       const actualData = this.list.map(x => x.quantity)
       const predictData = this.list.map(x => x.predictQuantity)
-      const storageData = this.list.map(x => x.storageQuantity)
+      const storageData = []
+      const storageXs = []
       const fittingData = this.list.map(x => x.fittingPredictQuantity)
+
+      for (let i = 0; i < this.list.length; i++) {
+        const item = this.list[i]
+        if (item.storageQuantity != null) {
+          storageData.push(item.storageQuantity)
+          storageXs.push(item.date)
+        }
+      }
 
       const actualDataSeriesConfig = this.getChartSerialDataConfig(actualData, '销售数据', 'rgb(219,50,51)', false)
       const predictDataSeriesConfig = this.getChartSerialDataConfig(predictData, '预估销售', 'rgb(137, 189, 27)', false)
@@ -195,7 +209,7 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.saleDataChart.initChart(xs, [actualDataSeriesConfig, predictDataSeriesConfig, fittingPredictDataSeriesConfig])
-        this.$refs.storageDataChart.initChart(xs, [storageDataSeriesConfig])
+        this.$refs.storageDataChart.initChart(storageXs, [storageDataSeriesConfig])
       })
     },
 
@@ -232,19 +246,19 @@ export default {
     },
 
     handleRowClick(row, column, cell, event) {
-      if (column.property === 'actualData' || column.property === 'buyOrderQuantity') {
-        if (this.editRowDate !== row.date) {
-          this.editRowDate = row.date
-          console.log(this.editRowDate)
-          this.key = Math.random() * 100
-        }
-      } else {
-        this.editRowDate = null
-      }
+      // if (column.property === 'actualData' || column.property === 'buyOrderQuantity') {
+      //   if (this.editRowDate !== row.date) {
+      //     this.editRowDate = row.date
+      //     console.log(this.editRowDate)
+      //     this.key = Math.random() * 100
+      //   }
+      // } else {
+      //   this.editRowDate = null
+      // }
     },
     handleInputChange(row) {
-      row.modify = true
-      this.dataModify = true
+      // row.modify = true
+      // this.dataModify = true
     },
 
     syncCalculate() {
@@ -364,13 +378,13 @@ body {
   height: 25px;
 }
 
-.metric-name {
+.metric-name3 {
   width: 70px;
   font-weight: bold; /* 设置字体*/
   float: left;
 }
 
-.metric-value {
+.metric-value3 {
   color: red; /* 设置字体颜色为红色 */
   font-weight: bold; /* 设置字体*/
   float: left;
