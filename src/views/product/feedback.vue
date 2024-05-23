@@ -120,6 +120,7 @@ export default {
       confirmFeedback(row.id).then(res => {
         if (res.data) {
           this.$message.success('已确认')
+          this.getList(this.page)
         }
       })
     }
