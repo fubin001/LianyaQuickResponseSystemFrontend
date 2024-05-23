@@ -7,3 +7,10 @@ export function queryFeedbackOrder(query) {
     params: query
   })
 }
+
+export function confirmFeedback(id) {
+  return request({
+    url: '/feedback/confirm/' + id,
+    method: 'POST'
+  })
+}

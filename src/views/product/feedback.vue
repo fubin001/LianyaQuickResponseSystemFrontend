@@ -14,7 +14,8 @@
       <el-table-column align="center" label="ID" prop="id" width="65" />
       <el-table-column align="left" label="skuId" prop="skuId" />
       <el-table-column align="left" label="订货日期" prop="bookDate" />
-      <el-table-column align="left" label="到货日期" prop="predictDate" />
+      <el-table-column align="left" label="预计到货" prop="predictDate" />
+      <el-table-column align="left" label="确认到货" prop="confirmDate" />
       <el-table-column align="left" label="订货数量" prop="quantity" />
       <el-table-column align="left" label="颜色" prop="color" />
       <el-table-column align="left" label="颜色名称" prop="colorName" />
@@ -41,6 +42,13 @@
       <el-table-column align="left" label="本周销售" prop="currentWeekSale" />
       <el-table-column align="left" label="最近四周销售" prop="recentlyFourWeekSale" />
       <el-table-column align="left" label="最近四周销售平均" prop="recentlyFourWeekAvgSale" />
+      <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button type="success" size="mini" @click="confirmFeedbackOrder(row)">
+            确认到货
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       layout="total, sizes, prev, pager, next, jumper"
@@ -60,7 +68,7 @@
 
 import { getBrandEnum } from '@/api/enum'
 import { saveOrUpdateSalePlan } from '@/api/salePlan'
-import { queryFeedbackOrder } from '@/api/feedback'
+import { confirmFeedback, queryFeedbackOrder } from '@/api/feedback'
 
 export default {
   name: 'User',
@@ -103,71 +111,16 @@ export default {
       this.listLoading = false
     },
 
-    beforeCreate() {
-      this.temp = {}
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-    },
-
-    beforeUpdate(row) {
-      this.temp = JSON.parse(JSON.stringify(row))
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-    },
-
-    deleteProduct(row) {
-      deleteProductById(row.id).then(res => {
-        if (res.data) {
-          this.$message.success('删除成功')
-          this.getList(this.page)
-        } else {
-          this.$message.error('删除失败')
-        }
-      })
-    },
-
-    beforeCreateNewSalePlan(row) {
-      this.salePlanForm = JSON.parse(JSON.stringify(row))
-      this.salePlanForm.productName = this.salePlanForm.name
-      this.salePlanForm.productId = this.salePlanForm.id
-      this.salePlanForm.name = null
-      this.salePlanDialogFormVisible = true
-    },
-
     async getBrands() {
       const { data } = await getBrandEnum()
       this.brands = data
     },
 
-    createOrUpdateProduct(status, data) {
-      if (status === 'create') {
-        data.id = null
-      }
-      for (let i = 0; i < this.brands.length; i++) {
-        const brand = this.brands[i]
-        if (brand.value === data.brandId) {
-          data.brandName = brand.name
-        }
-      }
-      saveOrUpdateProduct(data).then(res => {
+    confirmFeedbackOrder(row) {
+      confirmFeedback(row.id).then(res => {
         if (res.data) {
-          this.$message.success('操作成功')
-          this.getList(this.page)
+          this.$message.success('已确认')
         }
-        this.dialogFormVisible = false
-      })
-    },
-    createOrUpdateSalePlan(status, data) {
-      if (status === 'create') {
-        data.id = null
-      }
-
-      saveOrUpdateSalePlan(data).then(res => {
-        if (res.data) {
-          this.$message.success('操作成功')
-          this.getList(this.page)
-        }
-        this.salePlanDialogFormVisible = false
       })
     }
   }

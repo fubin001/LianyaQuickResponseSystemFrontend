@@ -55,18 +55,19 @@
           </div>
           <el-table ref="dragTable" :key="key" v-loading="listLoading" style="width: 100%" :data="list" border fit highlight-current-row @cell-click="handleRowClick">
             <el-table-column align="left" label="ID" type="index" width="65" />
-            <el-table-column v-if="timeUint === 0" align="left" label="日期" prop="date">
+            <!--            <el-table-column v-if="timeUint === 0" align="left" label="日期" prop="date">-->
+            <!--              <template slot-scope="{row}">-->
+            <!--                {{ row.date }}-->
+            <!--                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>-->
+            <!--              </template>-->
+            <!--            </el-table-column>-->
+            <el-table-column align="left" label="月-周" prop="date" width="70">
               <template slot-scope="{row}">
-                {{ row.date }}
-                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>
+                {{ row.month + '-W' + row.week }}
+                <!--                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>-->
               </template>
             </el-table-column>
-            <el-table-column v-else-if="timeUint === 1" align="left" label="日期" prop="date" width="150px">
-              <template slot-scope="{row}">
-                {{ row.month + '-W' + row.week }}{{ '(' + row.date + ')' }}
-                <el-tag v-if="row.modify" type="danger" style="margin-left: 5px">已修改</el-tag>
-              </template>
-            </el-table-column>
+            <el-table-column align="left" label="日期" prop="date" width="100" />
             <el-table-column align="left" label="实际销售" prop="actualData" width="100px">
               <template slot-scope="{row}">
                 <span v-if="row.date === editRowDate">
