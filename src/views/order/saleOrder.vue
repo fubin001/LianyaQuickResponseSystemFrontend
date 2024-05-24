@@ -3,21 +3,21 @@
   <div class="app-container">
     <div class="filter-container">
       <el-row :gutter="10">
-        <el-col :xs="6" :sm="8" :md="6" :lg="6" :xl="6">
+        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6">
           品牌名称：<el-input
             v-model="listQuery.brand"
             placeholder="请输入品牌名称"
             style="width: 150px; margin: 5px 8px 5px 0"
             class="filter-item"
         /></el-col>
-        <el-col :xs="6" :sm="8" :md="6" :lg="6" :xl="6"
+        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
           >商品名称：<el-input
             v-model="listQuery.productName"
             placeholder="请输入商品名称"
             style="width: 150px; margin: 5px 8px 5px 0"
             class="filter-item"
         /></el-col>
-        <el-col :xs="6" :sm="8" :md="6" :lg="6" :xl="6"
+        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
           >货号：<el-input
             v-model="listQuery.skuId"
             placeholder="请输入货号"
@@ -25,8 +25,8 @@
             class="filter-item"
           />
         </el-col>
-        <el-col :xs="4" :sm="24" :md="6" :lg="6" :xl="6">
-          <span style="float: right"
+        <el-col :xs="4" :sm="24" :md="24" :lg="6" :xl="6">
+          <span style="text-align: right;"
             ><el-button
               class="filter-item"
               plain
@@ -54,11 +54,12 @@
         <el-row :gutter="10">
           <el-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">商品列表</el-col>
           <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-            <span style="float: right">
+            <span style="text-align: right">
               <el-upload
                 action="/api/saleOrder/importExcel"
                 :show-file-list="false"
                 :on-success="handleFileUploadSuccess"
+                :on-error="handleFileUploadError"
                 style="display: inline-block"
               >
                 <el-button
@@ -66,6 +67,9 @@
                   class="ml-5"
                   size="mini"
                   style="background-color: #244496"
+                  :loading="upLoading"
+
+                  @click="upLoading = true"
                   >上传<i class="el-icon-top"
                 /></el-button>
               </el-upload>
@@ -78,8 +82,8 @@
         v-loading="listLoading"
         :data="list"
         row-key="id"
-        border
         fit
+        :header-cell-style="{background:'#e4e7f0'}"
         highlight-current-row
         style="width: 100%"
       >
@@ -374,6 +378,7 @@ export default {
         size: 10,
       },
       sortable: null,
+      upLoading: false
     };
   },
   created() {
@@ -441,8 +446,12 @@ export default {
       } else {
         this.$message.error("上传失败");
       }
+      this.upLoading = false;
     },
-
+    handleFileUploadError() {
+      this.$message.error("上传失败");
+      this.upLoading = false;
+    },
     handleSizeChange(pageSize) {
       this.size = pageSize;
       this.getList(1);

@@ -25,7 +25,7 @@
             class="filter-item"
         /></el-col>
         <el-col :xs="4" :sm="24" :md="6" :lg="6" :xl="6">
-          <span style="float: right"
+          <span style="text-align: right"
             ><el-button
               class="filter-item"
               plain
@@ -53,15 +53,13 @@
         <el-row :gutter="10">
           <el-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">商品列表</el-col>
           <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-            <span style="float: right">
+            <span style="text-align: right">
               <el-upload
                 action="/api/buyOrder/importExcel"
                 style="display: inline-block"
                 :show-file-list="false"
                 :on-success="handleFileUploadSuccess"
                 :on-error="handleFileUploadError"
-                :on-remove="handleFileUploadRemove"
-                @abort="abort"
               >
                 <el-button
                   type="primary"
@@ -69,7 +67,7 @@
                   style="background-color: #244496"
                   size="mini"
                   :loading="upLoading"
-                  @click="upClick"
+                  @click="upLoading = true"
                   >上传<i class="el-icon-top"
                 /></el-button>
               </el-upload>
@@ -83,8 +81,8 @@
         v-loading="listLoading"
         :data="list"
         row-key="id"
-        border
         fit
+        :header-cell-style="{background:'#e4e7f0'}"
         highlight-current-row
         style="width: 100%"
       >
@@ -278,9 +276,6 @@ export default {
     this.getList(1);
   },
   methods: {
-    upClick() {
-      this.upLoading = true;
-    },
     reset() {
       this.listQuery = {
         page: 1,
@@ -322,7 +317,7 @@ export default {
       arr.push(label); // 把每列的表头也加进去算
       // console.log(arr)
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 20 + "px";
+      return this.getMaxLength(arr) + 25 + "px";
     },
 
     async getList(page) {
@@ -352,10 +347,6 @@ export default {
       console.log("上传失败");
       this.$message.error("上传失败");
       this.upLoading = false;
-    },
-    handleFileUploadRemove(){
-      console.log("移除文件");
-
     },
 
     abort() {
