@@ -1,19 +1,30 @@
 <template>
   <div style="width: 100%; background-color: #f7f8fc">
     <div class="sale-container" style="width: 100%; height: 1000px">
-      <div class="left-panel" :class="{ widhtAll: !rightShow }">
-        <div class="top-metric-panel">
-          <div style="height: 2rem; line-height: 2rem; padding: 0 0.2rem; margin-top: 0.2rem">
-            <span style="float: left;">基础信息</span>
-            <span style="float: right;">
-              <el-button
-                type="primary"
-                size="mini"
-                style="margin: 5px 0px 5px 0; background-color: #244496"
-                @click="showOrHide"
-              >
-                {{ showOrHideText }}
-              </el-button>
+      <div
+        class="left-panel"
+        :class="{
+          allShow: currentShow == 1 || currentShow == 2,
+          width30: currentShow == 4,
+        }"
+      >
+        <div
+          v-show="currentShow == 1 || currentShow == 4"
+          class="top-metric-panel"
+          :class="{ allShow: currentShow == 1, height30: currentShow == 4 }"
+        >
+          <div
+            style="
+              height: 2rem;
+              line-height: 2rem;
+              padding: 0 0.2rem;
+              margin-top: 0.2rem;
+            "
+          >
+            <span style="float: left">基础信息</span>
+            <span style="float: right">
+              <span class="iconfont icon-zuixiaohua" @click="minimize"> </span>
+              <span class="iconfont icon-zuidahua" @click="maximize(1)"> </span>
             </span>
           </div>
           <div style="margin-bottom: -18px"></div>
@@ -31,13 +42,20 @@
               </span>
             </div>
 
-            <div >
-              <span :class="{ heightAll: rightShow }" class="border-all border-left"> 货号 </span>
-              <span :class="{ heightAll: rightShow }" class="border-all">
+            <div>
+              <span
+                :class="{ heightAll: currentShow == 4 }"
+                class="border-all border-left"
+              >
+                货号
+              </span>
+              <span :class="{ heightAll: currentShow == 4 }" class="border-all">
                 {{ this.skuProduct.skuId }}
               </span>
-              <span :class="{ heightAll: rightShow }" class="border-all"> 商品名 </span>
-              <span :class="{ heightAll: rightShow }" class="border-all">
+              <span :class="{ heightAll: currentShow == 4 }" class="border-all">
+                商品名
+              </span>
+              <span :class="{ heightAll: currentShow == 4 }" class="border-all">
                 {{ this.skuProduct.fullName }}
               </span>
             </div>
@@ -66,16 +84,26 @@
               v-for="metric in metrics"
               :key="metric.metricName"
             >
-              <div :class="{ heightAll: rightShow }">
+              <div :class="{ heightAll: currentShow == 4 }">
                 {{ metric.metricName }}
               </div>
-              <div :class="{ heightAll: rightShow }">
+              <div :class="{ heightAll: currentShow == 4 }">
                 {{ metric.metricValue }}
               </div>
             </div>
           </div>
         </div>
-        <div class="bottom-sale-data">
+        <div
+          v-show="currentShow == 2 || currentShow == 4"
+          :class="{ allShow: currentShow == 2 }"
+          class="bottom-sale-data"
+        >
+          <div style="height: 1.2rem">
+            <span style="float: right">
+              <span class="iconfont icon-zuixiaohua" @click="minimize"> </span>
+              <span class="iconfont icon-zuidahua" @click="maximize(2)"> </span>
+            </span>
+          </div>
           <div
             class="title-region"
             style="
@@ -233,7 +261,17 @@
           </el-table>
         </div>
       </div>
-      <div v-show="rightShow" class="right-panel">
+      <div
+        v-show="currentShow == 3 || currentShow == 4"
+        :class="{ allShow: currentShow == 3, width65: currentShow == 4 }"
+        class="right-panel"
+      >
+        <div style="height: 1.2rem">
+          <span style="float: left">
+            <span class="iconfont icon-zuixiaohua" @click="minimize"> </span>
+              <span class="iconfont icon-zuidahua" @click="maximize(3)"> </span>
+          </span>
+        </div>
         <div class="top-sale-chart">
           <div class="chart-container">
             <SaleLineChart
@@ -277,8 +315,7 @@ export default {
   components: { SaleLineChart },
   data() {
     return {
-      rightShow: true,
-      showOrHideText: '隐藏',
+      currentShow: 4,
       timeUint: 0,
       fittingSalePlanId: null,
       dialogStatus: "create",
@@ -325,11 +362,12 @@ export default {
     console.log(Object.keys(this.$refs));
   },
   methods: {
-    showOrHide() {
-      this.rightShow = !this.rightShow;
-      if(this.rightShow) this.showOrHideText = '隐藏'
-      else this.showOrHideText = '显示'
-
+    minimize() {
+      this.currentShow = 4;
+    },
+    maximize(id) {
+      this.currentShow = id;
+      console.log("当前id:" + this.currentShow);
     },
     async getList() {
       if (!this.listQuery.salePlanId) {
@@ -589,24 +627,38 @@ export default {
   float: left;
 }
 
+
+.allShow {
+  height: 100%;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.width30 {
+  width: 30%;
+}
+
+.width65 {
+  width: 65%;
+}
+
+.height30 {
+  height: 30%;
+}
+
 .left-panel {
   background-color: #fff;
   float: left;
-  width: 30%;
-  min-width: 400px;
   margin-right: 30px;
   height: 100%;
   margin-left: 20px;
 }
 
-.widhtAll {
-  width: 60%;
-}
 
 .right-panel {
+  max-width: 1100px;
   background-color: #fff;
   float: left;
-  width: 65%;
   min-width: 400px;
   margin: auto auto;
   height: 97%;
@@ -616,8 +668,9 @@ export default {
 }
 
 .top-metric-panel {
+  max-width: 800px;
+  max-height: 400px;
   font-size: 1rem;
-  height: 30%;
   overflow: scroll;
   margin-bottom: 20px;
   padding: 10px;
@@ -636,11 +689,6 @@ export default {
         color: #b1a9a9;
       }
     }
-    // div:nth-child(2) {
-    //   span {
-    //     height: 40px;
-    //   }
-    // }
   }
 
   .top-metric-penel-list2 {
@@ -652,9 +700,9 @@ export default {
     }
   }
 
-  .heightAll{
-      height: 40px;
-    }
+  .heightAll {
+    height: 40px;
+  }
 
   .border-set {
     div {
@@ -688,6 +736,7 @@ export default {
 .bottom-sale-data {
   height: 65%;
   overflow: scroll;
+  max-width: 800px;
   padding: 10px;
   border: 1px solid #1f2d3d;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); /* 设置阴影 */

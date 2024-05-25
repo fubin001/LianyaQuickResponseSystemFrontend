@@ -1,9 +1,9 @@
 /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
   font-family: 'iconfont';  /* Project id 4553166 */
-  src: url('//at.alicdn.com/t/c/font_4553166_ez3hw21g6k.woff2?t=1716462155736') format('woff2'),
-       url('//at.alicdn.com/t/c/font_4553166_ez3hw21g6k.woff?t=1716462155736') format('woff'),
-       url('//at.alicdn.com/t/c/font_4553166_ez3hw21g6k.ttf?t=1716462155736') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4553166_8bdr2guuhb5.woff2?t=1716641598921') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4553166_8bdr2guuhb5.woff?t=1716641598921') format('woff'),
+       url('//at.alicdn.com/t/c/font_4553166_8bdr2guuhb5.ttf?t=1716641598921') format('truetype');
 }
 
 .iconfont {
@@ -12,6 +12,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-zuixiaohua:before {
+  content: "\e650";
+}
+
+.icon-zuidahua:before {
+  content: "\e651";
 }
 
 .icon-pinpaisheji:before {
