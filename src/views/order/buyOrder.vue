@@ -49,7 +49,6 @@
 
     <div class="product-list">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.3rem;">
-        <el-row :gutter="10">
           <span style="float: left;">商品列表</span>
           <span style="float: right;">
             <span style="text-align: right">
@@ -72,7 +71,6 @@
               </el-upload>
             </span>
           </span>
-        </el-row>
       </div>
 
       <el-table

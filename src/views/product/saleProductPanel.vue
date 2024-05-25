@@ -1,9 +1,22 @@
 <template>
   <div style="width: 100%; background-color: #f7f8fc">
     <div class="sale-container" style="width: 100%; height: 1000px">
-      <div class="left-panel">
+      <div class="left-panel" :class="{ widhtAll: !rightShow }">
         <div class="top-metric-panel">
-          <h4 style="margin-bottom: -18px">基础信息</h4>
+          <div style="height: 2rem; line-height: 2rem; padding: 0 0.2rem; margin-top: 0.2rem">
+            <span style="float: left;">基础信息</span>
+            <span style="float: right;">
+              <el-button
+                type="primary"
+                size="mini"
+                style="margin: 5px 0px 5px 0; background-color: #244496"
+                @click="showOrHide"
+              >
+                {{ showOrHideText }}
+              </el-button>
+            </span>
+          </div>
+          <div style="margin-bottom: -18px"></div>
           <el-divider />
           <div style="margin-top: -18px"></div>
           <div class="top-metric-penel-list">
@@ -18,13 +31,13 @@
               </span>
             </div>
 
-            <div>
-              <span class="border-all border-left"> 货号 </span>
-              <span class="border-all">
+            <div >
+              <span :class="{ heightAll: rightShow }" class="border-all border-left"> 货号 </span>
+              <span :class="{ heightAll: rightShow }" class="border-all">
                 {{ this.skuProduct.skuId }}
               </span>
-              <span class="border-all"> 商品名 </span>
-              <span class="border-all">
+              <span :class="{ heightAll: rightShow }" class="border-all"> 商品名 </span>
+              <span :class="{ heightAll: rightShow }" class="border-all">
                 {{ this.skuProduct.fullName }}
               </span>
             </div>
@@ -53,10 +66,10 @@
               v-for="metric in metrics"
               :key="metric.metricName"
             >
-              <div>
+              <div :class="{ heightAll: rightShow }">
                 {{ metric.metricName }}
               </div>
-              <div>
+              <div :class="{ heightAll: rightShow }">
                 {{ metric.metricValue }}
               </div>
             </div>
@@ -220,7 +233,7 @@
           </el-table>
         </div>
       </div>
-      <div class="right-panel">
+      <div v-show="rightShow" class="right-panel">
         <div class="top-sale-chart">
           <div class="chart-container">
             <SaleLineChart
@@ -232,6 +245,7 @@
             />
           </div>
         </div>
+
         <div class="bottom-metric-chart">
           <div class="chart-container">
             <SaleLineChart
@@ -263,6 +277,8 @@ export default {
   components: { SaleLineChart },
   data() {
     return {
+      rightShow: true,
+      showOrHideText: '隐藏',
       timeUint: 0,
       fittingSalePlanId: null,
       dialogStatus: "create",
@@ -309,6 +325,12 @@ export default {
     console.log(Object.keys(this.$refs));
   },
   methods: {
+    showOrHide() {
+      this.rightShow = !this.rightShow;
+      if(this.rightShow) this.showOrHideText = '隐藏'
+      else this.showOrHideText = '显示'
+
+    },
     async getList() {
       if (!this.listQuery.salePlanId) {
         this.$message.error("请填写销售计划");
@@ -577,6 +599,10 @@ export default {
   margin-left: 20px;
 }
 
+.widhtAll {
+  width: 60%;
+}
+
 .right-panel {
   background-color: #fff;
   float: left;
@@ -598,37 +624,37 @@ export default {
   padding-top: 0;
   border: 1px solid #1f2d3d;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); /* 设置阴影 */
-
   .top-metric-penel-list {
     div {
       span {
         float: left;
         width: 25%;
-        display: inline-block;
         word-break: break-all;
         white-space: normal;
       }
-      span:nth-child(2n - 1){
+      span:nth-child(2n - 1) {
         color: #b1a9a9;
       }
     }
-    div:nth-child(2) {
-      span{
-        height: 40px;
-      }
-    }
+    // div:nth-child(2) {
+    //   span {
+    //     height: 40px;
+    //   }
+    // }
   }
 
   .top-metric-penel-list2 {
     div {
       float: left;
-      height: 40px;
       width: 25%;
-      display: inline-block;
       word-break: break-all;
       white-space: normal;
     }
   }
+
+  .heightAll{
+      height: 40px;
+    }
 
   .border-set {
     div {
