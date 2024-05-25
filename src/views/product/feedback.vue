@@ -113,6 +113,7 @@
               type="success"
               size="mini"
               @click="confirmFeedbackOrder(row)"
+              style="background-color: #244496; border: none"
             >
               确认到货
             </el-button>
@@ -246,7 +247,21 @@ export default {
 }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
+.app-container {
+  background-color: #f7f8fc;
+
+  .filter-container {
+    background-color: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .product-list {
+    background-color: #ffffff;
+    padding: 10px;
+  }
+}
 .icon-star {
   margin-right: 2px;
 }

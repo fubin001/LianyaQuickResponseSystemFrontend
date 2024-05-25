@@ -2,100 +2,102 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-row type="flex" justify="end">
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6">
-          品牌名称：<el-input
-            v-model="listQuery.brand"
-            placeholder="请输入品牌名称"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-          />
-        </el-col>
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
-          >款式：<el-input
-            v-model="listQuery.styleId"
-            placeholder="请输入款式"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-        /></el-col>
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
-          >名称：<el-input
-            v-model="listQuery.fullName"
-            placeholder="请输入名称"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-          />
-        </el-col>
-        <el-col :xs="4" :sm="24" :md="24" :lg="6" :xl="6">
-          skuId：<el-input
-            v-model="listQuery.skuId"
-            placeholder="请输入skuId"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-          />
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="end">
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6">
-          上市日期：<el-date-picker
-            v-model="listQuery.listingMonth"
-            type="month"
-            placeholder="上市日期"
-            class="filter-item"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            value-format="yyyy-MM-01"
-        /></el-col>
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
-          >季节：<el-input
-            v-model="listQuery.season"
-            placeholder="季节"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-        /></el-col>
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
-          >面料编码：<el-input
-            v-model="listQuery.fabricCode"
-            placeholder="面料编码"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-          />
-        </el-col>
-        <el-col :xs="4" :sm="24" :md="24" :lg="6" :xl="6">
-          <span style="text-align: right"
-            ><el-button
-              class="filter-item"
-              plain
-              style="margin: 5px 8px 5px 0"
-              @click="reset"
-            >
-              重置
-            </el-button>
-            <el-button
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              style="margin: 5px 0px 5px 0; background-color: #244496"
-              @click="getList(1)"
-            >
-              搜索
-            </el-button></span
-          >
-          <!-- <el-input
+      <span>
+        品牌名称：<el-input
+          v-model="listQuery.brand"
+          placeholder="请输入品牌名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        款式：<el-input
+          v-model="listQuery.styleId"
+          placeholder="请输入款式"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        名称：<el-input
+          v-model="listQuery.fullName"
+          placeholder="请输入名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        skuId：<el-input
+          v-model="listQuery.skuId"
+          placeholder="请输入skuId"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        上市日期：<el-date-picker
+          v-model="listQuery.listingMonth"
+          type="month"
+          placeholder="上市日期"
+          class="filter-item"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          value-format="yyyy-MM-01"
+        />
+      </span>
+      <span>
+        季节：<el-input
+          v-model="listQuery.season"
+          placeholder="季节"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        面料编码：<el-input
+          v-model="listQuery.fabricCode"
+          placeholder="面料编码"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        面料组成：<el-input
         v-model="listQuery.fabricComposition"
         placeholder="面料组成"
         style="width: 150px; margin: 5px 8px 5px 0"
         class="filter-item"
-      /> -->
-        </el-col>
-      </el-row>
+      />
+      </span>
+      <span class="end">
+        <span 
+          ><el-button
+            class="filter-item"
+            plain
+            style="margin: 5px 8px 5px 0"
+            @click="reset"
+          >
+            重置
+          </el-button>
+          <el-button
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            style="margin: 5px 0px 5px 0; background-color: #244496"
+            @click="getList(1)"
+          >
+            搜索
+          </el-button></span
+        >
+        
+      </span>
+      <div style="clear:both"></div>
     </div>
 
     <div class="product-list">
-      <div style="height: 2rem; line-height: 2rem">
-        <el-row :gutter="10">
-          <el-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">商品列表</el-col>
-          <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-            <span style="text-align: right">
+      <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem;">
+          <span style="float: left;">商品列表</span>
+          <span style="float: right;">
+            <span>
               <el-upload
                 action="/api/skuProduct/importExcel"
                 :show-file-list="false"
@@ -114,8 +116,7 @@
                 /></el-button>
               </el-upload>
             </span>
-          </el-col>
-        </el-row>
+          </span>
       </div>
       <el-table
         ref="dragTable"
@@ -134,7 +135,12 @@
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{ row }">
-            <el-button type="success" size="mini" @click="goSalePanel(row)">
+            <el-button
+              type="success"
+              size="mini"
+              @click="goSalePanel(row)"
+              style="background-color: #244496; border: none"
+            >
               预览
             </el-button>
           </template>
@@ -207,12 +213,13 @@
             :width="flexColumnWidth('面料成分', 'fabricComposition')"
           />
         </el-table-column>
-        <el-table-column label="关联指标" width="">
+        <el-table-column label="关联指标" width="90">
           <template slot-scope="{ row }">
             <el-button
               type="success"
               size="mini"
               @click="openRelevance(row.metricValueList)"
+              style="background-color: #244496; border: none"
             >
               查看
             </el-button>
@@ -235,10 +242,10 @@
                   v-for="metric in metricValueList"
                   :key="metric.metricName"
                 >
-                  <div style="width: 32%; float: left">
+                  <div style="width: 28%; float: left">
                     {{ metric.metricName }}
                   </div>
-                  <div style="width: 18%; float: left">
+                  <div style="width: 22%; float: left">
                     {{ metric.metricValue }}
                   </div>
                 </div>
@@ -473,8 +480,14 @@ export default {
     padding: 10px;
     margin-bottom: 10px;
 
-    .el-col {
-      text-align: right;
+    span{
+      float: left;
+      width: 240px;
+      text-align: end;
+    }
+
+    .end{
+      float: right;
     }
   }
 
@@ -491,7 +504,7 @@ export default {
     padding: 0.2rem;
   }
 
-  div:nth-child(1){
+  div:nth-child(1) {
     color: #cccccc;
   }
 }

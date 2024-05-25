@@ -6,116 +6,57 @@
           <h4 style="margin-bottom: -18px">基础信息</h4>
           <el-divider />
           <div style="margin-top: -18px"></div>
-          <el-row>
-            <el-col
-              :xs="5"
-              :sm="5"
-              :md="5"
-              :lg="5"
-              :xl="5"
-              class="border-all border-left border-top"
-            >
-              <div class="metric-name2">策略模型</div>
-            </el-col>
-            <el-col
-              :xs="7"
-              :sm="7"
-              :md="7"
-              :lg="7"
-              :xl="7"
-              class="border-all border-top"
-            >
-              <div class="metric-value2">
+          <div class="top-metric-penel-list">
+            <div>
+              <span class="border-all border-left border-top"> 策略模型 </span>
+              <span class="border-all border-top">
                 {{ this.skuProduct.predictModel }}
-              </div>
-            </el-col>
-            <el-col
-              :xs="5"
-              :sm="5"
-              :md="5"
-              :lg="5"
-              :xl="5"
-              class="border-all border-top"
-            >
-              <div class="metric-name2">快反周期</div>
-            </el-col>
-            <el-col
-              :xs="7"
-              :sm="7"
-              :md="7"
-              :lg="7"
-              :xl="7"
-              class="border-all border-top"
-            >
-              <div class="metric-value2">
+              </span>
+              <span class="border-all border-top"> 快反周期 </span>
+              <span class="border-all border-top">
                 {{ this.skuProduct.feedbackDay }}天
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col
-              :xs="5"
-              :sm="5"
-              :md="5"
-              :lg="5"
-              :xl="5"
-              class="border-all border-left"
-            >
-              <div class="metric-name2">货号</div>
-            </el-col>
-            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7" class="border-all">
-              <div class="metric-value2">
+              </span>
+            </div>
+
+            <div>
+              <span class="border-all border-left"> 货号 </span>
+              <span class="border-all">
                 {{ this.skuProduct.skuId }}
-              </div>
-            </el-col>
-            <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5" class="border-all">
-              <div class="metric-name2">商品名</div>
-            </el-col>
-            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7" class="border-all">
-              <div class="metric-value2">
+              </span>
+              <span class="border-all"> 商品名 </span>
+              <span class="border-all">
                 {{ this.skuProduct.fullName }}
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col
-              :xs="5"
-              :sm="5"
-              :md="5"
-              :lg="5"
-              :xl="5"
-              class="border-all border-left"
-            >
-              <div class="metric-name2">上市时间</div>
-            </el-col>
-            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7" class="border-all">
-              <div class="metric-value2">
+              </span>
+            </div>
+
+            <div>
+              <span class="border-all border-left"> 上市时间 </span>
+              <span class="border-all">
                 {{ this.skuProduct.listingDate }}
-              </div>
-            </el-col>
-            <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5" class="border-all">
-              <div class="metric-name2">款式</div>
-            </el-col>
-            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7" class="border-all">
-              <div class="metric-value2">
+              </span>
+              <span class="border-all">款式 </span>
+              <span class="border-all">
                 {{ this.skuProduct.styleId }}
-              </div>
-            </el-col>
-          </el-row>
+              </span>
+            </div>
+
+            <div style="clear: both"></div>
+          </div>
+
           <div style="margin-bottom: -10px"></div>
           <el-divider />
           <div style="margin-top: -10px"></div>
 
           <div style="width: 100%; height: 100px">
             <div
-              class="border-set"
+              class="top-metric-penel-list2 border-set"
               v-for="metric in metrics"
               :key="metric.metricName"
             >
-              <div style="width: 32%; float: left">
+              <div>
                 {{ metric.metricName }}
               </div>
-              <div style="width: 18%; float: left">
+              <div>
                 {{ metric.metricValue }}
               </div>
             </div>
@@ -658,6 +599,37 @@ export default {
   border: 1px solid #1f2d3d;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); /* 设置阴影 */
 
+  .top-metric-penel-list {
+    div {
+      span {
+        float: left;
+        width: 25%;
+        display: inline-block;
+        word-break: break-all;
+        white-space: normal;
+      }
+      span:nth-child(2n - 1){
+        color: #b1a9a9;
+      }
+    }
+    div:nth-child(2) {
+      span{
+        height: 40px;
+      }
+    }
+  }
+
+  .top-metric-penel-list2 {
+    div {
+      float: left;
+      height: 40px;
+      width: 25%;
+      display: inline-block;
+      word-break: break-all;
+      white-space: normal;
+    }
+  }
+
   .border-set {
     div {
       border: 1px solid #d5d5d5;
@@ -668,6 +640,7 @@ export default {
 
     div:nth-child(1) {
       color: #a9a9a9;
+      border-right-style: none;
     }
   }
 

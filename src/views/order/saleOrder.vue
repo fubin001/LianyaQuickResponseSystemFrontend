@@ -2,80 +2,74 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-row :gutter="10">
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6">
-          品牌名称：<el-input
-            v-model="listQuery.brand"
-            placeholder="请输入品牌名称"
-            style="width: 150px; margin: 5px 8px 5px 0"
+      <span>
+        品牌名称：<el-input
+          v-model="listQuery.brand"
+          placeholder="请输入品牌名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+      /></span>
+      <span
+        >商品名称：<el-input
+          v-model="listQuery.productName"
+          placeholder="请输入商品名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+      /></span>
+      <span
+        >货号：<el-input
+          v-model="listQuery.skuId"
+          placeholder="请输入货号"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span class="end">
+        <span
+          ><el-button
             class="filter-item"
-        /></el-col>
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
-          >商品名称：<el-input
-            v-model="listQuery.productName"
-            placeholder="请输入商品名称"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-        /></el-col>
-        <el-col :xs="6" :sm="8" :md="8" :lg="6" :xl="6"
-          >货号：<el-input
-            v-model="listQuery.skuId"
-            placeholder="请输入货号"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-          />
-        </el-col>
-        <el-col :xs="4" :sm="24" :md="24" :lg="6" :xl="6">
-          <span style="text-align: right;"
-            ><el-button
-              class="filter-item"
-              plain
-              style="margin: 5px 8px 5px 0"
-              @click="reset"
-            >
-              重置
-            </el-button>
-            <el-button
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              style="margin: 5px 0px 5px 0; background-color: #244496"
-              @click="getList(1)"
-            >
-              搜索
-            </el-button></span
+            plain
+            style="margin: 5px 8px 5px 0"
+            @click="reset"
           >
-        </el-col>
-      </el-row>
+            重置
+          </el-button>
+          <el-button
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            style="margin: 5px 0px 5px 0; background-color: #244496"
+            @click="getList(1)"
+          >
+            搜索
+          </el-button></span
+        >
+      </span>
+      <div style="clear: both"></div>
     </div>
 
     <div class="product-list">
-      <div style="height: 2rem; line-height: 2rem">
-        <el-row :gutter="10">
-          <el-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">商品列表</el-col>
-          <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-            <span style="text-align: right">
-              <el-upload
-                action="/api/saleOrder/importExcel"
-                :show-file-list="false"
-                :on-success="handleFileUploadSuccess"
-                :on-error="handleFileUploadError"
-                style="display: inline-block"
-              >
-                <el-button
-                  type="primary"
-                  class="ml-5"
-                  size="mini"
-                  style="background-color: #244496"
-                  :loading="upLoading"
-
-                  @click="upLoading = true"
-                  >上传<i class="el-icon-top"
-                /></el-button>
-              </el-upload>
-            </span>
-          </el-col>
-        </el-row>
+      <div style="height: 2rem; line-height: 2rem; padding: 0 0.1rem;">
+        <span style="float: left;">商品列表</span>
+        <span style="float: right">
+          <el-upload
+            action="/api/saleOrder/importExcel"
+            :show-file-list="false"
+            :on-success="handleFileUploadSuccess"
+            :on-error="handleFileUploadError"
+            style="display: inline-block"
+          >
+            <el-button
+              type="primary"
+              class="ml-5"
+              size="mini"
+              style="background-color: #244496"
+              :loading="upLoading"
+              @click="upLoading = true"
+              >上传<i class="el-icon-top"
+            /></el-button>
+          </el-upload>
+        </span>
       </div>
       <el-table
         ref="dragTable"
@@ -83,7 +77,7 @@
         :data="list"
         row-key="id"
         fit
-        :header-cell-style="{background:'#e4e7f0'}"
+        :header-cell-style="{ background: '#e4e7f0' }"
         highlight-current-row
         style="width: 100%"
       >
@@ -378,20 +372,20 @@ export default {
         size: 10,
       },
       sortable: null,
-      upLoading: false
+      upLoading: false,
     };
   },
   created() {
     this.getList(1);
   },
   methods: {
-    reset(){
+    reset() {
       this.listQuery = {
         page: 1,
         size: 10,
-      }
+      };
     },
-    
+
     getMaxLength(arr) {
       return arr.reduce((acc, item) => {
         if (item) {
@@ -484,8 +478,17 @@ export default {
   .filter-container {
     background-color: #ffffff;
     padding: 10px;
-
     margin-bottom: 10px;
+
+    span {
+      float: left;
+      width: 240px;
+      text-align: end;
+    }
+
+    .end {
+      float: right;
+    }
   }
 
   .product-list {
