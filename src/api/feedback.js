@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { downloadFile } from '@/api/util'
 
 export function queryFeedbackOrder(query) {
   return request({
@@ -13,4 +14,8 @@ export function confirmFeedback(id) {
     url: '/feedback/confirm/' + id,
     method: 'POST'
   })
+}
+
+export function exportFeedbackOrder(param) {
+  downloadFile('/feedback/export', param, '反馈订单详情.xlsx')
 }

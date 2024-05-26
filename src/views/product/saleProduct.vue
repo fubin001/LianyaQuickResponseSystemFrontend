@@ -90,7 +90,71 @@
       </span>
       <div style="clear:both" />
     </div>
+    <div class="filter-container2">
+      <div class="search-item">
+        <span>
+          YTD售罄率：
+          <el-input-number
+            v-model="listQuery.saleYtdSaleOutRateLowerBound"
+            placeholder="下限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+            size="small"
+          />
+        </span>
+        <span>~
+          <el-input-number
+            v-model="listQuery.saleYtdSaleOutRateUpperBound"
+            placeholder="上限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+            size="small"
+          />
+        </span>
+      </div>
+      <div class="search-item">
 
+        <span>
+          首单售罄率：
+          <el-input-number
+            v-model="listQuery.firstOrderSaleOutRateLowerBound"
+            placeholder="下限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
+        </span>
+        <span>~
+          <el-input-number
+            v-model="listQuery.firstOrderSaleOutRateUpperBound"
+            placeholder="上限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
+        </span>
+      </div>
+      <div class="search-item">
+
+        <span>
+          预估售罄率：
+          <el-input-number
+            v-model="listQuery.predictSaleOutRateLowerBound"
+            placeholder="下限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
+        </span>
+        <span>~
+          <el-input
+            v-model="listQuery.predictSaleOutRateUpperBound"
+            placeholder="上限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
+        </span>
+      </div>
+      <div style="clear:both" />
+
+    </div>
     <div class="product-list">
       <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem;">
         <span style="float: left;">商品列表</span>
@@ -139,7 +203,7 @@
         <el-table-column
           label="操作"
           align="center"
-          width="100"
+          width="200"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{ row }">
@@ -277,17 +341,47 @@
             :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"
           />
           <el-table-column
+            prop="predictFinalSale"
+            align="left"
+            label="预估最终销售"
+            :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"
+          />
+          <el-table-column
             prop="firstBuyOrder"
             align="left"
             label="首单采购量"
             :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
           />
           <el-table-column
+            prop="ytdSaleOutRate"
+            align="left"
+            label="ytd售罄率"
+            :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')"
+          >
+            <template slot-scope="{row}">
+              {{ new Number(row.ytdSaleOutRate * 100).toFixed(1) }}%
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="firstOrderSaleOutRate"
+            align="left"
+            label="首单售罄率"
+            :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')"
+          >
+            <template slot-scope="{row}">
+              {{ new Number(row.firstOrderSaleOutRate * 100).toFixed(1) }}%
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="predictSaleOutRate"
             align="left"
             label="预估售罄率"
             :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -528,6 +622,25 @@ export default {
 
     .end{
       float: right;
+    }
+  }
+
+  .filter-container2 {
+    background-color: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    .search-item {
+      width: 450px;
+      float: left;
+      span {
+        float: left;
+        text-align: end;
+      }
+
+      .end {
+        float: right;
+      }
     }
   }
 
