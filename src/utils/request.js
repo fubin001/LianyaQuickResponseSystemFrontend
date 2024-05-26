@@ -43,6 +43,10 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    if (response.headers['content-type'].indexOf('excel') > -1) {
+      return response
+    }
+
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.

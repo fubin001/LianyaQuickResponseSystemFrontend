@@ -62,22 +62,21 @@
       </span>
       <span>
         面料组成：<el-input
-        v-model="listQuery.fabricComposition"
-        placeholder="面料组成"
-        style="width: 150px; margin: 5px 8px 5px 0"
-        class="filter-item"
-      />
+          v-model="listQuery.fabricComposition"
+          placeholder="面料组成"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
       <span class="end">
-        <span 
-          ><el-button
-            class="filter-item"
-            plain
-            style="margin: 5px 8px 5px 0"
-            @click="reset"
-          >
-            重置
-          </el-button>
+        <span><el-button
+                class="filter-item"
+                plain
+                style="margin: 5px 8px 5px 0"
+                @click="reset"
+              >
+                重置
+              </el-button>
           <el-button
             class="filter-item"
             type="primary"
@@ -86,37 +85,46 @@
             @click="getList(1)"
           >
             搜索
-          </el-button></span
-        >
-        
+          </el-button></span>
+
       </span>
-      <div style="clear:both"></div>
+      <div style="clear:both" />
     </div>
 
     <div class="product-list">
       <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem;">
-          <span style="float: left;">商品列表</span>
-          <span style="float: right;">
-            <span>
-              <el-upload
-                action="/api/skuProduct/importExcel"
-                :show-file-list="false"
-                :on-success="handleFileUploadSuccess"
-                :on-error="handleFileUploadError"
-                style="display: inline-block"
-              >
-                <el-button
-                  type="primary"
-                  class="ml-5"
-                  size="mini"
-                  style="background-color: #244496"
-                  :loading="upLoading"
-                  @click="upLoading = true"
-                  >上传<i class="el-icon-top"
-                /></el-button>
-              </el-upload>
-            </span>
+        <span style="float: left;">商品列表</span>
+        <span style="float: right;">
+          <span>
+            <el-button
+              type="primary"
+              class="ml-5"
+              size="mini"
+              style="background-color: #244496"
+              @click="exportSkuProductExcel"
+            >导出</el-button>
           </span>
+          <span>
+            <el-upload
+              action="/api/skuProduct/importExcel"
+              :show-file-list="false"
+              :on-success="handleFileUploadSuccess"
+              :on-error="handleFileUploadError"
+              style="display: inline-block"
+            >
+              <el-button
+                type="primary"
+                class="ml-5"
+                size="mini"
+                style="background-color: #244496"
+                :loading="upLoading"
+                @click="upLoading = true"
+              >上传<i
+                class="el-icon-top"
+              /></el-button>
+            </el-upload>
+          </span>
+        </span>
       </div>
       <el-table
         ref="dragTable"
@@ -138,11 +146,47 @@
             <el-button
               type="success"
               size="mini"
-              @click="goSalePanel(row)"
               style="background-color: #244496; border: none"
+              @click="goSalePanel(row)"
             >
-              预览
+              预览数据
             </el-button>
+            <el-button
+              type="success"
+              size="mini"
+              style="background-color: #244496; border: none"
+              @click="openRelevance(row.metricValueList)"
+            >
+              查看指标
+            </el-button>
+            <!-- <div v-for="metric in row.metricValueList" :key="metric.metricName">
+              <div class="metric-name">{{ metric.metricName }}</div>
+              :
+              <div style="float: right" class="metric-value">
+                {{ metric.metricValue }}
+              </div>
+            </div> -->
+            <el-dialog
+              title="关联指标"
+              :visible.sync="relevanceShow"
+              width="40%"
+              :before-close="handleClose"
+            >
+              <div style="height: 200px">
+                <div
+                  v-for="metric in metricValueList"
+                  :key="metric.metricName"
+                  class="border-set"
+                >
+                  <div style="width: 28%; float: left">
+                    {{ metric.metricName }}
+                  </div>
+                  <div style="width: 22%; float: left">
+                    {{ metric.metricValue }}
+                  </div>
+                </div>
+              </div>
+            </el-dialog>
           </template>
         </el-table-column>
         <el-table-column
@@ -214,44 +258,36 @@
           />
         </el-table-column>
         <el-table-column label="关联指标" width="90">
-          <template slot-scope="{ row }">
-            <el-button
-              type="success"
-              size="mini"
-              @click="openRelevance(row.metricValueList)"
-              style="background-color: #244496; border: none"
-            >
-              查看
-            </el-button>
-            <!-- <div v-for="metric in row.metricValueList" :key="metric.metricName">
-              <div class="metric-name">{{ metric.metricName }}</div>
-              :
-              <div style="float: right" class="metric-value">
-                {{ metric.metricValue }}
-              </div>
-            </div> -->
-            <el-dialog
-              title="关联指标"
-              :visible.sync="relevanceShow"
-              width="40%"
-              :before-close="handleClose"
-            >
-              <div style="height: 200px">
-                <div
-                  class="border-set"
-                  v-for="metric in metricValueList"
-                  :key="metric.metricName"
-                >
-                  <div style="width: 28%; float: left">
-                    {{ metric.metricName }}
-                  </div>
-                  <div style="width: 22%; float: left">
-                    {{ metric.metricValue }}
-                  </div>
-                </div>
-              </div>
-            </el-dialog>
-          </template>
+          <el-table-column
+            prop="saleYtd"
+            align="left"
+            label="销售ytd"
+            :width="flexColumnWidth('销售ytd', 'saleYtd')"
+          />
+          <el-table-column
+            prop="storage"
+            align="left"
+            label="库存"
+            :width="flexColumnWidth('库存', 'storage')"
+          />
+          <el-table-column
+            prop="predictRestSale"
+            align="left"
+            label="预估剩余销售"
+            :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"
+          />
+          <el-table-column
+            prop="firstBuyOrder"
+            align="left"
+            label="首单采购量"
+            :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
+          />
+          <el-table-column
+            prop="predictSaleOutRate"
+            align="left"
+            label="预估售罄率"
+            :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')"
+          />
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -343,10 +379,10 @@
 </template>
 
 <script>
-import { querySkuProduct } from "@/api/skuProduct";
+import { exportSkuProduct, querySkuProduct } from '@/api/skuProduct'
 
 export default {
-  name: "User",
+  name: 'User',
   data() {
     return {
       list: [],
@@ -356,50 +392,54 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        size: 10,
+        size: 10
       },
       sortable: null,
       upLoading: false,
       relevanceShow: false,
-      metricValueList: [],
-    };
+      metricValueList: []
+    }
   },
   created() {
-    this.getList(1);
+    this.getList(1)
   },
   methods: {
+    exportSkuProductExcel() {
+      console.log(this.listQuery)
+      exportSkuProduct(this.listQuery)
+    },
     openRelevance(data) {
-      this.relevanceShow = true;
-      this.metricValueList = data;
+      this.relevanceShow = true
+      this.metricValueList = data
     },
     reset() {
       this.listQuery = {
         page: 1,
-        size: 10,
-      };
+        size: 10
+      }
     },
 
     getMaxLength(arr) {
       return arr.reduce((acc, item) => {
         if (item) {
-          const calcLen = this.getTextWidth(item);
+          const calcLen = this.getTextWidth(item)
           if (acc < calcLen) {
-            acc = calcLen;
+            acc = calcLen
           }
         }
-        return acc;
-      }, 0);
+        return acc
+      }, 0)
     },
 
     getTextWidth(str) {
-      let width = 0;
-      const html = document.createElement("span");
-      html.innerText = str;
-      html.className = "getTextWidth";
-      document.querySelector("body").appendChild(html);
-      width = document.querySelector(".getTextWidth").offsetWidth;
-      document.querySelector(".getTextWidth").remove();
-      return width;
+      let width = 0
+      const html = document.createElement('span')
+      html.innerText = str
+      html.className = 'getTextWidth'
+      document.querySelector('body').appendChild(html)
+      width = document.querySelector('.getTextWidth').offsetWidth
+      document.querySelector('.getTextWidth').remove()
+      return width
     },
     /**
      * el-table-column 自适应列宽
@@ -408,59 +448,59 @@ export default {
      */
     flexColumnWidth(label, prop) {
       // 1.获取该列的所有数据
-      const arr = this.list.map((x) => x[prop]);
-      arr.push(label); // 把每列的表头也加进去算
+      const arr = this.list.map((x) => x[prop])
+      arr.push(label) // 把每列的表头也加进去算
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 20 + "px";
+      return this.getMaxLength(arr) + 20 + 'px'
     },
     async getList(page) {
-      console.log(this.page);
-      console.log(this.size);
-      this.listQuery.page = page;
-      this.listQuery.size = this.size;
-      const { data, total } = await querySkuProduct(this.listQuery);
-      this.list = data;
-      this.total = total;
-      this.listLoading = false;
+      console.log(this.page)
+      console.log(this.size)
+      this.listQuery.page = page
+      this.listQuery.size = this.size
+      const { data, total } = await querySkuProduct(this.listQuery)
+      this.list = data
+      this.total = total
+      this.listLoading = false
     },
 
     handleFileUploadSuccess(res) {
       if (res.data) {
-        console.log(res);
-        this.$message.success("上传成功");
-        this.load();
+        console.log(res)
+        this.$message.success('上传成功')
+        this.load()
       } else {
-        this.$message.error("上传失败");
+        this.$message.error('上传失败')
       }
     },
     handleFileUploadError() {
-      this.$message.error("上传失败");
-      this.upLoading = false;
+      this.$message.error('上传失败')
+      this.upLoading = false
     },
 
     handleSizeChange(pageSize) {
-      this.size = pageSize;
-      this.getList(1);
+      this.size = pageSize
+      this.getList(1)
     },
     handleCurrentChange(pageNum) {
-      this.page = pageNum;
-      this.getList(this.page);
+      this.page = pageNum
+      this.getList(this.page)
     },
     Nindex(index) {
-      const page = this.page;
-      const size = this.size;
-      return index + 1 + (page - 1) * size;
+      const page = this.page
+      const size = this.size
+      return index + 1 + (page - 1) * size
     },
     goSalePanel(row) {
       this.$router.push({
-        path: "/product/saleProductPanel",
+        path: '/product/saleProductPanel',
         query: {
-          salePlanId: row.skuId,
-        },
-      });
-    },
-  },
-};
+          salePlanId: row.skuId
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style>
