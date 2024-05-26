@@ -78,6 +78,7 @@
                 重置
               </el-button>
           <el-button
+            v-loading="listLoading"
             class="filter-item"
             type="primary"
             icon="el-icon-search"
@@ -161,11 +162,21 @@
         <span style="float: right;">
           <span>
             <el-button
+              v-loading="listLoading"
               type="primary"
               class="ml-5"
               size="mini"
-              style="background-color: #244496"
-              @click="exportSkuProductExcel"
+              style="background-color: #244496;margin-right: 2px"
+              @click="refreshAllSkuData"
+            >全部刷新</el-button>
+          </span>
+          <span>
+            <el-button
+              type="primary"
+              class="ml-5"
+              size="mini"
+              style="background-color: #244496;margin-right: 2px"
+              @click="exportSkuProductExcel;"
             >导出</el-button>
           </span>
           <span>
@@ -203,7 +214,7 @@
         <el-table-column
           label="操作"
           align="center"
-          width="200"
+          width="300"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{ row }">
@@ -214,6 +225,14 @@
               @click="goSalePanel(row)"
             >
               预览数据
+            </el-button>
+            <el-button
+              type="success"
+              size="mini"
+              style="background-color: #244496; border: none"
+              @click="refreshSkuRelatedData(row.skuId)"
+            >
+              刷新数据
             </el-button>
             <el-button
               type="success"
@@ -323,36 +342,6 @@
         </el-table-column>
         <el-table-column label="关联指标" width="90">
           <el-table-column
-            prop="saleYtd"
-            align="left"
-            label="销售ytd"
-            :width="flexColumnWidth('销售ytd', 'saleYtd')"
-          />
-          <el-table-column
-            prop="storage"
-            align="left"
-            label="库存"
-            :width="flexColumnWidth('库存', 'storage')"
-          />
-          <el-table-column
-            prop="predictRestSale"
-            align="left"
-            label="预估剩余销售"
-            :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"
-          />
-          <el-table-column
-            prop="predictFinalSale"
-            align="left"
-            label="预估最终销售"
-            :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"
-          />
-          <el-table-column
-            prop="firstBuyOrder"
-            align="left"
-            label="首单采购量"
-            :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
-          />
-          <el-table-column
             prop="ytdSaleOutRate"
             align="left"
             label="ytd售罄率"
@@ -382,6 +371,37 @@
               {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
+          <el-table-column
+            prop="saleYtd"
+            align="left"
+            label="销售ytd"
+            :width="flexColumnWidth('销售ytd', 'saleYtd')"
+          />
+          <el-table-column
+            prop="storage"
+            align="left"
+            label="库存"
+            :width="flexColumnWidth('库存', 'storage')"
+          />
+          <el-table-column
+            prop="predictRestSale"
+            align="left"
+            label="预估剩余销售"
+            :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"
+          />
+          <el-table-column
+            prop="predictFinalSale"
+            align="left"
+            label="预估最终销售"
+            :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"
+          />
+          <el-table-column
+            prop="firstBuyOrder"
+            align="left"
+            label="首单采购量"
+            :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
+          />
+
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -473,7 +493,7 @@
 </template>
 
 <script>
-import { exportSkuProduct, querySkuProduct } from '@/api/skuProduct'
+import { exportSkuProduct, querySkuProduct, refreshAllRelatedData, refreshRelatedData } from '@/api/skuProduct'
 
 export default {
   name: 'User',
@@ -498,6 +518,7 @@ export default {
     this.getList(1)
   },
   methods: {
+    refreshRelatedData,
     exportSkuProductExcel() {
       console.log(this.listQuery)
       exportSkuProduct(this.listQuery)
@@ -523,6 +544,32 @@ export default {
         }
         return acc
       }, 0)
+    },
+
+    refreshSkuRelatedData(skuId) {
+      this.listLoading = true
+      refreshRelatedData(skuId).then(res => {
+        if (res.data) {
+          this.$message.success('刷新成功')
+        }
+        this.listLoading = false
+      }).catch(res => {
+        this.$message.error('刷新失败')
+        this.listLoading = false
+      })
+    },
+
+    refreshAllSkuData() {
+      this.listLoading = true
+      refreshAllRelatedData().then(res => {
+        if (res.data) {
+          this.$message.success('刷新成功')
+        }
+        this.listLoading = false
+      }).catch(res => {
+        this.$message.error('刷新失败')
+        this.listLoading = false
+      })
     },
 
     getTextWidth(str) {
@@ -552,7 +599,9 @@ export default {
       console.log(this.size)
       this.listQuery.page = page
       this.listQuery.size = this.size
-      const { data, total } = await querySkuProduct(this.listQuery)
+      const { data, total } = await querySkuProduct(this.listQuery).catch(res => {
+        this.listLoading = false
+      })
       this.list = data
       this.total = total
       this.listLoading = false
