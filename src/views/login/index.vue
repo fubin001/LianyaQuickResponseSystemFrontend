@@ -49,7 +49,7 @@
                 v-model="loginForm.password"
                 :type="passwordType"
                 placeholder="请输入密码"
-                prefix-icon="iconfont icon-mima"
+                prefix-icon="iconfont icon-mima1"
                 name="password"
                 tabindex="2"
                 autocomplete="on"

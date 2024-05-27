@@ -43,7 +43,7 @@
       <!--      </el-button>-->
     </div>
 
-    <div class="product-list">
+    <div class="table-list">
       <el-table
         ref="dragTable"
         v-loading="listLoading"
@@ -265,7 +265,7 @@ export default {
     margin-bottom: 10px;
   }
 
-  .product-list {
+  .table-list {
     background-color: #ffffff;
     padding: 10px;
   }

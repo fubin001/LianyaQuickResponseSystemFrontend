@@ -48,7 +48,7 @@
       <div style="clear: both"></div>
     </div>
 
-    <div class="product-list">
+    <div class="table-list">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.1rem;">
         <span style="float: left;">商品列表</span>
         <span style="float: right">
@@ -491,7 +491,7 @@ export default {
     }
   }
 
-  .product-list {
+  .table-list {
     background-color: #ffffff;
     padding: 10px;
   }

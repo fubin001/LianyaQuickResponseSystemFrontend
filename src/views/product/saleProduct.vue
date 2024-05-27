@@ -156,7 +156,7 @@
       <div style="clear:both" />
 
     </div>
-    <div class="product-list">
+    <div class="table-list">
       <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem;">
         <span style="float: left;">商品列表</span>
         <span style="float: right;">
@@ -176,7 +176,7 @@
               class="ml-5"
               size="mini"
               style="background-color: #244496;margin-right: 2px"
-              @click="exportSkuProductExcel;"
+              @click="exportSkuProductExcel"
             >导出</el-button>
           </span>
           <span>
@@ -219,25 +219,25 @@
         >
           <template slot-scope="{ row }">
             <el-button
-              type="success"
               size="mini"
-              style="background-color: #244496; border: none"
+              style="color: #244496; border: none"
+              icon="iconfont icon-a-zu1221"
               @click="goSalePanel(row)"
             >
               预览数据
             </el-button>
             <el-button
-              type="success"
               size="mini"
-              style="background-color: #244496; border: none"
+              icon="iconfont icon-shuaxin"
+              style="color: #244496; border: none"
               @click="refreshSkuRelatedData(row.skuId)"
             >
               刷新数据
             </el-button>
             <el-button
-              type="success"
               size="mini"
-              style="background-color: #244496; border: none"
+              icon="iconfont icon-a-zu1221"
+              style="color: #244496; border: none"
               @click="openRelevance(row.metricValueList)"
             >
               查看指标
@@ -255,16 +255,16 @@
               width="40%"
               :before-close="handleClose"
             >
-              <div style="height: 200px">
+              <div style="height: 200px;">
                 <div
                   v-for="metric in metricValueList"
                   :key="metric.metricName"
                   class="border-set"
                 >
-                  <div style="width: 28%; float: left">
+                  <div style="width: 24%; float: left">
                     {{ metric.metricName }}
                   </div>
-                  <div style="width: 22%; float: left">
+                  <div style="width: 26%; float: left">
                     {{ metric.metricValue }}
                   </div>
                 </div>
@@ -693,7 +693,7 @@ export default {
     }
   }
 
-  .product-list {
+  .table-list {
     background-color: #ffffff;
     padding: 10px;
   }

@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "579551",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e782",
+      "unicode_decimal": 59266
+    },
+    {
+      "icon_id": "40475862",
+      "name": "ly-serach",
+      "font_class": "a-zu12211",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "40475863",
+      "name": "ly-look",
+      "font_class": "a-zu1221",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "40475860",
+      "name": "ly-pass",
+      "font_class": "mima1",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
       "icon_id": "11490918",
       "name": "最小化",
       "font_class": "zuixiaohua",
@@ -25,13 +53,6 @@
       "font_class": "pinpaisheji",
       "unicode": "e73f",
       "unicode_decimal": 59199
-    },
-    {
-      "icon_id": "637790",
-      "name": "密码",
-      "font_class": "mima",
-      "unicode": "e622",
-      "unicode_decimal": 58914
     },
     {
       "icon_id": "6299298",
