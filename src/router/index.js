@@ -179,6 +179,18 @@ export const constantRoutes = [
         component: () => import('@/views/order/saleOrder'),
         name: '销售数据',
         meta: { title: '销售数据', icon: 'edit' }
+      },
+      {
+        path: '/data/bom',
+        component: () => import('@/views/bom/data'),
+        name: 'BOM数据',
+        meta: { title: 'BOM数据', icon: 'edit' }
+      },
+      {
+        path: '/data/storage',
+        component: () => import('@/views/storage/overview'),
+        name: '库存数据',
+        meta: { title: '库存数据', icon: 'edit' }
       }
     ]
   },

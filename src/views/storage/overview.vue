@@ -2,14 +2,6 @@
   <div class="app-container">
     <div class="filter-container">
       <span>
-        款号：<el-input
-          v-model="listQuery.skuId"
-          placeholder="请输入款号"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
-      <span>
         TRS编号：<el-input
           v-model="listQuery.skuId"
           placeholder="请输入TRS编号"
@@ -40,15 +32,11 @@
           type="primary"
           icon="el-icon-search"
           style="margin: 5px 0px 5px 0; background-color: #244496"
-          @click="exportBom(listQuery)"
+          @click="exportStorage(listQuery)"
         >
           下载
         </el-button>
       </span>
-
-      <!--      <el-button class="filter-item" type="primary" icon="el-icon-edit" style="margin: 5px 8px 5px 0" @click="beforeCreate">-->
-      <!--        增加-->
-      <!--      </el-button>-->
     </div>
 
     <div class="table-list">
@@ -57,7 +45,7 @@
         <span style="float: right;">
           <span style="text-align: right">
             <el-upload
-              action="/api/bom/importExcel"
+              action="/api/storage/importExcel"
               style="display: inline-block"
               :show-file-list="false"
               :on-success="handleFileUploadSuccess"
@@ -88,22 +76,15 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="center" type="index" width="50" :index="Nindex"/>
-        <el-table-column align="left" label="款号" prop="skuId" :min-width="flexColumnWidth('款号', 'skuId')" />
-        <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth('颜色', 'color')" />
-        <el-table-column align="left" label="层" prop="layer" :min-width="flexColumnWidth('层', 'layer')" />
-        <el-table-column align="left" label="TRS 编号" prop="trs" :min-width="flexColumnWidth('TRS 编号', 'trs')" />
-        <el-table-column align="left" label="供应商" prop="supplier" :min-width="flexColumnWidth('供应商', 'supplier')" />
-        <el-table-column align="left" label="供应商物料编号" prop="supplierMaterialComponentNo" :min-width="flexColumnWidth('供应商物料编号', 'supplierMaterialComponentNo')" />
-        <el-table-column align="left" label="物料描述" prop="materialDescription" :min-width="flexColumnWidth('物料描述', 'materialDescription')" />
+        <el-table-column align="center" type="index" width="50" :index="Nindex" />
+        <el-table-column align="left" label="编号" prop="trsNo" :min-width="flexColumnWidth('款号', 'trsNo')" />
         <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth('颜色代码', 'colorCode')" />
-        <el-table-column align="left" label="尺码" prop="size" :width="flexColumnWidth('尺码', 'colorDescription')" />
-        <el-table-column align="left" label="单位名称" prop="unitName" :min-width="flexColumnWidth('单位名称', 'unitName')" />
-        <el-table-column align="left" label="单位成本" prop="unitCode" :min-width="flexColumnWidth('单位成本', 'unitCode')" />
-        <el-table-column align="left" label="用量" prop="useQuantity" :min-width="flexColumnWidth('用量', 'useQuantity')" />
-        <el-table-column align="left" label="生产天数" prop="produceDay" :min-width="flexColumnWidth('生产天数', 'produceDay')" />
-        <el-table-column align="left" label="上层TRS编号" prop="parentTrsNo" :min-width="flexColumnWidth('上层TRS编号', 'parentTrsNo')" />
-        <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth('组件类型', 'componentType')" />
+        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth('尺寸', 'layer')" />
+        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth('单位', 'unitName')" />
+        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth('库存', 'quantity')" />
+        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth('预留库存', 'preserveQuantity')" />
+        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth('可用库存', 'availableQuantity')" />
+        <el-table-column align="left" label="安全库存" prop="saveQuantity" :min-width="flexColumnWidth('安全库存', 'saveQuantity')" />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -120,8 +101,7 @@
 </template>
 
 <script>
-import { getBrandEnum } from '@/api/enum'
-import { exportBom, queryBom } from '@/api/bom'
+import {exportStorage, queryStorage} from '@/api/storage'
 
 export default {
   name: 'User',
@@ -154,7 +134,7 @@ export default {
     this.getList(1)
   },
   methods: {
-    exportBom,
+    exportStorage,
     reset() {
       this.listQuery = {
         page: 1,
@@ -191,8 +171,14 @@ export default {
      */
     flexColumnWidth(label, prop) {
       // 1.获取该列的所有数据
-      const arr = this.list.map((x) => x[prop])
-      arr.push(label) // 把每列的表头也加进去算
+      let arr = []
+      if (this.list && this.list.length > 0) {
+        arr = this.list.map((x) => x[prop])
+        arr.push(label)
+      }
+      // 把每列的表头也加进去算
+      arr.push(label)
+
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
       return this.getMaxLength(arr) + 20 + 'px'
     },
@@ -219,7 +205,7 @@ export default {
       this.listQuery.page = page
       this.listQuery.size = this.size
       this.listLoading = true
-      const { data, total } = await queryBom(this.listQuery).catch(res => {
+      const { data, total } = await queryStorage(this.listQuery).catch(res => {
         this.listLoading = false
       })
       this.list = data
