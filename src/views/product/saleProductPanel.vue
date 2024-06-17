@@ -23,13 +23,13 @@
           >
             <span style="float: left">基础信息</span>
             <span style="float: right">
-              <span class="iconfont icon-zuixiaohua" @click="minimize"> </span>
-              <span class="iconfont icon-zuidahua" @click="maximize(1)"> </span>
+              <span class="iconfont icon-zuixiaohua" @click="minimize" />
+              <span class="iconfont icon-zuidahua" @click="maximize(1)" />
             </span>
           </div>
-          <div style="margin-bottom: -18px"></div>
+          <div style="margin-bottom: -18px" />
           <el-divider />
-          <div style="margin-top: -18px"></div>
+          <div style="margin-top: -18px" />
           <div class="top-metric-penel-list">
             <div>
               <span class="border-all border-left border-top"> 策略模型 </span>
@@ -71,18 +71,18 @@
               </span>
             </div>
 
-            <div style="clear: both"></div>
+            <div style="clear: both" />
           </div>
 
-          <div style="margin-bottom: -10px"></div>
+          <div style="margin-bottom: -10px" />
           <el-divider />
-          <div style="margin-top: -10px"></div>
+          <div style="margin-top: -10px" />
 
           <div style="width: 100%; height: 100px">
             <div
-              class="top-metric-penel-list2 border-set"
               v-for="metric in metrics"
               :key="metric.metricName"
+              class="top-metric-penel-list2 border-set"
             >
               <div :class="{ heightAll: currentShow == 4 }">
                 {{ metric.metricName }}
@@ -100,8 +100,8 @@
         >
           <div style="height: 1.2rem">
             <span style="float: right">
-              <span class="iconfont icon-zuixiaohua" @click="minimize"> </span>
-              <span class="iconfont icon-zuidahua" @click="maximize(2)"> </span>
+              <span class="iconfont icon-zuixiaohua" @click="minimize" />
+              <span class="iconfont icon-zuidahua" @click="maximize(2)" />
             </span>
           </div>
           <div
@@ -167,8 +167,8 @@
               </el-button>
             </span>
           </div>
-          <el-divider></el-divider>
-          <div style="margin-top: -15px"></div>
+          <el-divider />
+          <div style="margin-top: -15px" />
           <el-table
             ref="dragTable"
             :key="key"
@@ -268,8 +268,8 @@
       >
         <div style="height: 1.2rem">
           <span style="float: left">
-            <span class="iconfont icon-zuixiaohua" @click="minimize"> </span>
-              <span class="iconfont icon-zuidahua" @click="maximize(3)"> </span>
+            <span class="iconfont icon-zuixiaohua" @click="minimize" />
+            <span class="iconfont icon-zuidahua" @click="maximize(3)" />
           </span>
         </div>
         <div class="top-sale-chart">
@@ -301,24 +301,24 @@
 </template>
 
 <script>
-import { getBrandEnum } from "@/api/enum";
+import { getBrandEnum } from '@/api/enum'
 import {
   batchUpdateSaleData,
   queryCandidateSalePlan,
   querySaleDataBy,
   querySkuProductSaleDate,
-  syncCalculateBySalePlanById,
-} from "@/api/saleData";
-import SaleLineChart from "@/views/product/component/SaleLineChart.vue";
+  syncCalculateBySalePlanById
+} from '@/api/saleData'
+import SaleLineChart from '@/views/product/component/SaleLineChart.vue'
 export default {
-  name: "User",
+  name: 'User',
   components: { SaleLineChart },
   data() {
     return {
       currentShow: 4,
       timeUint: 0,
       fittingSalePlanId: null,
-      dialogStatus: "create",
+      dialogStatus: 'create',
       dialogFormVisible: false,
       page: 1,
       size: 10,
@@ -328,13 +328,13 @@ export default {
       dataModify: false,
       listQuery: {
         page: 1,
-        size: 10,
+        size: 10
       },
       metrics: {},
       key: 1,
       titleMap: {
-        create: "新增销售计划",
-        update: "编辑销售计划",
+        create: '新增销售计划',
+        update: '编辑销售计划'
       },
       sortable: null,
       salePlan: null,
@@ -344,154 +344,154 @@ export default {
       salePlanForm: {},
       salePlanId: null,
       candidateSalePlan: [],
-      skuProduct: {},
-    };
+      skuProduct: {}
+    }
   },
   created() {
-    this.editRowDate = null;
-    this.getBrands();
-    console.log(this.$route);
-    this.salePlanId = this.$route.query.salePlanId;
+    this.editRowDate = null
+    this.getBrands()
+    console.log(this.$route)
+    this.salePlanId = this.$route.query.salePlanId
     if (this.$route.query.salePlanId) {
-      this.listQuery.salePlanId = this.$route.query.salePlanId;
-      this.getList();
+      this.listQuery.salePlanId = this.$route.query.salePlanId
+      this.getList()
     }
   },
   mounted() {
-    console.log(this.$refs);
-    console.log(Object.keys(this.$refs));
+    console.log(this.$refs)
+    console.log(Object.keys(this.$refs))
   },
   methods: {
     minimize() {
-      this.currentShow = 4;
+      this.currentShow = 4
     },
     maximize(id) {
-      this.currentShow = id;
-      console.log("当前id:" + this.currentShow);
+      this.currentShow = id
+      console.log('当前id:' + this.currentShow)
     },
     async getList() {
       if (!this.listQuery.salePlanId) {
-        this.$message.error("请填写销售计划");
+        this.$message.error('请填写销售计划')
       }
-      this.listLoading = true;
-      const { data } = await querySkuProductSaleDate(this.listQuery.salePlanId);
-      console.log(data);
-      this.list = data.saleDataList;
-      this.skuProduct = data.skuProduct;
-      this.timeUint = this.skuProduct?.saleTimeUnit ?? 0;
-      this.metrics = data.metricValueList;
-      this.listLoading = false;
-      const xs = this.list.map((x) => x.date);
-      console.log(xs);
+      this.listLoading = true
+      const { data } = await querySkuProductSaleDate(this.listQuery.salePlanId)
+      console.log(data)
+      this.list = data.saleDataList
+      this.skuProduct = data.skuProduct
+      this.timeUint = this.skuProduct?.saleTimeUnit ?? 0
+      this.metrics = data.metricValueList
+      this.listLoading = false
+      const xs = this.list.map((x) => x.date)
+      console.log(xs)
 
-      const actualData = this.list.map((x) => x.quantity);
-      const predictData = this.list.map((x) => x.predictQuantity);
-      const storageData = [];
-      const storageXs = [];
-      const fittingData = this.list.map((x) => x.fittingPredictQuantity);
+      const actualData = this.list.map((x) => x.quantity)
+      const predictData = this.list.map((x) => x.predictQuantity)
+      const storageData = []
+      const storageXs = []
+      const fittingData = this.list.map((x) => x.fittingPredictQuantity)
 
       for (let i = 0; i < this.list.length; i++) {
-        const item = this.list[i];
+        const item = this.list[i]
         if (item.storageQuantity != null) {
-          storageData.push(item.storageQuantity);
-          storageXs.push(item.date);
+          storageData.push(item.storageQuantity)
+          storageXs.push(item.date)
         }
       }
 
       const actualDataSeriesConfig = this.getChartSerialDataConfig(
         actualData,
-        "销售数据",
-        "rgb(219,50,51)",
+        '销售数据',
+        'rgb(219,50,51)',
         false
-      );
+      )
       const predictDataSeriesConfig = this.getChartSerialDataConfig(
         predictData,
-        "预估销售",
-        "rgb(137, 189, 27)",
+        '预估销售',
+        'rgb(137, 189, 27)',
         false
-      );
+      )
       const fittingPredictDataSeriesConfig = this.getChartSerialDataConfig(
         fittingData,
-        "三次拟合",
-        "rgb(0, 136, 212)",
+        '三次拟合',
+        'rgb(0, 136, 212)',
         false
-      );
+      )
       const storageDataSeriesConfig = this.getChartSerialDataConfig(
         storageData,
-        "库存数据",
-        "rgb(219,50,51)",
+        '库存数据',
+        'rgb(219,50,51)',
         false
-      );
+      )
 
       this.$nextTick(() => {
         this.$refs.saleDataChart.initChart(xs, [
           actualDataSeriesConfig,
           predictDataSeriesConfig,
-          fittingPredictDataSeriesConfig,
-        ]);
+          fittingPredictDataSeriesConfig
+        ])
         this.$refs.storageDataChart.initChart(storageXs, [
-          storageDataSeriesConfig,
-        ]);
-      });
+          storageDataSeriesConfig
+        ])
+      })
     },
 
     async fitting() {
-      this.listLoading = true;
+      this.listLoading = true
       const { data } = await querySaleDataBy(
         this.listQuery.salePlanId,
         this.listQuery.oldSalePlanId
-      );
-      this.list = data.saleDataList;
-      this.salePlan = data.salePlan;
-      this.timeUint = this.salePlan?.saleTimeUnit ?? 0;
-      this.metrics = data.metrics;
-      this.listLoading = false;
-      const xs = this.list.map((x) => x.date);
-      console.log(xs);
+      )
+      this.list = data.saleDataList
+      this.salePlan = data.salePlan
+      this.timeUint = this.salePlan?.saleTimeUnit ?? 0
+      this.metrics = data.metrics
+      this.listLoading = false
+      const xs = this.list.map((x) => x.date)
+      console.log(xs)
 
       queryCandidateSalePlan(this.salePlan.oldSkuId).then((res) => {
-        this.candidateSalePlan = res.data;
-      });
-      const actualData = this.list.map((x) => x.quantity);
-      const predictData = this.list.map((x) => x.predictQuantity);
-      const storageData = this.list.map((x) => x.storageQuantity);
-      const fittingData = this.list.map((x) => x.fittingPredictQuantity);
+        this.candidateSalePlan = res.data
+      })
+      const actualData = this.list.map((x) => x.quantity)
+      const predictData = this.list.map((x) => x.predictQuantity)
+      const storageData = this.list.map((x) => x.storageQuantity)
+      const fittingData = this.list.map((x) => x.fittingPredictQuantity)
 
       const actualDataSeriesConfig = this.getChartSerialDataConfig(
         actualData,
-        "销售数据",
-        "rgb(219,50,51)",
+        '销售数据',
+        'rgb(219,50,51)',
         false
-      );
+      )
       const predictDataSeriesConfig = this.getChartSerialDataConfig(
         predictData,
-        "预估销售",
-        "rgb(137, 189, 27)",
+        '预估销售',
+        'rgb(137, 189, 27)',
         false
-      );
+      )
       const fittingPredictDataSeriesConfig = this.getChartSerialDataConfig(
         fittingData,
-        "三次拟合",
-        "rgb(0, 136, 212)",
+        '三次拟合',
+        'rgb(0, 136, 212)',
         false
-      );
+      )
       const storageDataSeriesConfig = this.getChartSerialDataConfig(
         storageData,
-        "库存数据",
-        "rgb(219,50,51)",
+        '库存数据',
+        'rgb(219,50,51)',
         false
-      );
+      )
       this.$refs.saleDataChart.initChart(xs, [
         actualDataSeriesConfig,
         predictDataSeriesConfig,
-        fittingPredictDataSeriesConfig,
-      ]);
-      this.$refs.storageDataChart.initChart(xs, [storageDataSeriesConfig]);
+        fittingPredictDataSeriesConfig
+      ])
+      this.$refs.storageDataChart.initChart(xs, [storageDataSeriesConfig])
     },
 
     async getBrands() {
-      const { data } = await getBrandEnum();
-      this.brands = data;
+      const { data } = await getBrandEnum()
+      this.brands = data
     },
 
     handleRowClick(row, column, cell, event) {
@@ -513,68 +513,68 @@ export default {
     syncCalculate() {
       syncCalculateBySalePlanById(this.salePlanId).then((res) => {
         if (res.data) {
-          this.$message.success("同步成功");
-          this.getList();
+          this.$message.success('同步成功')
+          this.getList()
         } else {
-          this.$message.error("同步失败");
+          this.$message.error('同步失败')
         }
-      });
+      })
     },
     submitModifySaleData() {
-      const modifyDataList = [];
-      this.dataModify = false;
-      const typeList = [0, 1];
+      const modifyDataList = []
+      this.dataModify = false
+      const typeList = [0, 1]
       for (let i = 0; i < this.list.length; i++) {
-        const item = this.list[i];
+        const item = this.list[i]
         if (!item.modify) {
-          continue;
+          continue
         }
-        item.modify = false;
+        item.modify = false
         typeList.forEach((type) => {
-          const saleData = JSON.parse(JSON.stringify(item));
-          saleData.salePlanId = this.salePlan.id;
-          saleData.type = type;
+          const saleData = JSON.parse(JSON.stringify(item))
+          saleData.salePlanId = this.salePlan.id
+          saleData.type = type
           if (type === 0) {
-            saleData.quantity = item.quantity;
+            saleData.quantity = item.quantity
           } else if (type === 1) {
-            saleData.quantity = item.buyOrderQuantity;
+            saleData.quantity = item.buyOrderQuantity
           }
-          modifyDataList.push(saleData);
-        });
+          modifyDataList.push(saleData)
+        })
       }
       batchUpdateSaleData(modifyDataList).then((res) => {
-        this.editRowDate = null;
+        this.editRowDate = null
         if (res.data) {
-          this.$message.success("修改已提交");
-          this.getList();
+          this.$message.success('修改已提交')
+          this.getList()
         }
-      });
+      })
     },
 
     getChartSerialDataConfig(data, title, color, smooth) {
       return {
         name: title,
-        type: "line",
+        type: 'line',
         smooth: smooth,
-        symbol: "circle",
+        symbol: 'circle',
         symbolSize: 5,
         showSymbol: false,
         lineStyle: {
           normal: {
-            width: 2,
-          },
+            width: 2
+          }
         },
         itemStyle: {
           normal: {
             color: color,
-            borderWidth: 12,
-          },
+            borderWidth: 12
+          }
         },
-        data: data,
-      };
-    },
-  },
-};
+        data: data
+      }
+    }
+  }
+}
 </script>
 
 <style>
@@ -627,7 +627,6 @@ export default {
   float: left;
 }
 
-
 .allShow {
   height: 100%;
   width: 90%;
@@ -653,7 +652,6 @@ export default {
   height: 100%;
   margin-left: 20px;
 }
-
 
 .right-panel {
   max-width: 1100px;

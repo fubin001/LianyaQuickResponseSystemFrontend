@@ -194,13 +194,22 @@ export default {
         this.$message.warning('需要填写尺码信息')
         return
       }
+
       if (this.sizeForm.quantity != null || this.sizeForm.quantity !== undefined) {
         if (this.feedbackOrder.quantity < this.sizeForm.quantity) {
           this.$message.warning('分尺码数量不能大于订单总数')
           return
         }
       } else {
+        if (this.feedbackOrder.quantity < this.sizeForm.quantity) {
+          this.$message.warning('分尺码数量不能大于订单总数')
+          return
+        }
         this.sizeForm.quantity = this.feedbackOrder.quantity
+      }
+      if (this.feedbackOrder.quantity < this.sizeForm.quantity) {
+        this.$message.warning('分尺码数量不能大于订单总数')
+        return
       }
       this.sizeInfo.push({
         size: this.sizeForm.size,

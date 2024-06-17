@@ -233,7 +233,7 @@ export default {
     handleCurrentChange(pageNum) {
       this.page = pageNum
       this.getList(this.page)
-    },
+    }
   }
 }
 </script>

@@ -177,7 +177,7 @@
 
 <script>
 import { getBrandEnum } from '@/api/enum'
-import {confirmFeedback, executeFeedback, exportFeedbackOrder, queryFeedbackOrder} from '@/api/feedback'
+import { confirmFeedback, executeFeedback, exportFeedbackOrder, queryFeedbackOrder } from '@/api/feedback'
 import ProduceMaterialList from '@/views/product/component/produceMaterialList.vue'
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
 
