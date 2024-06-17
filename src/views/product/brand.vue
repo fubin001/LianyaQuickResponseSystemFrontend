@@ -56,10 +56,10 @@
 </template>
 
 <script>
-import { query } from "@/api/brand";
+import { query } from '@/api/brand'
 
 export default {
-  name: "User",
+  name: 'User',
   data() {
     return {
       list: null,
@@ -69,25 +69,25 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        size: 10,
+        size: 10
       },
-      sortable: null,
-    };
+      sortable: null
+    }
   },
   created() {
-    this.getList(1);
+    this.getList(1)
   },
   methods: {
     async getList(page) {
-      this.listQuery.page = page;
-      this.listQuery.size = this.size;
-      const { data, total } = await query(this.listQuery);
-      this.list = data;
-      this.total = total;
-      this.listLoading = false;
-    },
-  },
-};
+      this.listQuery.page = page
+      this.listQuery.size = this.size
+      const { data, total } = await query(this.listQuery)
+      this.list = data
+      this.total = total
+      this.listLoading = false
+    }
+  }
+}
 </script>
 
 <style>

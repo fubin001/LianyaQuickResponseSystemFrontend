@@ -99,7 +99,7 @@ import {
   querySaleDataBySalePlanById,
   syncCalculateBySalePlanById
 } from '@/api/saleData'
-import SaleLineChart from '@/views/product/chart/SaleLineChart.vue'
+import SaleLineChart from '@/views/product/component/SaleLineChart.vue'
 export default {
   name: 'User',
   components: { SaleLineChart },

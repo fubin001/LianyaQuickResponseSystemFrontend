@@ -2,13 +2,32 @@
   <div class="app-container">
     <div class="filter-container">
       <span>
-        TRS编号：<el-input
-          v-model="listQuery.skuId"
-          placeholder="请输入TRS编号"
+        品牌：
+        <el-select
+          v-model="listQuery.brand"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        >
+          <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span>
+      <span>
+        颜色代码：<el-input
+          v-model="listQuery.colorCode"
+          placeholder="请输入颜色代码"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
       </span>
+      <span>
+        颜色描述：<el-input
+          v-model="listQuery.colorDescription"
+          placeholder="请输入颜色描述"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+
       <span style="float: right">
         <el-button
           class="filter-item"
@@ -29,10 +48,10 @@
         </el-button>
         <el-button
           class="filter-item"
-          type="primary"
           icon="el-icon-search"
           style="margin: 5px 0px 5px 0; background-color: #244496"
-          @click="exportStorage(listQuery)"
+          type="primary"
+          @click="exportColor(listQuery)"
         >
           下载
         </el-button>
@@ -41,11 +60,11 @@
 
     <div class="table-list">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.3rem;">
-        <span style="float: left;">商品列表</span>
+        <span style="float: left;">颜色数据</span>
         <span style="float: right;">
           <span style="text-align: right">
             <el-upload
-              action="/api/storage/importExcel"
+              action="/api/color/importExcel"
               style="display: inline-block"
               :show-file-list="false"
               :on-success="handleFileUploadSuccess"
@@ -77,14 +96,9 @@
         style="width: 100%"
       >
         <el-table-column align="center" type="index" width="50" :index="Nindex" />
-        <el-table-column align="left" label="编号" prop="trsNo" :min-width="flexColumnWidth('款号', 'trsNo')" />
+        <el-table-column align="left" label="品牌" prop="skuId" :min-width="flexColumnWidth('品牌', 'brand')" />
         <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth('颜色代码', 'colorCode')" />
-        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth('尺寸', 'layer')" />
-        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth('单位', 'unitName')" />
-        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth('库存', 'quantity')" />
-        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth('预留库存', 'preserveQuantity')" />
-        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth('可用库存', 'availableQuantity')" />
-        <el-table-column align="left" label="安全库存" prop="saveQuantity" :min-width="flexColumnWidth('安全库存', 'saveQuantity')" />
+        <el-table-column align="left" label="颜色描述" prop="colorDescription" :min-width="flexColumnWidth('颜色描述', 'colorDescription')" />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -93,15 +107,17 @@
         :current-page="page"
         :page-size="size"
         align="center"
-        @size-change="getList(page)"
-        @current-change="getList(page)"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
+
     </div>
   </div>
 </template>
 
 <script>
-import { exportStorage, queryStorage } from '@/api/storage'
+import { getBrandEnum } from '@/api/enum'
+import { exportColor, queryColor } from '@/api/color'
 
 export default {
   name: 'User',
@@ -111,6 +127,7 @@ export default {
       dialogFormVisible: false,
       salePlanDialogFormVisible: false,
       upLoading: false,
+      componentTypeList: [],
       page: 1,
       size: 10,
       list: null,
@@ -120,21 +137,16 @@ export default {
         page: 1,
         size: 10
       },
-      titleMap: {
-        create: '新增商品',
-        update: '编辑商品'
-      },
-      sortable: null,
-      temp: {},
-      salePlanForm: {},
       brands: []
     }
   },
-  created() {
+  async created() {
+    const { data } = await getBrandEnum()
+    this.brands = data
     this.getList(1)
   },
   methods: {
-    exportStorage,
+    exportColor,
     reset() {
       this.listQuery = {
         page: 1,
@@ -170,15 +182,11 @@ export default {
      * @param table_data: 表格数据
      */
     flexColumnWidth(label, prop) {
-      // 1.获取该列的所有数据
       let arr = []
       if (this.list && this.list.length > 0) {
         arr = this.list.map((x) => x[prop])
-        arr.push(label)
       }
-      // 把每列的表头也加进去算
-      arr.push(label)
-
+      arr.push(label) // 把每列的表头也加进去算
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
       return this.getMaxLength(arr) + 20 + 'px'
     },
@@ -202,10 +210,11 @@ export default {
     },
 
     async getList(page) {
+      console.log(this.page, this.size)
       this.listQuery.page = page
       this.listQuery.size = this.size
       this.listLoading = true
-      const { data, total } = await queryStorage(this.listQuery).catch(res => {
+      const { data, total } = await queryColor(this.listQuery).catch(res => {
         this.listLoading = false
       })
       this.list = data
@@ -216,7 +225,15 @@ export default {
       const page = this.page
       const size = this.size
       return index + 1 + (page - 1) * size
-    }
+    },
+    handleSizeChange(pageSize) {
+      this.size = pageSize
+      this.getList(1)
+    },
+    handleCurrentChange(pageNum) {
+      this.page = pageNum
+      this.getList(this.page)
+    },
   }
 }
 </script>

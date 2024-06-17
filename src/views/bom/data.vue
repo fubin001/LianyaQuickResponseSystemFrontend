@@ -11,11 +11,21 @@
       </span>
       <span>
         TRS编号：<el-input
-          v-model="listQuery.skuId"
+          v-model="listQuery.trsNo"
           placeholder="请输入TRS编号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
+      </span>
+      <span>
+        物料类型：
+        <el-select
+          v-model="listQuery.componentType"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        >
+          <el-option v-for="item in componentTypeList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
       </span>
       <span style="float: right">
         <el-button
@@ -50,6 +60,10 @@
       <!--        增加-->
       <!--      </el-button>-->
     </div>
+
+    <el-dialog title="BOM可视化结构" :visible.sync="bomTreeDialogVisble" width="1500px">
+      <BomTree ref="bomTree" />
+    </el-dialog>
 
     <div class="table-list">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.3rem;">
@@ -88,11 +102,11 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="center" type="index" width="50" :index="Nindex"/>
+        <el-table-column align="center" type="index" width="50" :index="Nindex" />
         <el-table-column align="left" label="款号" prop="skuId" :min-width="flexColumnWidth('款号', 'skuId')" />
         <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth('颜色', 'color')" />
         <el-table-column align="left" label="层" prop="layer" :min-width="flexColumnWidth('层', 'layer')" />
-        <el-table-column align="left" label="TRS 编号" prop="trs" :min-width="flexColumnWidth('TRS 编号', 'trs')" />
+        <el-table-column align="left" label="TRS 编号" prop="trsNo" :min-width="flexColumnWidth('TRS 编号', 'trs')" />
         <el-table-column align="left" label="供应商" prop="supplier" :min-width="flexColumnWidth('供应商', 'supplier')" />
         <el-table-column align="left" label="供应商物料编号" prop="supplierMaterialComponentNo" :min-width="flexColumnWidth('供应商物料编号', 'supplierMaterialComponentNo')" />
         <el-table-column align="left" label="物料描述" prop="materialDescription" :min-width="flexColumnWidth('物料描述', 'materialDescription')" />
@@ -104,6 +118,30 @@
         <el-table-column align="left" label="生产天数" prop="produceDay" :min-width="flexColumnWidth('生产天数', 'produceDay')" />
         <el-table-column align="left" label="上层TRS编号" prop="parentTrsNo" :min-width="flexColumnWidth('上层TRS编号', 'parentTrsNo')" />
         <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth('组件类型', 'componentType')" />
+        <el-table-column>
+          <template slot-scope="{row}">
+            <el-button
+              v-if="row.layer === 1"
+              size="mini"
+              style="color: #244496; border: none"
+              icon="iconfont icon-a-zu1221"
+              @click="popBomTreeDialog(row.skuId)"
+            >
+              查看bom结构
+            </el-button>
+            <el-tooltip v-else content="只能查看成品bom结构">
+              <el-button
+                size="mini"
+                style="color: gray; border: none"
+                icon="iconfont icon-a-zu1221"
+                disabled
+              >
+                查看bom结构
+              </el-button>
+            </el-tooltip>
+
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -120,17 +158,19 @@
 </template>
 
 <script>
-import { getBrandEnum } from '@/api/enum'
-import { exportBom, queryBom } from '@/api/bom'
+import { exportBom, queryBom, queryComponentTypeList } from '@/api/bom'
+import BomTree from '@/views/bom/tree.vue'
 
 export default {
   name: 'User',
+  components: { BomTree },
   data() {
     return {
       dialogStatus: 'create',
       dialogFormVisible: false,
       salePlanDialogFormVisible: false,
       upLoading: false,
+      componentTypeList: [],
       page: 1,
       size: 10,
       list: null,
@@ -140,17 +180,11 @@ export default {
         page: 1,
         size: 10
       },
-      titleMap: {
-        create: '新增商品',
-        update: '编辑商品'
-      },
-      sortable: null,
-      temp: {},
-      salePlanForm: {},
-      brands: []
+      bomTreeDialogVisble: false
     }
   },
   created() {
+    this.initComponentTypeList()
     this.getList(1)
   },
   methods: {
@@ -174,6 +208,11 @@ export default {
       }, 0)
     },
 
+    async initComponentTypeList() {
+      const { data } = await queryComponentTypeList()
+      this.componentTypeList = data
+    },
+
     getTextWidth(str) {
       let width = 0
       const html = document.createElement('span')
@@ -191,7 +230,10 @@ export default {
      */
     flexColumnWidth(label, prop) {
       // 1.获取该列的所有数据
-      const arr = this.list.map((x) => x[prop])
+      let arr = []
+      if (this.list && this.list.length > 0) {
+        arr = this.list.map((x) => x[prop])
+      }
       arr.push(label) // 把每列的表头也加进去算
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
       return this.getMaxLength(arr) + 20 + 'px'
@@ -230,6 +272,13 @@ export default {
       const page = this.page
       const size = this.size
       return index + 1 + (page - 1) * size
+    },
+    popBomTreeDialog(skuId) {
+      this.bomTreeDialogVisble = true
+      this.$nextTick(() => {
+        console.log(skuId)
+        this.$refs.bomTree.render(skuId)
+      })
     }
   }
 }

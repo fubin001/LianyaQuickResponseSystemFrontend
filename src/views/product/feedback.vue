@@ -37,11 +37,15 @@
           下载
         </el-button>
       </span>
-
-      <!--      <el-button class="filter-item" type="primary" icon="el-icon-edit" style="margin: 5px 8px 5px 0" @click="beforeCreate">-->
-      <!--        增加-->
-      <!--      </el-button>-->
     </div>
+
+    <el-dialog title="物料单预览" :visible.sync="dialogFormVisible" width="1500px">
+      <ProduceMaterialList ref="produceMaterial" />
+    </el-dialog>
+
+    <el-dialog title="物料单" :visible.sync="readerDialogFormVisible" width="1500px">
+      <ProduceMaterialListReader ref="produceMaterialReader" />
+    </el-dialog>
 
     <div class="table-list">
       <el-table
@@ -55,16 +59,61 @@
         style="width: 100%"
       >
         <el-table-column align="center" label="ID" prop="id" width="50" />
-        <el-table-column align="left" label="skuId" prop="skuId" :width="flexColumnWidth('skuId', 'skuId')" />
-        <el-table-column align="left" label="订货日期" prop="bookDate" :width="flexColumnWidth('订货日期', 'bookDate')" />
-        <el-table-column align="left" label="预计到货" prop="predictDate" :width="flexColumnWidth('预计到货', 'predictDate')" />
-        <el-table-column align="left" label="确认到货" prop="confirmDate" :width="flexColumnWidth('确认到货', 'confirmDate')" />
-        <el-table-column align="left" label="订货数量" prop="quantity" :width="flexColumnWidth('订货数量', 'quantity')" />
-        <el-table-column align="left" label="颜色" prop="color" :width="flexColumnWidth('颜色', 'color')" />
-        <el-table-column align="left" label="颜色名称" prop="colorName" :width="flexColumnWidth('颜色名称', 'colorName')" />
-        <el-table-column align="left" label="销售YTD" prop="ytd" :width="flexColumnWidth('销售YTD', 'ytd')" />
-        <el-table-column align="left" label="库存量" prop="storage" :width="flexColumnWidth('库存量', 'storage')" />
-        <el-table-column align="left" label="YTD售罄率" prop="ytdSaleOutRate" :width="flexColumnWidth('YTD售罄率', 'ytdSaleOutRate')">
+        <el-table-column
+          label="操作"
+          align="left"
+          width="200"
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="{ row }">
+            <span v-if="row.orderState < 2">
+              <el-button
+                size="mini"
+                style="color: #244496; border: none"
+                icon="el-icon-edit-outline"
+                @click="popProduceMaterialList(row.skuId, row.id)"
+              >
+                配置物料
+              </el-button>
+            </span>
+            <span v-if="row.orderState > 0">
+              <el-button
+                size="mini"
+                style="color: #244496; border: none"
+                icon="el-icon-search"
+                @click="popProduceMaterialListReader(row.skuId, row.id)"
+              >
+                查看物料
+              </el-button>
+              <el-button
+                size="mini"
+                style="color: #244496; border: none"
+                icon="el-icon-arrow-right"
+                @click="executeFeedbackOrder(row)"
+              >
+                执行反馈
+              </el-button>
+            </span>
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-circle-check"
+              @click="confirmFeedbackOrder(row)"
+            >
+              确认到货
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth('skuId', 'skuId')" />
+        <el-table-column align="left" label="订货日期" prop="bookDate" :min-width="flexColumnWidth('订货日期', 'bookDate')" />
+        <el-table-column align="left" label="预计到货" prop="predictDate" :min-width="flexColumnWidth('预计到货', 'predictDate')" />
+        <el-table-column align="left" label="确认到货" prop="confirmDate" :min-width="flexColumnWidth('确认到货', 'confirmDate')" />
+        <el-table-column align="left" label="订货数量" prop="quantity" :min-width="flexColumnWidth('订货数量', 'quantity')" />
+        <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth('颜色', 'color')" />
+        <el-table-column align="left" label="颜色名称" prop="colorName" :min-width="flexColumnWidth('颜色名称', 'colorName')" />
+        <el-table-column align="left" label="销售YTD" prop="ytd" :min-width="flexColumnWidth('销售YTD', 'ytd')" />
+        <el-table-column align="left" label="库存量" prop="storage" :min-width="flexColumnWidth('库存量', 'storage')" />
+        <el-table-column align="left" label="YTD售罄率" prop="ytdSaleOutRate" :min-width="flexColumnWidth('YTD售罄率', 'ytdSaleOutRate')">
           <template slot-scope="{ row }">
             {{ new Number(row.ytdSaleOutRate * 100).toFixed(2) }} %
           </template>
@@ -110,23 +159,7 @@
           prop="recentlyFourWeekAvgSale"
           :width="flexColumnWidth('最近四周销售平均', 'recentlyFourWeekAvgSale')"
         />
-        <el-table-column
-          label="操作"
-          align="center"
-          width="100"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="{ row }">
-            <el-button
-              type="success"
-              size="mini"
-              style="background-color: #244496; border: none"
-              @click="confirmFeedbackOrder(row)"
-            >
-              确认到货
-            </el-button>
-          </template>
-        </el-table-column>
+
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -144,15 +177,18 @@
 
 <script>
 import { getBrandEnum } from '@/api/enum'
-import { confirmFeedback, exportFeedbackOrder, queryFeedbackOrder } from '@/api/feedback'
+import {confirmFeedback, executeFeedback, exportFeedbackOrder, queryFeedbackOrder} from '@/api/feedback'
+import ProduceMaterialList from '@/views/product/component/produceMaterialList.vue'
+import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
 
 export default {
   name: 'User',
+  components: { ProduceMaterialListReader, ProduceMaterialList },
   data() {
     return {
       dialogStatus: 'create',
       dialogFormVisible: false,
-      salePlanDialogFormVisible: false,
+      readerDialogFormVisible: false,
       page: 1,
       size: 10,
       list: null,
@@ -177,6 +213,7 @@ export default {
     this.getList(1)
   },
   methods: {
+    executeFeedback,
     exportFeedbackOrder,
     reset() {
       this.listQuery = {
@@ -220,6 +257,20 @@ export default {
       return this.getMaxLength(arr) + 20 + 'px'
     },
 
+    popProduceMaterialList(skuId, feedbackOrderId) {
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.produceMaterial.render(skuId, feedbackOrderId)
+      })
+    },
+
+    popProduceMaterialListReader(skuId, feedbackOrderId) {
+      this.readerDialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
+      })
+    },
+
     async getList(page) {
       this.listQuery.page = page
       this.listQuery.size = this.size
@@ -240,6 +291,15 @@ export default {
         if (res.data) {
           this.$message.success('已确认')
           this.getList(this.page)
+        }
+      })
+    },
+
+    executeFeedbackOrder(row) {
+      executeFeedback(row.id).then((res) => {
+        if (res.data) {
+          this.$message.success('已确认')
+          this.$forceUpdate()
         }
       })
     }

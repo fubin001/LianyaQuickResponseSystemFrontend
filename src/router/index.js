@@ -55,11 +55,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-  {
-    path: '/register',
-    component: () => import('@/views/register/index'),
-    hidden: true
-  },
+  // {
+  //   path: '/register',
+  //   component: () => import('@/views/register/index'),
+  //   hidden: true
+  // },
   {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
@@ -191,6 +191,12 @@ export const constantRoutes = [
         component: () => import('@/views/storage/overview'),
         name: '库存数据',
         meta: { title: '库存数据', icon: 'edit' }
+      },
+      {
+        path: '/data/color',
+        component: () => import('@/views/color/index'),
+        name: '颜色数据',
+        meta: { title: '颜色数据', icon: 'edit' }
       }
     ]
   },

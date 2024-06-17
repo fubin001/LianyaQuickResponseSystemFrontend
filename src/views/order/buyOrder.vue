@@ -2,75 +2,72 @@
 <template>
   <div class="app-container">
     <div class="filter-container" style="">
-        <span>
-          品牌名称：<el-input
-            v-model="listQuery.brandName"
-            placeholder="请输入品牌名称"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
+      <span>
+        品牌名称：<el-input
+          v-model="listQuery.brandName"
+          placeholder="请输入品牌名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
         /></span>
-        <span
-          >商品名称：<el-input
-            v-model="listQuery.productName"
-            placeholder="请输入商品名称"
-            style="width: 150px; margin: 5px 8px 5px 0"
+      <span>商品名称：<el-input
+        v-model="listQuery.productName"
+        placeholder="请输入商品名称"
+        style="width: 150px; margin: 5px 8px 5px 0"
+        class="filter-item"
+      /></span>
+      <span>货号：<el-input
+        v-model="listQuery.skuId"
+        placeholder="请输入货号"
+        style="width: 150px; margin: 5px 8px 5px 0"
+        class="filter-item"
+      /></span>
+      <span class="end">
+        <span><el-button
+                class="filter-item"
+                plain
+                style="margin: 5px 8px 5px 0"
+                @click="reset"
+              >
+                重置
+              </el-button>
+          <el-button
             class="filter-item"
-        /></span>
-        <span
-          >货号：<el-input
-            v-model="listQuery.skuId"
-            placeholder="请输入货号"
-            style="width: 150px; margin: 5px 8px 5px 0"
-            class="filter-item"
-        /></span>
-        <span class="end">
-          <span
-            ><el-button
-              class="filter-item"
-              plain
-              style="margin: 5px 8px 5px 0"
-              @click="reset"
-            >
-              重置
-            </el-button>
-            <el-button
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              style="margin: 5px 0px 5px 0; background-color: #244496"
-              @click="getList(1)"
-            >
-              搜索
-            </el-button></span
+            type="primary"
+            icon="el-icon-search"
+            style="margin: 5px 0px 5px 0; background-color: #244496"
+            @click="getList(1)"
           >
-        </span>
-      <div style="clear:both"></div>
+            搜索
+          </el-button></span>
+      </span>
+      <div style="clear:both" />
     </div>
 
     <div class="table-list">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.3rem;">
-          <span style="float: left;">商品列表</span>
-          <span style="float: right;">
-            <span style="text-align: right">
-              <el-upload
-                action="/api/buyOrder/importExcel"
-                style="display: inline-block"
-                :show-file-list="false"
-                :on-success="handleFileUploadSuccess"
-                :on-error="handleFileUploadError"
-              >
-                <el-button
-                  type="primary"
-                  class="ml-5"
-                  style="background-color: #244496"
-                  size="mini"
-                  :loading="upLoading"
-                  @click="upLoading = true"
-                  >上传<i class="el-icon-top"
-                /></el-button>
-              </el-upload>
-            </span>
+        <span style="float: left;">商品列表</span>
+        <span style="float: right;">
+          <span style="text-align: right">
+            <el-upload
+              action="/api/buyOrder/importExcel"
+              style="display: inline-block"
+              :show-file-list="false"
+              :on-success="handleFileUploadSuccess"
+              :on-error="handleFileUploadError"
+            >
+              <el-button
+                type="primary"
+                class="ml-5"
+                style="background-color: #244496"
+                size="mini"
+                :loading="upLoading"
+                @click="upLoading = true"
+              >上传<i
+                class="el-icon-top"
+              /></el-button>
+            </el-upload>
           </span>
+        </span>
       </div>
 
       <el-table
@@ -250,10 +247,10 @@
 </template>
 
 <script>
-import { queryBuyOrder } from "@/api/buyOrder";
+import { queryBuyOrder } from '@/api/buyOrder'
 
 export default {
-  name: "User",
+  name: 'User',
   data() {
     return {
       list: [],
@@ -263,43 +260,43 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        size: 10,
+        size: 10
       },
       sortable: [],
-      upLoading: false,
-    };
+      upLoading: false
+    }
   },
   created() {
-    this.getList(1);
+    this.getList(1)
   },
   methods: {
     reset() {
       this.listQuery = {
         page: 1,
-        size: 10,
-      };
+        size: 10
+      }
     },
     getMaxLength(arr) {
       return arr.reduce((acc, item) => {
         if (item) {
-          const calcLen = this.getTextWidth(item);
+          const calcLen = this.getTextWidth(item)
           if (acc < calcLen) {
-            acc = calcLen;
+            acc = calcLen
           }
         }
-        return acc;
-      }, 0);
+        return acc
+      }, 0)
     },
 
     getTextWidth(str) {
-      let width = 0;
-      const html = document.createElement("span");
-      html.innerText = str;
-      html.className = "getTextWidth";
-      document.querySelector("body").appendChild(html);
-      width = document.querySelector(".getTextWidth").offsetWidth;
-      document.querySelector(".getTextWidth").remove();
-      return width;
+      let width = 0
+      const html = document.createElement('span')
+      html.innerText = str
+      html.className = 'getTextWidth'
+      document.querySelector('body').appendChild(html)
+      width = document.querySelector('.getTextWidth').offsetWidth
+      document.querySelector('.getTextWidth').remove()
+      return width
     },
     /**
      * el-table-column 自适应列宽
@@ -310,63 +307,63 @@ export default {
       // console.log('label', label)
       // console.log('prop', prop)
       // 1.获取该列的所有数据
-      const arr = this.list.map((x) => x[prop]);
-      arr.push(label); // 把每列的表头也加进去算
+      const arr = this.list.map((x) => x[prop])
+      arr.push(label) // 把每列的表头也加进去算
       // console.log(arr)
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 25 + "px";
+      return this.getMaxLength(arr) + 25 + 'px'
     },
 
     async getList(page) {
-      console.log(this.page);
-      console.log(this.size);
-      this.listQuery.page = page;
-      this.listQuery.size = this.size;
-      const { data, total } = await queryBuyOrder(this.listQuery);
-      this.list = data;
-      this.total = total;
-      this.listLoading = false;
+      console.log(this.page)
+      console.log(this.size)
+      this.listQuery.page = page
+      this.listQuery.size = this.size
+      const { data, total } = await queryBuyOrder(this.listQuery)
+      this.list = data
+      this.total = total
+      this.listLoading = false
     },
 
     handleFileUploadSuccess(res) {
-      console.log("上传成功");
+      console.log('上传成功')
       if (res.data) {
-        console.log(res);
-        this.$message.success("上传成功");
-        this.upLoading = false;
-        this.load();
+        console.log(res)
+        this.$message.success('上传成功')
+        this.upLoading = false
+        this.load()
       } else {
-        this.$message.error("上传失败");
-        this.upLoading = false;
+        this.$message.error('上传失败')
+        this.upLoading = false
       }
     },
     handleFileUploadError() {
-      console.log("上传失败");
-      this.$message.error("上传失败");
-      this.upLoading = false;
+      console.log('上传失败')
+      this.$message.error('上传失败')
+      this.upLoading = false
     },
 
     abort() {
       this.upLoading = false
-      this.$message.error("取消上传");
-      console.log("取消上传");
+      this.$message.error('取消上传')
+      console.log('取消上传')
     },
 
     handleSizeChange(pageSize) {
-      this.size = pageSize;
-      this.getList(1);
+      this.size = pageSize
+      this.getList(1)
     },
     handleCurrentChange(pageNum) {
-      this.page = pageNum;
-      this.getList(this.page);
+      this.page = pageNum
+      this.getList(this.page)
     },
     Nindex(index) {
-      const page = this.page;
-      const size = this.size;
-      return index + 1 + (page - 1) * size;
-    },
-  },
-};
+      const page = this.page
+      const size = this.size
+      return index + 1 + (page - 1) * size
+    }
+  }
+}
 </script>
 
 <style>
