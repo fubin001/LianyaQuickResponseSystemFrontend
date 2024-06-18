@@ -136,19 +136,12 @@ export const constantRoutes = [
         name: '反馈订单',
         meta: { title: '反馈订单', icon: 'edit' }
       },
-      // {
-      //   path: '/product/salePlan',
-      //   component: () => import('@/views/product/salePlan'),
-      //   name: '销售计划',
-      //   meta: { title: '销售计划', icon: 'edit' }
-      // },
-      // {
-      //   path: '/product/saleDataPanel',
-      //   component: () => import('@/views/product/saleDataPanel'),
-      //   name: '销售面板',
-      //   hidden: true,
-      //   meta: { title: '销售面板', icon: 'edit' }
-      // },
+      {
+        path: '/data/componentOrder',
+        component: () => import('@/views/order/componentOrder'),
+        name: '生产订单',
+        meta: { title: '生产订单', icon: 'edit' }
+      },
       {
         path: '/product/saleProductPanel',
         component: () => import('@/views/product/saleProductPanel'),
@@ -179,6 +172,12 @@ export const constantRoutes = [
         component: () => import('@/views/order/saleOrder'),
         name: '销售数据',
         meta: { title: '销售数据', icon: 'edit' }
+      },
+      {
+        path: '/data/materialOrder',
+        component: () => import('@/views/order/materialOrder'),
+        name: '备料数据',
+        meta: { title: '备料数据', icon: 'edit' }
       },
       {
         path: '/data/bom',
