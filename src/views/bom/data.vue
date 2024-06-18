@@ -150,8 +150,8 @@
         :current-page="page"
         :page-size="size"
         align="center"
-        @size-change="getList(page)"
-        @current-change="getList(page)"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
     </div>
   </div>
@@ -279,6 +279,14 @@ export default {
         console.log(skuId)
         this.$refs.bomTree.render(skuId)
       })
+    },
+    handleSizeChange(pageSize) {
+      this.size = pageSize
+      this.getList(1)
+    },
+    handleCurrentChange(pageNum) {
+      this.page = pageNum
+      this.getList(this.page)
     }
   }
 }

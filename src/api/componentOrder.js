@@ -12,3 +12,25 @@ export function queryComponentOrder(query) {
 export function exportComponentOrder(param) {
   return downloadFile('/componentOrder/export', param, '颜色数据.xlsx')
 }
+
+export function addComponentOrder(order) {
+  return request({
+    url: '/componentOrder/generateComponentOrder',
+    method: 'post',
+    data: order
+  })
+}
+
+export function deleteOrder(id) {
+  return request({
+    url: '/componentOrder/delete/' + id,
+    method: 'post'
+  })
+}
+
+export function confirmOrder(id) {
+  return request({
+    url: '/componentOrder/confirmOrder/' + id,
+    method: 'post'
+  })
+}

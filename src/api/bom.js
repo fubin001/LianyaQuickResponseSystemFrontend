@@ -47,3 +47,10 @@ export function generateProduceMaterial(bomSizeInfo) {
     data: bomSizeInfo
   })
 }
+
+export function getTrsNoEnumList() {
+  return request({
+    url: '/bom/getTrsNoEnumList',
+    method: 'get'
+  })
+}

@@ -81,10 +81,13 @@
         <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, '品牌', 'brand')" />
         <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth(list, '组件类型', 'componentType')" />
         <el-table-column align="left" label="供应商" prop="supplier" :min-width="flexColumnWidth(list, '供应商', 'supplier')" />
+        <el-table-column align="left" label="供应商组件编号" prop="supplierComponentNo" :min-width="flexColumnWidth(list, '供应商组件编号', 'supplierComponentNo')" />
+        <el-table-column align="left" label="物料描述" prop="materialDescription" :min-width="flexColumnWidth(list, '物料描述', 'materialDescription')" />
         <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list, '颜色代码', 'colorCode')" />
         <el-table-column align="left" label="颜色描述" prop="colorDescription" :min-width="flexColumnWidth(list, '颜色描述', 'colorDescription')" />
         <el-table-column align="left" label="尺码" prop="size" :min-width="flexColumnWidth(list, '尺码', 'size')" />
         <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth(list, '单位', 'unitName')" />
+        <el-table-column align="left" label="单价" prop="unitCost" :min-width="flexColumnWidth(list, '单价', 'unitCost')" />
         <el-table-column align="left" label="数量" prop="materialQuantity" :min-width="flexColumnWidth(list, '数量', 'materialQuantity')" />
       </el-table>
       <el-pagination
@@ -136,7 +139,6 @@ export default {
   methods: {
     flexColumnWidth,
     exportMaterialOrder,
-    exportColor,
     reset() {
       this.listQuery = {
         page: 1,
