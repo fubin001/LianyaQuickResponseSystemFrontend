@@ -192,6 +192,12 @@ export const constantRoutes = [
         meta: { title: '库存数据', icon: 'edit' }
       },
       {
+        path: '/data/storageDetail',
+        component: () => import('@/views/storage/detail'),
+        name: '库存明细',
+        meta: { title: '库存明细', icon: 'edit' }
+      },
+      {
         path: '/data/color',
         component: () => import('@/views/color/index'),
         name: '颜色数据',

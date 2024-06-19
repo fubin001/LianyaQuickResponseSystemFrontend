@@ -12,3 +12,15 @@ export function queryStorage(query) {
 export function exportStorage(param) {
   return downloadFile('/storage/export', param, '库存数据.xlsx')
 }
+
+export function queryStorageDetail(query) {
+  return request({
+    url: '/storageDetail/query',
+    method: 'get',
+    params: query
+  })
+}
+
+export function exportStorageDetail(param) {
+  return downloadFile('/storageDetail/export', param, '库存明细.xlsx')
+}
