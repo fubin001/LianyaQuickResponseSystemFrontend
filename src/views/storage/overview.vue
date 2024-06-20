@@ -3,7 +3,7 @@
     <div class="filter-container">
       <span>
         TRS编号：<el-input
-          v-model="listQuery.skuId"
+          v-model="listQuery.trsNo"
           placeholder="请输入TRS编号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
@@ -41,7 +41,7 @@
 
     <div class="table-list">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.3rem;">
-        <span style="float: left;">商品列表</span>
+        <span style="float: left;">库存管理</span>
         <span style="float: right;">
           <span style="text-align: right">
             <el-upload
@@ -54,7 +54,7 @@
               <el-button
                 type="primary"
                 class="ml-5"
-                style="background-color: #244496"
+                style="background-color: #244496;margin: 4px"
                 size="mini"
                 :loading="upLoading"
                 @click="upLoading = true"
@@ -62,9 +62,78 @@
                 class="el-icon-top"
               /></el-button>
             </el-upload>
+            <el-button
+              type="primary"
+              class="ml-5"
+              style="background-color: #244496;margin: 4px"
+              size="mini"
+              icon="el-icon-plus"
+              @click="addDialogVisible = true"
+            >新增<i /></el-button>
           </span>
         </span>
       </div>
+
+      <el-dialog :visible.sync="addDialogVisible" title="新增库存" width="500px">
+        <el-form ref="dataForm" :model="addForm" label-position="left" label-width="100px" style="width: 300px; margin-left:50px;">
+          <el-form-item label="TRS编号">
+            <el-select v-model="addForm.trsNo" style="width: 300px">
+              <el-option v-for="trsNoEnum in trsNoEnumList" :key="trsNoEnum.key" :label="trsNoEnum.key" :value="trsNoEnum.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="尺寸（选填）">
+            <el-input v-model="addForm.size" style="width: 300px" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="addDialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="addOneStorage">
+            确定
+          </el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog :visible.sync="editDialogVisible" title="编辑库存" width="500px">
+        <el-form ref="dataForm" :model="editForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+          <el-form-item label="TRS编号">
+            <el-input v-model="editForm.trsNo" style="width: 300px" disabled />
+          </el-form-item>
+          <el-form-item label="安全库存">
+            <el-input v-model="editForm.safeQuantity" style="width: 300px" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editDialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="editStorage">
+            确定
+          </el-button>
+        </div>
+      </el-dialog>
+      <el-dialog :visible.sync="storageDialogVisible" title="操作库存" width="500px">
+        <el-form ref="dataForm" :model="storageForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+          <el-form-item label="TRS编号">
+            <el-input v-model="storageForm.trsNo" style="width: 300px" disabled />
+          </el-form-item>
+          <el-form-item label="操作类型">
+            <el-input v-model="storageForm.recordType" style="width: 300px" disabled />
+          </el-form-item>
+          <el-form-item label="数量">
+            <el-input v-model="storageForm.quantity" style="width: 300px" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="storageDialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="manualOperateStorage">
+            确定
+          </el-button>
+        </div>
+      </el-dialog>
 
       <el-table
         ref="dragTable"
@@ -76,15 +145,50 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="center" type="index" width="50" :index="Nindex" />
-        <el-table-column align="left" label="编号" prop="trsNo" :min-width="flexColumnWidth('款号', 'trsNo')" />
-        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth('颜色代码', 'colorCode')" />
-        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth('尺寸', 'layer')" />
-        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth('单位', 'unitName')" />
-        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth('库存', 'quantity')" />
-        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth('预留库存', 'preserveQuantity')" />
-        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth('可用库存', 'availableQuantity')" />
-        <el-table-column align="left" label="安全库存" prop="saveQuantity" :min-width="flexColumnWidth('安全库存', 'saveQuantity')" />
+        <el-table-column align="left" label="操作" width="350px">
+          <template slot-scope="{row}">
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-edit"
+              @click="popEditDialog(row)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-scissors"
+              @click="removeStorageById(row.id)"
+            >
+              删除
+            </el-button>
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-minus"
+              @click="popOperateStorageDialog(row.id, row.trsNo, '出库')"
+            >
+              出库
+            </el-button>
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-plus"
+              @click="popOperateStorageDialog(row.id, row.trsNo, '入库')"
+            >
+              入库
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="编号" prop="trsNo" :min-width="flexColumnWidth(list,'款号', 'trsNo')" />
+        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list,'颜色代码', 'colorCode')" />
+        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth(list,'尺寸', 'layer')" />
+        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth(list,'单位', 'unitName')" />
+        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth(list,'库存', 'quantity')" />
+        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth(list,'预留库存', 'preserveQuantity')" />
+        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth(list,'可用库存', 'availableQuantity')" />
+        <el-table-column align="left" label="安全库存" prop="safeQuantity" :min-width="flexColumnWidth(list,'安全库存', 'saveQuantity')" />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -93,20 +197,36 @@
         :current-page="page"
         :page-size="size"
         align="center"
-        @size-change="getList(page)"
-        @current-change="getList(page)"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { exportStorage, queryStorage } from '@/api/storage'
+import {
+  addStorage,
+  exportStorage,
+  getRecordTypeList,
+  modifyStorage,
+  operateStorage,
+  queryStorage,
+  removeStorage
+} from '@/api/storage'
+import { getTrsNoEnumList } from '@/api/bom'
+import { flexColumnWidth } from '@/common/util'
 
 export default {
   name: 'User',
   data() {
     return {
+      addForm: {},
+      editForm: {},
+      storageForm: {},
+      addDialogVisible: false,
+      editDialogVisible: false,
+      storageDialogVisible: false,
       dialogStatus: 'create',
       dialogFormVisible: false,
       salePlanDialogFormVisible: false,
@@ -127,13 +247,18 @@ export default {
       sortable: null,
       temp: {},
       salePlanForm: {},
-      brands: []
+      trsNoEnumList: [],
+      recordTypeEnumList: []
     }
   },
-  created() {
+  computed: {
+  },
+  async created() {
+    await this.initEnums()
     this.getList(1)
   },
   methods: {
+    flexColumnWidth,
     exportStorage,
     reset() {
       this.listQuery = {
@@ -142,45 +267,83 @@ export default {
       }
     },
 
-    getMaxLength(arr) {
-      return arr.reduce((acc, item) => {
-        if (item) {
-          const calcLen = this.getTextWidth(item)
-          if (acc < calcLen) {
-            acc = calcLen
-          }
+    popOperateStorageDialog(id, trsNo, recordType) {
+      this.storageForm.id = id
+      this.storageForm.trsNo = trsNo
+      this.storageForm.recordType = recordType
+      this.storageDialogVisible = true
+    },
+
+    manualOperateStorage() {
+      operateStorage(this.storageForm).then(res => {
+        if (res.data) {
+          this.$message.success(this.storageForm.recordType + '成功')
+          this.getList(this.page)
+          this.storageDialogVisible = false
+        } else {
+          this.$message.error(this.storageForm.recordType + '失败')
         }
-        return acc
-      }, 0)
+      }).catch(res => {
+        this.$message.error(this.storageForm.recordType + '失败')
+      })
     },
 
-    getTextWidth(str) {
-      let width = 0
-      const html = document.createElement('span')
-      html.innerText = str
-      html.className = 'getTextWidth'
-      document.querySelector('body').appendChild(html)
-      width = document.querySelector('.getTextWidth').offsetWidth
-      document.querySelector('.getTextWidth').remove()
-      return width
+    removeStorageById(id) {
+      removeStorage(id).then(res => {
+        if (res.data) {
+          this.$message.success('删除成功')
+          this.getList(this.page)
+        } else {
+          this.$message.error('删除失败')
+        }
+      }).catch(res => {
+        this.$message.error('删除失败')
+      })
     },
-    /**
-     * el-table-column 自适应列宽
-     * @param prop_label: 表名
-     * @param table_data: 表格数据
-     */
-    flexColumnWidth(label, prop) {
-      // 1.获取该列的所有数据
-      let arr = []
-      if (this.list && this.list.length > 0) {
-        arr = this.list.map((x) => x[prop])
-        arr.push(label)
-      }
-      // 把每列的表头也加进去算
-      arr.push(label)
 
-      // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 20 + 'px'
+    addOneStorage() {
+      addStorage(this.addForm).then(res => {
+        if (res.data) {
+          this.$message.success('添加成功')
+          this.addForm = {}
+          this.getList(this.page)
+        } else {
+          this.$message.error('添加失败')
+        }
+        this.addDialogVisible = false
+      }).catch(res => {
+        this.$message.error('添加失败')
+        this.addDialogVisible = false
+      })
+    },
+
+    popEditDialog(row) {
+      this.editForm = JSON.parse(JSON.stringify(row))
+      this.editDialogVisible = true
+    },
+
+    editStorage() {
+      modifyStorage(this.editForm).then(res => {
+        if (res.data) {
+          this.$message.success('编辑成功')
+          this.addForm = {}
+          this.getList(this.page)
+          this.editDialogVisible = false
+        } else {
+          this.$message.error('编辑失败')
+        }
+      }).catch(res => {
+        this.$message.error('编辑失败')
+      })
+    },
+
+    async initEnums() {
+      await getTrsNoEnumList().then(res => {
+        this.trsNoEnumList = res?.data ?? []
+      })
+      await getRecordTypeList().then(res => {
+        this.recordTypeEnumList = res?.data ?? []
+      })
     },
 
     handleFileUploadSuccess(res) {
@@ -211,6 +374,14 @@ export default {
       this.list = data
       this.total = total
       this.listLoading = false
+    },
+    handleSizeChange(pageSize) {
+      this.size = pageSize
+      this.getList(1)
+    },
+    handleCurrentChange(pageNum) {
+      this.page = pageNum
+      this.getList(this.page)
     },
     Nindex(index) {
       const page = this.page

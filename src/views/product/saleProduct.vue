@@ -201,6 +201,25 @@
           </span>
         </span>
       </div>
+
+      <el-dialog :visible.sync="editDialogVisible" title="编辑库存" width="500px">
+        <el-form ref="dataForm" :model="modForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+          <el-form-item label="skuId">
+            <el-input v-model="modForm.skuId" style="width: 300px" disabled />
+          </el-form-item>
+          <el-form-item label="预测系数">
+            <el-input v-model="modForm.predictCoe" style="width: 300px" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editDialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="editPredictCoe">
+            确定
+          </el-button>
+        </div>
+      </el-dialog>
       <el-table
         ref="dragTable"
         v-loading="listLoading"
@@ -224,7 +243,7 @@
               icon="iconfont icon-a-zu1221"
               @click="goSalePanel(row)"
             >
-              预览数据
+              预览
             </el-button>
             <el-button
               size="mini"
@@ -232,7 +251,7 @@
               style="color: #244496; border: none"
               @click="refreshSkuRelatedData(row.skuId)"
             >
-              刷新数据
+              刷新
             </el-button>
             <el-button
               size="mini"
@@ -240,7 +259,15 @@
               style="color: #244496; border: none"
               @click="openRelevance(row.metricValueList)"
             >
-              查看指标
+              指标
+            </el-button>
+            <el-button
+              size="mini"
+              icon="iconfont icon-shuaxin"
+              style="color: #244496; border: none"
+              @click="popModForm(row)"
+            >
+              编辑
             </el-button>
             <!-- <div v-for="metric in row.metricValueList" :key="metric.metricName">
               <div class="metric-name">{{ metric.metricName }}</div>
@@ -249,6 +276,7 @@
                 {{ metric.metricValue }}
               </div>
             </div> -->
+
             <el-dialog
               title="关联指标"
               :visible.sync="relevanceShow"
@@ -338,6 +366,20 @@
             align="left"
             label="面料成分"
             :width="flexColumnWidth('面料成分', 'fabricComposition')"
+          />
+        </el-table-column>
+        <el-table-column label="预测">
+          <el-table-column
+            prop="predictModel"
+            align="left"
+            label="预测模型"
+            :width="flexColumnWidth('预测模型', 'predictModel')"
+          />
+          <el-table-column
+            prop="predictCoe"
+            align="left"
+            label="预测系数"
+            :width="flexColumnWidth('预测系数', 'predictCoe')"
           />
         </el-table-column>
         <el-table-column label="关联指标" width="90">
@@ -494,6 +536,7 @@
 
 <script>
 import { exportSkuProduct, querySkuProduct, refreshAllRelatedData, refreshRelatedData } from '@/api/skuProduct'
+import request from '@/utils/request'
 
 export default {
   name: 'User',
@@ -511,7 +554,9 @@ export default {
       sortable: null,
       upLoading: false,
       relevanceShow: false,
-      metricValueList: []
+      metricValueList: [],
+      editDialogVisible: false,
+      modForm: {}
     }
   },
   created() {
@@ -527,6 +572,33 @@ export default {
       this.relevanceShow = true
       this.metricValueList = data
     },
+
+    popModForm(row) {
+      console.log(row)
+      this.modForm.id = row.id
+      this.modForm.skuId = row.skuId
+      this.editDialogVisible = true
+    },
+
+    editPredictCoe() {
+      request({
+        url: '/skuProduct/modify',
+        method: 'post',
+        data: this.modForm
+      }).then(res => {
+        if (res.data) {
+          this.$message.success('编辑成功')
+          this.modForm = {}
+          this.getList(this.page)
+          this.editDialogVisible = false
+        } else {
+          this.$message.error('编辑失败')
+        }
+      }).catch(res => {
+        this.$message.error('编辑失败')
+      })
+    },
+
     reset() {
       this.listQuery = {
         page: 1,

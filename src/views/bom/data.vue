@@ -23,6 +23,9 @@
           v-model="listQuery.componentType"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
+          clearable
+          allow-create
+          filterable
         >
           <el-option v-for="item in componentTypeList" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>

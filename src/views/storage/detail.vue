@@ -59,7 +59,6 @@
         <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')" />
         <el-table-column align="left" label="订单类型" prop="orderType" :min-width="flexColumnWidth(list, '订单类型', 'orderType')" />
         <el-table-column align="left" label="订单ID" prop="outerId" :min-width="flexColumnWidth(list, '订单ID', 'outerId')" />
-        <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth(list, '组件类型', 'componentType')" />
         <el-table-column align="left" label="记录类型" prop="recordType" :min-width="flexColumnWidth(list, '记录类型', 'recordType')" />
         <el-table-column align="left" label="记录时间" prop="recordDateTime" :min-width="flexColumnWidth(list, '记录时间', 'recordDateTime')" />
         <el-table-column align="left" label="数量" prop="quantity" :min-width="flexColumnWidth(list, '数量', 'quantity')" />
