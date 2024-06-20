@@ -623,6 +623,7 @@ export default {
       refreshRelatedData(skuId).then(res => {
         if (res.data) {
           this.$message.success('刷新成功')
+          this.getList(this.page)
         }
         this.listLoading = false
       }).catch(res => {
