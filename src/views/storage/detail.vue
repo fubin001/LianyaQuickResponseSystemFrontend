@@ -99,6 +99,7 @@ export default {
       total: null,
       listLoading: true,
       listQuery: {
+        trsNo: this.$route.query.trsNo || '',
         page: 1,
         size: 10
       },
