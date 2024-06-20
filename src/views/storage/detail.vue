@@ -50,18 +50,19 @@
         v-loading="listLoading"
         :data="list"
         row-key="id"
+        border
         :header-cell-style="{background:'#e4e7f0'}"
         fit
         highlight-current-row
         style="width: 100%"
       >
         <el-table-column align="center" type="index" width="50" :index="Nindex" />
-        <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')" />
-        <el-table-column align="left" label="订单类型" prop="orderType" :min-width="flexColumnWidth(list, '订单类型', 'orderType')" />
-        <el-table-column align="left" label="订单ID" prop="outerId" :min-width="flexColumnWidth(list, '订单ID', 'outerId')" />
-        <el-table-column align="left" label="记录类型" prop="recordType" :min-width="flexColumnWidth(list, '记录类型', 'recordType')" />
-        <el-table-column align="left" label="记录时间" prop="recordDateTime" :min-width="flexColumnWidth(list, '记录时间', 'recordDateTime')" />
-        <el-table-column align="left" label="数量" prop="quantity" :min-width="flexColumnWidth(list, '数量', 'quantity')" />
+        <el-table-column align="left" label="TRS编号" prop="trsNo" show-overflow-tooltip />
+        <el-table-column align="left" label="订单类型" prop="orderType" show-overflow-tooltip />
+        <el-table-column align="left" label="订单ID" prop="outerId" show-overflow-tooltip />
+        <el-table-column align="left" label="记录类型" prop="recordType" show-overflow-tooltip />
+        <el-table-column align="left" label="记录时间" prop="recordDateTime" show-overflow-tooltip />
+        <el-table-column align="left" label="数量" prop="quantity" show-overflow-tooltip />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
