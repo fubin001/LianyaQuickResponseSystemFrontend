@@ -116,7 +116,7 @@
             <span>数据面板</span>
 
             <span style="float: right">
-              <el-button
+              <!-- <el-button
                 size="mini"
                 class="filter-item"
                 type="primary"
@@ -129,6 +129,21 @@
                 @click="syncCalculate"
               >
                 同步数据
+              </el-button> -->
+              <el-button
+                size="mini"
+                class="filter-item"
+                type="primary"
+                icon="el-icon-search"
+                :loading="refreshLoading"
+                style="
+                  width: 100px;
+                  margin: 5px 8px 5px 0;
+                  background-color: #244496;
+                "
+                @click="refreshSkuRelatedData"
+              >
+                刷新数据
               </el-button>
               <span v-if="candidateSalePlan && candidateSalePlan.length > 0">
                 <el-select
@@ -252,12 +267,22 @@
               prop="storageQuantity"
               width="100px"
             />
-            <el-table-column
+            <!-- <el-table-column
               align="left"
               label="三次拟合"
               prop="fittingPredictQuantity"
               width="100px"
-            />
+            /> -->
+            <el-table-column
+              align="left"
+              label="周系数"
+              prop="weekCoefficient"
+              width="100px"
+            >
+              <template slot-scope="{ row }">
+                <el-input v-model="row.weekCoefficient" placeholder="周系数" @change="weekCoefficientChange(row)" />
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </div>
@@ -305,10 +330,12 @@ import { getBrandEnum } from '@/api/enum'
 import {
   batchUpdateSaleData,
   queryCandidateSalePlan,
+  weekCoefficientChange,
   querySaleDataBy,
   querySkuProductSaleDate,
   syncCalculateBySalePlanById
 } from '@/api/saleData'
+import { refreshRelatedData } from '@/api/skuProduct'
 import SaleLineChart from '@/views/product/component/SaleLineChart.vue'
 export default {
   name: 'User',
@@ -325,6 +352,7 @@ export default {
       list: null,
       total: null,
       listLoading: false,
+      refreshLoading: false,
       dataModify: false,
       listQuery: {
         page: 1,
@@ -434,6 +462,19 @@ export default {
         ])
       })
     },
+    refreshSkuRelatedData() {
+      this.refreshLoading = true
+      refreshRelatedData(this.listQuery.salePlanId).then(res => {
+        if (res.data) {
+          this.$message.success('刷新成功')
+          this.getList()
+        }
+        this.refreshLoading = false
+      }).catch(res => {
+        this.$message.error('刷新失败')
+        this.refreshLoading = false
+      })
+    },
 
     async fitting() {
       this.listLoading = true
@@ -517,6 +558,21 @@ export default {
           this.getList()
         } else {
           this.$message.error('同步失败')
+        }
+      })
+    },
+    weekCoefficientChange(row) {
+      debugger
+      const param = {
+        skuId: this.listQuery.salePlanId,
+        weekCoefficient: row.weekCoefficient,
+        date: row.date
+      }
+      weekCoefficientChange(param).then((res) => {
+        if (res.data) {
+          this.$message.success('周系数更改成功')
+        } else {
+          this.$message.error('更改失败')
         }
       })
     },
