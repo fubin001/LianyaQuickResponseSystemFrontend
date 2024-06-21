@@ -139,6 +139,7 @@
         ref="dragTable"
         v-loading="listLoading"
         :data="list"
+        border
         row-key="id"
         :header-cell-style="{background:'#e4e7f0'}"
         fit
@@ -181,14 +182,20 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="编号" prop="trsNo" :min-width="flexColumnWidth(list,'款号', 'trsNo')" />
-        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list,'颜色代码', 'colorCode')" />
-        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth(list,'尺寸', 'layer')" />
-        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth(list,'单位', 'unitName')" />
-        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth(list,'库存', 'quantity')" />
-        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth(list,'预留库存', 'preserveQuantity')" />
-        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth(list,'可用库存', 'availableQuantity')" />
-        <el-table-column align="left" label="安全库存" prop="safeQuantity" :min-width="flexColumnWidth(list,'安全库存', 'saveQuantity')" />
+        <el-table-column align="left" label="TRS编号" prop="trsNo" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-link type="primary" @click="goToPage(scope.row)">
+              {{ scope.row.trsNo }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="颜色代码" prop="colorCode" show-overflow-tooltip />
+        <el-table-column align="left" label="尺寸" prop="size" show-overflow-tooltip />
+        <el-table-column align="left" label="单位" prop="unitName" show-overflow-tooltip />
+        <el-table-column align="left" label="库存" prop="quantity" show-overflow-tooltip />
+        <el-table-column align="left" label="预留库存" prop="preserveQuantity" show-overflow-tooltip />
+        <el-table-column align="left" label="可用库存" prop="availableQuantity" show-overflow-tooltip />
+        <el-table-column align="left" label="安全库存" prop="safeQuantity" show-overflow-tooltip />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -387,6 +394,16 @@ export default {
       const page = this.page
       const size = this.size
       return index + 1 + (page - 1) * size
+    },
+    goToPage(row) {
+      const query = {
+        trsNo: row.trsNo
+      }
+      // 库存详情
+      this.$router.push({
+        path: '/data/storageDetail',
+        query
+      })
     }
   }
 }
