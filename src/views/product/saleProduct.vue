@@ -210,6 +210,9 @@
           <el-form-item label="预测系数">
             <el-input v-model="modForm.predictCoe" style="width: 300px" />
           </el-form-item>
+          <el-form-item label="下线日期">
+            <el-date-picker v-model="modForm.endDate" style="width: 300px" value-format="yyyy-MM-dd" />
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="editDialogVisible = false">
@@ -374,6 +377,12 @@
             align="left"
             label="预测模型"
             :width="flexColumnWidth('预测模型', 'predictModel')"
+          />
+          <el-table-column
+            prop="endDate"
+            align="left"
+            label="下线日期"
+            :width="flexColumnWidth('下线日期', 'endDate')"
           />
           <el-table-column
             prop="predictCoe"
