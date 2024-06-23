@@ -21,6 +21,8 @@ export function addComponentOrder(order) {
   })
 }
 
+// export function a
+
 export function deleteOrder(id) {
   return request({
     url: '/componentOrder/delete/' + id,

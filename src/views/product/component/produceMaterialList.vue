@@ -88,7 +88,11 @@
       <el-table-column prop="materialDescription" label="物料描述" :min-width="flexColumnWidth(bomList, '物料描述', 'materialDescription')" />
       <el-table-column prop="componentType" label="组件类型" :min-width="flexColumnWidth(bomList, '组件类型', 'componentType')" />
       <el-table-column prop="unitName" label="单位" :min-width="flexColumnWidth(bomList, '层', 'unitName')" />
-      <el-table-column prop="useQuantity" label="单位用量" :min-width="flexColumnWidth(bomList, '单位用量', 'useQuantity')" />
+      <el-table-column prop="useQuantity" label="用量(单件)" :min-width="flexColumnWidth(useBomList, '单位用量', 'useQuantity')">
+        <template slot-scope="{row}">
+          {{ Number(row.useQuantity).toFixed(2) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="size" label="是否区分尺寸" :min-width="flexColumnWidth(bomList, '', 'size')" />
 
     </el-table>
@@ -135,16 +139,24 @@
       <el-table-column prop="componentType" label="组件类型" :min-width="flexColumnWidth(useBomList, '组件类型', 'componentType')" />
       <el-table-column prop="unitName" label="单位" :min-width="flexColumnWidth(useBomList, '层', 'unitName')" />
       <el-table-column prop="size" label="尺码" :min-width="flexColumnWidth(useBomList, '尺码', 'size')" />
-      <el-table-column prop="useQuantity" label="用量(单件)" :min-width="flexColumnWidth(useBomList, '单位用量', 'useQuantity')" />
+      <el-table-column prop="useQuantity" label="用量(单件)" :min-width="flexColumnWidth(useBomList, '单位用量', 'useQuantity')">
+        <template slot-scope="{row}">
+          {{ Number(row.useQuantity).toFixed(2) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="totalQuantity" label="数量" :min-width="flexColumnWidth(useBomList, '数量', 'totalQuantity')" />
-      <el-table-column prop="totalUseQuantity" label="总用量" :min-width="flexColumnWidth(useBomList, '总量', 'totalUseQuantity')" />
+      <el-table-column prop="totalUseQuantity" label="总用量" :min-width="flexColumnWidth(useBomList, '总量', 'totalUseQuantity')">
+        <template slot-scope="{row}">
+          {{ Number(row.totalUseQuantity).toFixed(2) }}
+        </template>
+      </el-table-column>
 
     </el-table>
   </div>
 </template>
 
 <script>
-import { generateProduceMaterial, getBom } from '@/api/bom'
+import { generateProduceMaterial, getBomTreeNodeListByRootTrs } from '@/api/bom'
 import { flexColumnWidth } from '@/common/util'
 import { getFeedbackOrder } from '@/api/feedback'
 
@@ -180,10 +192,10 @@ export default {
 
   methods: {
     flexColumnWidth,
-    render(skuId, feedbackOrderId) {
+    async render(skuId, feedbackOrderId) {
       if (skuId && feedbackOrderId) {
-        this.getBomList(skuId)
-        this.getFeedbackOrder(feedbackOrderId)
+        await this.getFeedbackOrder(feedbackOrderId)
+        this.getBomList(skuId, this.feedbackOrder.rtsNo)
         this.$props.skuId = skuId
         this.$props.feedbackOrderId = feedbackOrderId
       }
@@ -225,8 +237,8 @@ export default {
       this.sizeInfo.splice(no, 1)
     },
 
-    async getBomList(skuId) {
-      await getBom(skuId).then(res => {
+    async getBomList(skuId, rtsNo) {
+      await getBomTreeNodeListByRootTrs(skuId, rtsNo).then(res => {
         this.bomList = res?.data ?? []
       })
     },
@@ -245,7 +257,8 @@ export default {
           skuId: this.skuId,
           totalQuantity: this.totalQuantity,
           sizeInfoList: this.sizeInfo,
-          feedbackOrderId: this.feedbackOrderId
+          feedbackOrderId: this.feedbackOrderId,
+          rtsNo: this.feedbackOrder.rtsNo
         }
         await generateProduceMaterial(data).then(res => {
           this.useBomList = res?.data ?? []
