@@ -69,14 +69,15 @@
         />
       </span>
       <span class="end">
-        <span><el-button
-                class="filter-item"
-                plain
-                style="margin: 5px 8px 5px 0"
-                @click="reset"
-              >
-                重置
-              </el-button>
+        <span
+          ><el-button
+            class="filter-item"
+            plain
+            style="margin: 5px 8px 5px 0"
+            @click="reset"
+          >
+            重置
+          </el-button>
           <el-button
             v-loading="listLoading"
             class="filter-item"
@@ -86,10 +87,10 @@
             @click="getList(1)"
           >
             搜索
-          </el-button></span>
-
+          </el-button></span
+        >
       </span>
-      <div style="clear:both" />
+      <div style="clear: both" />
     </div>
     <div class="filter-container2">
       <div class="search-item">
@@ -103,7 +104,8 @@
             size="small"
           />
         </span>
-        <span>~
+        <span
+          >~
           <el-input-number
             v-model="listQuery.saleYtdSaleOutRateUpperBound"
             placeholder="上限(%)"
@@ -114,7 +116,6 @@
         </span>
       </div>
       <div class="search-item">
-
         <span>
           首单售罄率：
           <el-input-number
@@ -124,7 +125,8 @@
             class="filter-item"
           />
         </span>
-        <span>~
+        <span
+          >~
           <el-input-number
             v-model="listQuery.firstOrderSaleOutRateUpperBound"
             placeholder="上限(%)"
@@ -134,7 +136,6 @@
         </span>
       </div>
       <div class="search-item">
-
         <span>
           预估售罄率：
           <el-input-number
@@ -144,7 +145,8 @@
             class="filter-item"
           />
         </span>
-        <span>~
+        <span
+          >~
           <el-input
             v-model="listQuery.predictSaleOutRateUpperBound"
             placeholder="上限(%)"
@@ -153,31 +155,32 @@
           />
         </span>
       </div>
-      <div style="clear:both" />
-
+      <div style="clear: both" />
     </div>
     <div class="table-list">
-      <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem;">
-        <span style="float: left;">商品列表</span>
-        <span style="float: right;">
+      <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem">
+        <span style="float: left">商品列表</span>
+        <span style="float: right">
           <span>
             <el-button
-              v-loading="listLoading"
               type="primary"
               class="ml-5"
               size="mini"
-              style="background-color: #244496;margin-right: 2px"
+              style="background-color: #244496; margin-right: 2px"
+              :loading="allLoad"
               @click="refreshAllSkuData"
-            >全部刷新</el-button>
+              >全部刷新</el-button
+            >
           </span>
           <span>
             <el-button
               type="primary"
               class="ml-5"
               size="mini"
-              style="background-color: #244496;margin-right: 2px"
+              style="background-color: #244496; margin-right: 2px"
               @click="exportSkuProductExcel"
-            >导出</el-button>
+              >导出</el-button
+            >
           </span>
           <span>
             <el-upload
@@ -194,16 +197,25 @@
                 style="background-color: #244496"
                 :loading="upLoading"
                 @click="upLoading = true"
-              >上传<i
-                class="el-icon-top"
+                >上传<i class="el-icon-top"
               /></el-button>
             </el-upload>
           </span>
         </span>
       </div>
 
-      <el-dialog :visible.sync="editDialogVisible" title="编辑库存" width="500px">
-        <el-form ref="dataForm" :model="modForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+      <el-dialog
+        :visible.sync="editDialogVisible"
+        title="编辑库存"
+        width="500px"
+      >
+        <el-form
+          ref="dataForm"
+          :model="modForm"
+          label-position="left"
+          label-width="70px"
+          style="width: 300px; margin-left: 50px"
+        >
           <el-form-item label="skuId">
             <el-input v-model="modForm.skuId" style="width: 300px" disabled />
           </el-form-item>
@@ -211,16 +223,16 @@
             <el-input v-model="modForm.predictCoe" style="width: 300px" />
           </el-form-item>
           <el-form-item label="下线日期">
-            <el-date-picker v-model="modForm.endDate" style="width: 300px" value-format="yyyy-MM-dd" />
+            <el-date-picker
+              v-model="modForm.endDate"
+              style="width: 300px"
+              value-format="yyyy-MM-dd"
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="editDialogVisible = false">
-            取消
-          </el-button>
-          <el-button type="primary" @click="editPredictCoe">
-            确定
-          </el-button>
+          <el-button @click="editDialogVisible = false"> 取消 </el-button>
+          <el-button type="primary" @click="editPredictCoe"> 确定 </el-button>
         </div>
       </el-dialog>
       <el-table
@@ -286,7 +298,7 @@
               width="40%"
               :before-close="handleClose"
             >
-              <div style="height: 200px;">
+              <div style="height: 200px">
                 <div
                   v-for="metric in metricValueList"
                   :key="metric.metricName"
@@ -398,7 +410,7 @@
             label="ytd售罄率"
             :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')"
           >
-            <template slot-scope="{row}">
+            <template slot-scope="{ row }">
               {{ new Number(row.ytdSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
@@ -408,7 +420,7 @@
             label="首单售罄率"
             :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')"
           >
-            <template slot-scope="{row}">
+            <template slot-scope="{ row }">
               {{ new Number(row.firstOrderSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
@@ -418,7 +430,7 @@
             label="预估售罄率"
             :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')"
           >
-            <template slot-scope="{row}">
+            <template slot-scope="{ row }">
               {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
@@ -452,7 +464,6 @@
             label="首单采购量"
             :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
           />
-
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -544,11 +555,16 @@
 </template>
 
 <script>
-import { exportSkuProduct, querySkuProduct, refreshAllRelatedData, refreshRelatedData } from '@/api/skuProduct'
-import request from '@/utils/request'
+import {
+  exportSkuProduct,
+  querySkuProduct,
+  refreshAllRelatedData,
+  refreshRelatedData,
+} from "@/api/skuProduct";
+import request from "@/utils/request";
 
 export default {
-  name: 'User',
+  name: "User",
   data() {
     return {
       list: [],
@@ -556,113 +572,121 @@ export default {
       page: 1,
       size: 10,
       listLoading: true,
+      allLoad: false,
       listQuery: {
         page: 1,
-        size: 10
+        size: 10,
       },
       sortable: null,
       upLoading: false,
       relevanceShow: false,
       metricValueList: [],
       editDialogVisible: false,
-      modForm: {}
-    }
+      modForm: {},
+    };
   },
   created() {
-    this.getList(1)
+    this.getList(1);
   },
   methods: {
     refreshRelatedData,
     exportSkuProductExcel() {
-      console.log(this.listQuery)
-      exportSkuProduct(this.listQuery)
+      console.log(this.listQuery);
+      exportSkuProduct(this.listQuery);
     },
     openRelevance(data) {
-      this.relevanceShow = true
-      this.metricValueList = data
+      this.relevanceShow = true;
+      this.metricValueList = data;
     },
 
     popModForm(row) {
-      console.log(row)
-      this.modForm.id = row.id
-      this.modForm.skuId = row.skuId
-      this.editDialogVisible = true
+      console.log(row);
+      this.modForm.id = row.id;
+      this.modForm.skuId = row.skuId;
+      this.editDialogVisible = true;
     },
 
     editPredictCoe() {
       request({
-        url: '/skuProduct/modify',
-        method: 'post',
-        data: this.modForm
-      }).then(res => {
-        if (res.data) {
-          this.$message.success('编辑成功')
-          this.modForm = {}
-          this.getList(this.page)
-          this.editDialogVisible = false
-        } else {
-          this.$message.error('编辑失败')
-        }
-      }).catch(res => {
-        this.$message.error('编辑失败')
+        url: "/skuProduct/modify",
+        method: "post",
+        data: this.modForm,
       })
+        .then((res) => {
+          if (res.data) {
+            this.$message.success("编辑成功");
+            this.modForm = {};
+            this.getList(this.page);
+            this.editDialogVisible = false;
+          } else {
+            this.$message.error("编辑失败");
+          }
+        })
+        .catch((res) => {
+          this.$message.error("编辑失败");
+        });
     },
 
     reset() {
       this.listQuery = {
         page: 1,
-        size: 10
-      }
+        size: 10,
+      };
     },
 
     getMaxLength(arr) {
       return arr.reduce((acc, item) => {
         if (item) {
-          const calcLen = this.getTextWidth(item)
+          const calcLen = this.getTextWidth(item);
           if (acc < calcLen) {
-            acc = calcLen
+            acc = calcLen;
           }
         }
-        return acc
-      }, 0)
+        return acc;
+      }, 0);
     },
 
     refreshSkuRelatedData(skuId) {
-      this.listLoading = true
-      refreshRelatedData(skuId).then(res => {
-        if (res.data) {
-          this.$message.success('刷新成功')
-          this.getList(this.page)
-        }
-        this.listLoading = false
-      }).catch(res => {
-        this.$message.error('刷新失败')
-        this.listLoading = false
-      })
+      this.listLoading = true;
+      refreshRelatedData(skuId)
+        .then((res) => {
+          if (res.data) {
+            this.$message.success("刷新成功");
+            this.getList(this.page);
+          }
+          this.listLoading = false;
+        })
+        .catch((res) => {
+          this.$message.error("刷新失败");
+          this.listLoading = false;
+        });
     },
 
     refreshAllSkuData() {
-      this.listLoading = true
-      refreshAllRelatedData().then(res => {
-        if (res.data) {
-          this.$message.success('刷新成功')
-        }
-        this.listLoading = false
-      }).catch(res => {
-        this.$message.error('刷新失败')
-        this.listLoading = false
-      })
+      this.allLoad = true;
+      refreshAllRelatedData()
+        .then((res) => {
+          if (res.data) {
+            this.$message.success("刷新成功");
+            this.allLoad = false;
+          }
+          this.listLoading = false;
+        })
+        .catch((res) => {
+          this.$message.error("刷新失败");
+          this.allLoad = false;
+        });
     },
 
     getTextWidth(str) {
-      let width = 0
-      const html = document.createElement('span')
-      html.innerText = str
-      html.className = 'getTextWidth'
-      document.querySelector('body').appendChild(html)
-      width = document.querySelector('.getTextWidth').offsetWidth
-      document.querySelector('.getTextWidth').remove()
-      return width
+      let width = 0;
+      const html = document.createElement("span");
+      html.innerText = str;
+      html.className = "getTextWidth";
+      document.querySelector("body").appendChild(html);
+      width = document.querySelector(".getTextWidth").offsetWidth;
+      document.querySelector(".getTextWidth").remove();
+      return width;
     },
     /**
      * el-table-column 自适应列宽
@@ -671,61 +695,63 @@ export default {
      */
     flexColumnWidth(label, prop) {
       // 1.获取该列的所有数据
-      const arr = this.list.map((x) => x[prop])
-      arr.push(label) // 把每列的表头也加进去算
+      const arr = this.list.map((x) => x[prop]);
+      arr.push(label); // 把每列的表头也加进去算
       // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 20 + 'px'
+      return this.getMaxLength(arr) + 20 + "px";
     },
     async getList(page) {
-      console.log(this.page)
-      console.log(this.size)
-      this.listQuery.page = page
-      this.listQuery.size = this.size
-      const { data, total } = await querySkuProduct(this.listQuery).catch(res => {
-        this.listLoading = false
-      })
-      this.list = data
-      this.total = total
-      this.listLoading = false
+      console.log(this.page);
+      console.log(this.size);
+      this.listQuery.page = page;
+      this.listQuery.size = this.size;
+      const { data, total } = await querySkuProduct(this.listQuery).catch(
+        (res) => {
+          this.listLoading = false;
+        }
+      );
+      this.list = data;
+      this.total = total;
+      this.listLoading = false;
     },
 
     handleFileUploadSuccess(res) {
       if (res.data) {
-        console.log(res)
-        this.$message.success('上传成功')
-        this.load()
+        console.log(res);
+        this.$message.success("上传成功");
+        this.load();
       } else {
-        this.$message.error('上传失败')
+        this.$message.error("上传失败");
       }
     },
     handleFileUploadError() {
-      this.$message.error('上传失败')
-      this.upLoading = false
+      this.$message.error("上传失败");
+      this.upLoading = false;
     },
 
     handleSizeChange(pageSize) {
-      this.size = pageSize
-      this.getList(1)
+      this.size = pageSize;
+      this.getList(1);
     },
     handleCurrentChange(pageNum) {
-      this.page = pageNum
-      this.getList(this.page)
+      this.page = pageNum;
+      this.getList(this.page);
     },
     Nindex(index) {
-      const page = this.page
-      const size = this.size
-      return index + 1 + (page - 1) * size
+      const page = this.page;
+      const size = this.size;
+      return index + 1 + (page - 1) * size;
     },
     goSalePanel(row) {
       this.$router.push({
-        path: '/product/saleProductPanel',
+        path: "/product/saleProductPanel",
         query: {
-          salePlanId: row.skuId
-        }
-      })
-    }
-  }
-}
+          salePlanId: row.skuId,
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style>
@@ -745,13 +771,13 @@ export default {
     padding: 10px;
     margin-bottom: 10px;
 
-    span{
+    span {
       float: left;
       width: 240px;
       text-align: end;
     }
 
-    .end{
+    .end {
       float: right;
     }
   }
