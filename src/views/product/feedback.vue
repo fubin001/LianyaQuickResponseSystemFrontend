@@ -159,7 +159,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth(list,'skuId', 'skuId')" />
-        <el-table-column align="left" label="RTS编号" prop="rtsNo" :min-width="flexColumnWidth(list,'RTS编号', 'rtsNo')" />
+        <el-table-column align="left" label="TRS编号" prop="rtsNo" :min-width="flexColumnWidth(list,'RTS编号', 'rtsNo')" />
         <el-table-column align="left" label="订单类型" prop="feedbackType" :min-width="flexColumnWidth(list,'订单类型', 'feedbackType')" />
         <el-table-column align="left" label="订货日期" prop="bookDate" :min-width="flexColumnWidth(list,'订货日期', 'bookDate')" />
         <el-table-column align="left" label="预计到货" prop="predictDate" :min-width="flexColumnWidth(list,'预计到货', 'predictDate')" />
