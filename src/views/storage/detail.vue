@@ -58,6 +58,9 @@
       >
         <el-table-column align="center" type="index" width="50" :index="Nindex" />
         <el-table-column align="left" label="TRS编号" prop="trsNo" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色" prop="colorCode" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色描述" prop="colorDescription" show-overflow-tooltip />
+        <el-table-column align="left" label="尺寸" prop="size" show-tooltip-when-overflow />
         <el-table-column align="left" label="订单类型" prop="orderType" show-overflow-tooltip />
         <el-table-column align="left" label="订单ID" prop="outerId" show-overflow-tooltip />
         <el-table-column align="left" label="记录类型" prop="recordType" show-overflow-tooltip />

@@ -19,6 +19,21 @@
         />
       </span>
       <span>
+        预测模型：<el-select
+          v-model="listQuery.predictModel"
+          placeholder="请输入款式"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          filterable
+        >
+          <el-option value="平均销售" />
+          <el-option value="增长对比" />
+          <el-option value="四周平均" />
+          <el-option value="货仓周转" />
+        </el-select>
+      </span>
+      <span>
         名称：<el-input
           v-model="listQuery.fullName"
           placeholder="请输入名称"
