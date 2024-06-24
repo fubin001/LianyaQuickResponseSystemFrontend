@@ -4,7 +4,7 @@
       <span>
         TRS编号：<el-input
           v-model="listQuery.skuId"
-          placeholder="请输入订单号"
+          placeholder="TRS编号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
@@ -12,7 +12,7 @@
       <span>
         反馈类型：<el-select
           v-model="listQuery.feedbackType"
-          placeholder="请输入订单号"
+          placeholder="反馈类型"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
           filterable
