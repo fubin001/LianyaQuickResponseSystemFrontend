@@ -322,6 +322,7 @@ import ProduceMaterialList from '@/views/product/component/produceMaterialList.v
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
 import { flexColumnWidth } from '@/common/util'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
+import sk from 'element-ui/src/locale/lang/sk'
 
 export default {
   name: 'User',
@@ -357,6 +358,18 @@ export default {
       brands: []
     }
   },
+
+  watch: {
+    dialogFormVisible(newVal, oldVal) {
+      console.log('dialogFormVisible update')
+      if (oldVal) {
+        if (!newVal) {
+          this.getList(this.page)
+        }
+      }
+      // 这里可以添加更多的逻辑来响应变量的变化
+    }
+  },
   created() {
     this.initTrsNoList()
     this.getBrands()
@@ -385,16 +398,24 @@ export default {
     },
 
     async popProduceMaterialList(skuId, feedbackOrderId) {
-      await this.$nextTick(() => {
+      if (!this.$refs.produceMaterial) {
+        await this.$nextTick(() => {
+          this.$refs.produceMaterial.render(skuId, feedbackOrderId)
+        })
+      } else {
         this.$refs.produceMaterial.render(skuId, feedbackOrderId)
-      })
+      }
       this.dialogFormVisible = true
     },
 
     async popProduceMaterialListReader(skuId, feedbackOrderId) {
-      await this.$nextTick(() => {
+      if (!this.$refs.produceMaterialReader) {
+        await this.$nextTick(() => {
+          this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
+        })
+      } else {
         this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
-      })
+      }
       this.readerDialogFormVisible = true
     },
 
