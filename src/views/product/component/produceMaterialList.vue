@@ -1,7 +1,7 @@
 <template>
   <div v-if="prepare">
     <h2>基础信息</h2>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog title="物料单" :visible.sync="visible">
       <el-form ref="dataForm" :model="sizeForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
         <el-form-item label="尺寸" prop="id">
           <el-input v-model="sizeForm.id" style="width: 300px" disabled />
@@ -151,16 +151,17 @@ import { getFeedbackOrder } from '@/api/feedback'
 export default {
   name: 'ProduceMaterialList',
   props: {
-    skuId: {
-      type: String,
-      default: null
+    visible: {
+      type: Boolean,
+      default: false
     },
-    feedbackOrderId: {
-      type: String,
-      default: null
+    params: {
+      type: Object,
+      default: () => {
+        return 0
+      }
     }
   },
-
   data() {
     return {
       bomList: [],
@@ -173,22 +174,21 @@ export default {
       useBomList: []
     }
   },
-
+  watch: {
+    params(newValue, oldValue) {
+      this.skuId = newValue.skuId
+      this.feedbackOrderId = newValue.feedbackOrderId
+      if (this.skuId && this.feedbackOrderId) {
+        this.getBomList(this.skuId)
+        this.getFeedbackOrder(this.feedbackOrderId)
+      }
+    }
+  },
   created() {
-    this.render(this.$props.skuId)
   },
 
   methods: {
     flexColumnWidth,
-    render(skuId, feedbackOrderId) {
-      if (skuId && feedbackOrderId) {
-        this.getBomList(skuId)
-        this.getFeedbackOrder(feedbackOrderId)
-        this.$props.skuId = skuId
-        this.$props.feedbackOrderId = feedbackOrderId
-      }
-    },
-
     addSize() {
       if (!this.sizeForm.size) {
         this.$message.warning('需要填写尺码信息')

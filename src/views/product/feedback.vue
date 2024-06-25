@@ -43,10 +43,6 @@
       <ProduceMaterialList ref="produceMaterial" />
     </el-dialog>
 
-    <el-dialog title="物料单" :visible.sync="readerDialogFormVisible" width="1500px">
-      <ProduceMaterialListReader ref="produceMaterialReader" />
-    </el-dialog>
-
     <div class="table-list">
       <el-table
         ref="dragTable"
@@ -171,6 +167,9 @@
         @size-change="getList(page)"
         @current-change="getList(page)"
       />
+
+      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" />
+
     </div>
   </div>
 </template>
@@ -187,7 +186,10 @@ export default {
   data() {
     return {
       dialogStatus: 'create',
-      dialogFormVisible: false,
+      produceMaterialListObj: {
+        visible: false,
+        params: {}
+      },
       readerDialogFormVisible: false,
       page: 1,
       size: 10,
@@ -258,10 +260,11 @@ export default {
     },
 
     popProduceMaterialList(skuId, feedbackOrderId) {
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs.produceMaterial.render(skuId, feedbackOrderId)
-      })
+      this.produceMaterialListObj.visible = true
+      this.produceMaterialListObj.params = {
+        skuId: skuId,
+        feedbackOrderId: feedbackOrderId
+      }
     },
 
     popProduceMaterialListReader(skuId, feedbackOrderId) {
