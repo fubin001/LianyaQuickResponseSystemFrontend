@@ -573,7 +573,7 @@ import {
 import request from '@/utils/request'
 
 export default {
-  name: 'User',
+  name: '销售商品',
   data() {
     return {
       list: [],

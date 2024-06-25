@@ -212,7 +212,7 @@ import { createOrUpdate, deleteUserById, queryUser } from "@/api/user";
 import { getBrandEnum, getRoleEnum } from "@/api/enum";
 
 export default {
-  name: "User",
+  name: "用户信息",
   data() {
     return {
       dialogStatus: "create",

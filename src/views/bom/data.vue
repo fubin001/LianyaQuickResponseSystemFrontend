@@ -165,7 +165,7 @@ import { exportBom, queryBom, queryComponentTypeList } from '@/api/bom'
 import BomTree from '@/views/bom/tree.vue'
 
 export default {
-  name: 'User',
+  name: 'BOM数据',
   components: { BomTree },
   data() {
     return {

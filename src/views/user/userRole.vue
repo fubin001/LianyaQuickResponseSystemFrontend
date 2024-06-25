@@ -8,7 +8,7 @@ import { createOrUpdate, deleteUserById, queryUser,getRoleBrand } from '@/api/us
 import { getBrandEnum, getRoleEnum } from '@/api/enum'
 
 export default {
-  name: 'User',
+  name: '用户与角色权限',
   data() {
     return {
       dialogStatus: 'create',

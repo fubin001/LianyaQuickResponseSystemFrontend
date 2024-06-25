@@ -89,7 +89,7 @@ import { flexColumnWidth } from '@/common/util'
 import { exportStorageDetail, queryStorageDetail } from '@/api/storage'
 
 export default {
-  name: 'User',
+  name: '库存明细',
   data() {
     return {
       dialogStatus: 'create',

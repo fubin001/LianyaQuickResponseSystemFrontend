@@ -120,7 +120,7 @@ import { getBrandEnum } from '@/api/enum'
 import { exportColor, queryColor } from '@/api/color'
 
 export default {
-  name: 'User',
+  name: '颜色数据',
   data() {
     return {
       dialogStatus: 'create',

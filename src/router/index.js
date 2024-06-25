@@ -106,6 +106,7 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     name: '销售管理',
+    noCache:true,
     redirect: '/skuProduct/info',
     meta: {
       title: '销售管理',
@@ -116,6 +117,7 @@ export const constantRoutes = [
         path: '/product/brand',
         component: () => import('@/views/product/brand'),
         name: '品牌信息',
+        noCache:true,
         meta: { title: '品牌信息', icon: 'edit' }
       },
       // {
@@ -128,12 +130,14 @@ export const constantRoutes = [
         path: '/skuProduct/info',
         component: () => import('@/views/product/saleProduct'),
         name: '销售商品',
+        noCache:true,
         meta: { title: '销售商品', icon: 'edit' }
       },
       {
         path: '/skuProduct/feedback',
         component: () => import('@/views/product/feedback'),
         name: '生产订单',
+        noCache:true,
         meta: { title: '生产订单', icon: 'edit' }
       },
       // {
@@ -146,6 +150,7 @@ export const constantRoutes = [
         path: '/product/saleProductPanel',
         component: () => import('@/views/product/saleProductPanel'),
         name: '销售面板',
+        noCache:true,
         hidden: true,
         meta: { title: '销售面板', icon: 'edit' }
       }
