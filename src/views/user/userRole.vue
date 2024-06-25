@@ -1,8 +1,10 @@
 <template>
-  <div ></div>
+  <div >
+    <button @click="on_getRoleBrand">获取</button>
+  </div>
 </template>
 <script>
-import { createOrUpdate, deleteUserById, queryUser } from '@/api/user'
+import { createOrUpdate, deleteUserById, queryUser,getRoleBrand } from '@/api/user'
 import { getBrandEnum, getRoleEnum } from '@/api/enum'
 
 export default {
@@ -27,7 +29,11 @@ export default {
       sortable: null,
       temp: {},
       brands: [],
-      roles: []
+      roles: [],
+      roleBrand:{
+        sizePage:10,
+        currentPage:1,
+      }
     }
   },
   created() {
@@ -76,6 +82,16 @@ export default {
         } else {
           this.$message.error('删除失败')
         }
+      })
+    },
+
+    on_getRoleBrand(){
+      getRoleBrand(this.roleBrand).then((res)=>{
+        console.log(res);
+      }).catch((error)=>{
+
+      }).finally({
+
       })
     },
 
