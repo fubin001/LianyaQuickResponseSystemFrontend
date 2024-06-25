@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: yangyang.liu
+ * @Date: 2024-06-20 12:32:43
+ * @LastEditors: yangyang.liu
+ * @LastEditTime: 2024-06-25 11:35:06
+ */
 import request from '@/utils/request'
 import { downloadFile } from '@/api/util'
 
@@ -28,7 +36,7 @@ export function confirmFeedback(id) {
 
 export function executeFeedback(id) {
   return request({
-    url: '/feedback/executeFeedback/' + id,
+    url: '/feedback/executeFeedback?feedbackOrderId=' + id,
     method: 'POST'
   })
 }
