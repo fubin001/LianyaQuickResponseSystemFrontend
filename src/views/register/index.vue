@@ -49,7 +49,7 @@
                 v-model="loginForm.password"
                 :type="passwordType"
                 placeholder="请输入密码"
-                prefix-icon="iconfont icon-mima"
+                prefix-icon="iconfont icon-mima1"
                 name="password"
                 tabindex="2"
                 autocomplete="on"
@@ -70,7 +70,7 @@
                 v-model="loginForm.confirmPassword"
                 :type="passwordType"
                 placeholder="请确认密码"
-                prefix-icon="iconfont icon-mima"
+                prefix-icon="iconfont icon-mima1"
                 name="password"
                 tabindex="2"
                 autocomplete="on"
@@ -192,7 +192,7 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    handleRegister(){
+    handleRegister() {
       // 注册接口
     },
     checkCapslock(e) {

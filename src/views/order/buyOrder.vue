@@ -54,14 +54,15 @@
               :show-file-list="false"
               :on-success="handleFileUploadSuccess"
               :on-error="handleFileUploadError"
+              :on-progress="onProgress"
             >
+
               <el-button
                 type="primary"
                 class="ml-5"
                 style="background-color: #244496"
                 size="mini"
                 :loading="upLoading"
-                @click="upLoading = true"
               >上传<i
                 class="el-icon-top"
               /></el-button>
@@ -343,10 +344,8 @@ export default {
       this.upLoading = false
     },
 
-    abort() {
-      this.upLoading = false
-      this.$message.error('取消上传')
-      console.log('取消上传')
+    onProgress() {
+      this.upLoading = true
     },
 
     handleSizeChange(pageSize) {

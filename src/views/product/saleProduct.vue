@@ -19,6 +19,21 @@
         />
       </span>
       <span>
+        预测模型：<el-select
+          v-model="listQuery.predictModel"
+          placeholder="请输入款式"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          filterable
+        >
+          <el-option value="平均销售" />
+          <el-option value="增长对比" />
+          <el-option value="四周平均" />
+          <el-option value="货仓周转" />
+        </el-select>
+      </span>
+      <span>
         名称：<el-input
           v-model="listQuery.fullName"
           placeholder="请输入名称"
@@ -87,9 +102,8 @@
           >
             搜索
           </el-button></span>
-
       </span>
-      <div style="clear:both" />
+      <div style="clear: both" />
     </div>
     <div class="filter-container2">
       <div class="search-item">
@@ -114,7 +128,6 @@
         </span>
       </div>
       <div class="search-item">
-
         <span>
           首单售罄率：
           <el-input-number
@@ -134,7 +147,6 @@
         </span>
       </div>
       <div class="search-item">
-
         <span>
           预估售罄率：
           <el-input-number
@@ -153,20 +165,19 @@
           />
         </span>
       </div>
-      <div style="clear:both" />
-
+      <div style="clear: both" />
     </div>
     <div class="table-list">
-      <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem;">
-        <span style="float: left;">商品列表</span>
-        <span style="float: right;">
+      <div style="height: 2.2rem; line-height: 2.2rem; padding: 0 0.1rem">
+        <span style="float: left">商品列表</span>
+        <span style="float: right">
           <span>
             <el-button
-              v-loading="listLoading"
               type="primary"
               class="ml-5"
               size="mini"
-              style="background-color: #244496;margin-right: 2px"
+              style="background-color: #244496; margin-right: 2px"
+              :loading="allLoad"
               @click="refreshAllSkuData"
             >全部刷新</el-button>
           </span>
@@ -175,7 +186,7 @@
               type="primary"
               class="ml-5"
               size="mini"
-              style="background-color: #244496;margin-right: 2px"
+              style="background-color: #244496; margin-right: 2px"
               @click="exportSkuProductExcel"
             >导出</el-button>
           </span>
@@ -202,8 +213,18 @@
         </span>
       </div>
 
-      <el-dialog :visible.sync="editDialogVisible" title="编辑库存" width="500px">
-        <el-form ref="dataForm" :model="modForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+      <el-dialog
+        :visible.sync="editDialogVisible"
+        title="编辑库存"
+        width="500px"
+      >
+        <el-form
+          ref="dataForm"
+          :model="modForm"
+          label-position="left"
+          label-width="70px"
+          style="width: 300px; margin-left: 50px"
+        >
           <el-form-item label="skuId">
             <el-input v-model="modForm.skuId" style="width: 300px" disabled />
           </el-form-item>
@@ -211,16 +232,16 @@
             <el-input v-model="modForm.predictCoe" style="width: 300px" />
           </el-form-item>
           <el-form-item label="下线日期">
-            <el-date-picker v-model="modForm.endDate" style="width: 300px" value-format="yyyy-MM-dd" />
+            <el-date-picker
+              v-model="modForm.endDate"
+              style="width: 300px"
+              value-format="yyyy-MM-dd"
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="editDialogVisible = false">
-            取消
-          </el-button>
-          <el-button type="primary" @click="editPredictCoe">
-            确定
-          </el-button>
+          <el-button @click="editDialogVisible = false"> 取消 </el-button>
+          <el-button type="primary" @click="editPredictCoe"> 确定 </el-button>
         </div>
       </el-dialog>
       <el-table
@@ -286,7 +307,7 @@
               width="40%"
               :before-close="handleClose"
             >
-              <div style="height: 200px;">
+              <div style="height: 200px">
                 <div
                   v-for="metric in metricValueList"
                   :key="metric.metricName"
@@ -398,7 +419,7 @@
             label="ytd售罄率"
             :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')"
           >
-            <template slot-scope="{row}">
+            <template slot-scope="{ row }">
               {{ new Number(row.ytdSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
@@ -408,7 +429,7 @@
             label="首单售罄率"
             :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')"
           >
-            <template slot-scope="{row}">
+            <template slot-scope="{ row }">
               {{ new Number(row.firstOrderSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
@@ -418,7 +439,7 @@
             label="预估售罄率"
             :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')"
           >
-            <template slot-scope="{row}">
+            <template slot-scope="{ row }">
               {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
@@ -452,7 +473,6 @@
             label="首单采购量"
             :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
           />
-
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -544,7 +564,12 @@
 </template>
 
 <script>
-import { exportSkuProduct, querySkuProduct, refreshAllRelatedData, refreshRelatedData } from '@/api/skuProduct'
+import {
+  exportSkuProduct,
+  querySkuProduct,
+  refreshAllRelatedData,
+  refreshRelatedData
+} from '@/api/skuProduct'
 import request from '@/utils/request'
 
 export default {
@@ -556,6 +581,7 @@ export default {
       page: 1,
       size: 10,
       listLoading: true,
+      allLoad: false,
       listQuery: {
         page: 1,
         size: 10
@@ -594,18 +620,20 @@ export default {
         url: '/skuProduct/modify',
         method: 'post',
         data: this.modForm
-      }).then(res => {
-        if (res.data) {
-          this.$message.success('编辑成功')
-          this.modForm = {}
-          this.getList(this.page)
-          this.editDialogVisible = false
-        } else {
-          this.$message.error('编辑失败')
-        }
-      }).catch(res => {
-        this.$message.error('编辑失败')
       })
+        .then((res) => {
+          if (res.data) {
+            this.$message.success('编辑成功')
+            this.modForm = {}
+            this.getList(this.page)
+            this.editDialogVisible = false
+          } else {
+            this.$message.error('编辑失败')
+          }
+        })
+        .catch((res) => {
+          this.$message.error('编辑失败')
+        })
     },
 
     reset() {
@@ -629,29 +657,34 @@ export default {
 
     refreshSkuRelatedData(skuId) {
       this.listLoading = true
-      refreshRelatedData(skuId).then(res => {
-        if (res.data) {
-          this.$message.success('刷新成功')
-          this.getList(this.page)
-        }
-        this.listLoading = false
-      }).catch(res => {
-        this.$message.error('刷新失败')
-        this.listLoading = false
-      })
+      refreshRelatedData(skuId)
+        .then((res) => {
+          if (res.data) {
+            this.$message.success('刷新成功')
+            this.getList(this.page)
+          }
+          this.listLoading = false
+        })
+        .catch((res) => {
+          this.$message.error('刷新失败')
+          this.listLoading = false
+        })
     },
 
     refreshAllSkuData() {
-      this.listLoading = true
-      refreshAllRelatedData().then(res => {
-        if (res.data) {
-          this.$message.success('刷新成功')
-        }
-        this.listLoading = false
-      }).catch(res => {
-        this.$message.error('刷新失败')
-        this.listLoading = false
-      })
+      this.allLoad = true
+      refreshAllRelatedData()
+        .then((res) => {
+          if (res.data) {
+            this.$message.success('刷新成功')
+            this.allLoad = false
+          }
+          this.listLoading = false
+        })
+        .catch((res) => {
+          this.$message.error('刷新失败')
+          this.allLoad = false
+        })
     },
 
     getTextWidth(str) {
@@ -681,9 +714,11 @@ export default {
       console.log(this.size)
       this.listQuery.page = page
       this.listQuery.size = this.size
-      const { data, total } = await querySkuProduct(this.listQuery).catch(res => {
-        this.listLoading = false
-      })
+      const { data, total } = await querySkuProduct(this.listQuery).catch(
+        (res) => {
+          this.listLoading = false
+        }
+      )
       this.list = data
       this.total = total
       this.listLoading = false
@@ -745,13 +780,13 @@ export default {
     padding: 10px;
     margin-bottom: 10px;
 
-    span{
+    span {
       float: left;
       width: 240px;
       text-align: end;
     }
 
-    .end{
+    .end {
       float: right;
     }
   }

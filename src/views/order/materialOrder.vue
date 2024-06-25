@@ -79,7 +79,7 @@
       >
         <el-table-column align="center" type="index" width="50" :index="Nindex" />
         <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, '品牌', 'brand')" />
-        <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth(list, '组件类型', 'componentType')" />
+        <!--        <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth(list, '组件类型', 'componentType')" />-->
         <el-table-column align="left" label="供应商" prop="supplier" :min-width="flexColumnWidth(list, '供应商', 'supplier')" />
         <el-table-column align="left" label="供应商组件编号" prop="supplierComponentNo" :min-width="flexColumnWidth(list, '供应商组件编号', 'supplierComponentNo')" />
         <el-table-column align="left" label="物料描述" prop="materialDescription" :min-width="flexColumnWidth(list, '物料描述', 'materialDescription')" />

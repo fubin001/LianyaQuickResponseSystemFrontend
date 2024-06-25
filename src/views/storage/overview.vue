@@ -190,6 +190,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="颜色代码" prop="colorCode" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色描述" prop="colorDescription" show-overflow-tooltip />
         <el-table-column align="left" label="尺寸" prop="size" show-overflow-tooltip />
         <el-table-column align="left" label="单位" prop="unitName" show-overflow-tooltip />
         <el-table-column align="left" label="库存" prop="quantity" show-overflow-tooltip />

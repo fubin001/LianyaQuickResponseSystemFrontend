@@ -42,6 +42,13 @@ export function executeFeedback(id) {
 }
 
 export function exportFeedbackOrder(param) {
-  downloadFile('/feedback/export', param, '反馈订单详情.xlsx')
+  return downloadFile('/feedback/export', param, '反馈订单详情.xlsx')
 }
 
+export function addFeedbackOrder(order) {
+  return request({
+    url: '/feedback/generateFeedbackOrder',
+    method: 'post',
+    data: order
+  })
+}

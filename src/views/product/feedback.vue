@@ -2,12 +2,25 @@
   <div class="app-container">
     <div class="filter-container">
       <span>
-        订单号：<el-input
+        TRS编号：<el-input
           v-model="listQuery.skuId"
-          placeholder="请输入订单号"
+          placeholder="TRS编号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
+      </span>
+      <span>
+        反馈类型：<el-select
+          v-model="listQuery.feedbackType"
+          placeholder="反馈类型"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          filterable
+          clearable
+        >
+          <el-option value="销售预测" />
+          <el-option value="人工操作" />
+        </el-select>
       </span>
       <span style="float: right">
         <el-button
@@ -29,6 +42,15 @@
         </el-button>
         <el-button
           class="filter-item"
+          icon="el-icon-search"
+          style="margin: 5px 0px 5px 0; background-color: #244496"
+          type="primary"
+          @click="addProduceOrderDialogFormVisible = true"
+        >
+          新增
+        </el-button>
+        <el-button
+          class="filter-item"
           type="primary"
           icon="el-icon-search"
           style="margin: 5px 0px 5px 0; background-color: #244496"
@@ -38,6 +60,38 @@
         </el-button>
       </span>
     </div>
+
+    <el-dialog title="新增生产订单" :visible.sync="addProduceOrderDialogFormVisible" width="500px">
+      <el-form ref="dataForm" :model="newOrder" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+        <el-form-item label="物料类型" prop="id">
+          <el-select v-model="newOrder.componentType" clearable filterable style="width: 300px" @change="handleComponentTypeChange">
+            <el-option v-for="componentType in componentTypeList" :key="componentType" :label="componentType" :value="componentType" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="TRS编号" prop="id">
+          <el-select v-model="newOrder.trsNo" clearable filterable style="width: 300px">
+            <el-option v-for="trsNoEnum in currentTrsNoList" :key="trsNoEnum.key" :label="trsNoEnum.key" :value="trsNoEnum.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数量">
+          <el-input v-model="newOrder.materialQuantity" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="生产时间">
+          <el-date-picker v-model="newOrder.startProduceDate" style="width: 300px" value-format="yyyy-MM-dd" />
+        </el-form-item>
+        <el-form-item label="结束时间">
+          <el-date-picker v-model="newOrder.endProduceDate" style="width: 300px" value-format="yyyy-MM-dd" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addProduceOrderDialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="addNewProductOrder">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
 
     <el-dialog title="物料单预览" :visible.sync="dialogFormVisible" width="1500px">
       <ProduceMaterialList ref="produceMaterial" />
@@ -100,61 +154,141 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth('skuId', 'skuId')" />
-        <el-table-column align="left" label="订货日期" prop="bookDate" :min-width="flexColumnWidth('订货日期', 'bookDate')" />
-        <el-table-column align="left" label="预计到货" prop="predictDate" :min-width="flexColumnWidth('预计到货', 'predictDate')" />
-        <el-table-column align="left" label="确认到货" prop="confirmDate" :min-width="flexColumnWidth('确认到货', 'confirmDate')" />
-        <el-table-column align="left" label="订货数量" prop="quantity" :min-width="flexColumnWidth('订货数量', 'quantity')" />
-        <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth('颜色', 'color')" />
-        <el-table-column align="left" label="颜色名称" prop="colorName" :min-width="flexColumnWidth('颜色名称', 'colorName')" />
-        <el-table-column align="left" label="销售YTD" prop="ytd" :min-width="flexColumnWidth('销售YTD', 'ytd')" />
-        <el-table-column align="left" label="库存量" prop="storage" :min-width="flexColumnWidth('库存量', 'storage')" />
-        <el-table-column align="left" label="YTD售罄率" prop="ytdSaleOutRate" :min-width="flexColumnWidth('YTD售罄率', 'ytdSaleOutRate')">
+        <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth(list,'skuId', 'skuId')" />
+        <el-table-column align="left" label="TRS编号" prop="rtsNo" :min-width="flexColumnWidth(list,'RTS编号', 'rtsNo')" />
+        <el-table-column align="left" label="订单类型" prop="feedbackType" :min-width="flexColumnWidth(list,'订单类型', 'feedbackType')" />
+        <el-table-column align="left" label="订货日期" prop="bookDate" :min-width="flexColumnWidth(list,'订货日期', 'bookDate')" />
+        <el-table-column align="left" label="预计到货" prop="predictDate" :min-width="flexColumnWidth(list,'预计到货', 'predictDate')" />
+        <el-table-column align="left" label="确认到货" prop="confirmDate" :min-width="flexColumnWidth(list,'确认到货', 'confirmDate')" />
+        <el-table-column align="left" label="订货数量" prop="quantity" :min-width="flexColumnWidth(list,'订货数量', 'quantity')" />
+        <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth(list,'颜色', 'color')" />
+        <el-table-column align="left" label="颜色名称" prop="colorName" :min-width="flexColumnWidth(list,'颜色名称', 'colorName')" />
+        <el-table-column align="left" label="销售YTD" prop="ytd" :min-width="flexColumnWidth(list,'销售YTD', 'ytd')">
           <template slot-scope="{ row }">
-            {{ new Number(row.ytdSaleOutRate * 100).toFixed(2) }} %
+            <span v-if="row.ytd">
+              {{ row.ytd }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="库存量" prop="storage" :min-width="flexColumnWidth(list,'库存量', 'storage')">
+          <template slot-scope="{ row }">
+            <span v-if="row.storage">
+              {{ row.storage }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="YTD售罄率" prop="ytdSaleOutRate" :min-width="flexColumnWidth(list,'YTD售罄率', 'ytdSaleOutRate')">
+          <template slot-scope="{ row }">
+            <span v-if="row.ytdSaleOutRate">
+              {{ new Number(row.ytdSaleOutRate * 100).toFixed(2) }} %
+            </span>
+            <span v-else>
+              -
+            </span>
           </template>
         </el-table-column>
         <el-table-column
           align="left"
           label="首单售罄率"
           prop="firstOrderSaleOut"
-          :width="flexColumnWidth('首单售罄率', 'firstOrderSaleOut')"
+          :width="flexColumnWidth(list, '首单售罄率', 'firstOrderSaleOut')"
         >
           <template slot-scope="{ row }">
-            {{ new Number(row.firstOrderSaleOut * 100).toFixed(2) }} %
+            <span v-if="row.firstOrderSaleOut">
+              {{ new Number(row.firstOrderSaleOut * 100).toFixed(2) }} %
+            </span>
+            <span v-else>
+              -
+            </span>
           </template>
         </el-table-column>
         <el-table-column
           align="left"
           label="预计最终销售"
           prop="predictFinalSale"
-          :width="flexColumnWidth('预计最终销售', 'predictFinalSale')"
+          :width="flexColumnWidth(list, '预计最终销售', 'predictFinalSale')"
         />
-        <el-table-column align="left" label="剩余预计销售" prop="restSale" :width="flexColumnWidth('剩余预计销售', 'restSale')" />
+        <el-table-column align="left" label="剩余预计销售" prop="restSale" :width="flexColumnWidth(list,'剩余预计销售', 'restSale')">
+          <template slot-scope="{ row }">
+            <span v-if="row.restSale">
+              {{ row.restSale }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           align="left"
           label="预计最终售罄率"
           prop="predictFinalSaleOut"
-          :width="flexColumnWidth('预计最终售罄率', 'predictFinalSaleOut')"
+          :width="flexColumnWidth(list, '预计最终售罄率', 'predictFinalSaleOut')"
         >
           <template slot-scope="{ row }">
-            {{ new Number(row.predictFinalSaleOut * 100).toFixed(2) }} %
+            <span v-if="row.predictFinalSaleOut">
+              {{ Number(row.predictFinalSaleOut * 100).toFixed(2) }}%
+            </span>
+            <span>
+              -
+            </span>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="上周销售" prop="lastWeekSale" :width="flexColumnWidth('上周销售', 'lastWeekSale')" />
-        <el-table-column align="left" label="本周销售" prop="currentWeekSale" :width="flexColumnWidth('本周销售', 'currentWeekSale')" />
+        <el-table-column align="left" label="上周销售" prop="lastWeekSale" :width="flexColumnWidth(list,'上周销售', 'lastWeekSale')">
+          <template slot-scope="{ row }">
+            <span v-if="row.lastWeekSale">
+              {{ row.lastWeekSale }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="本周销售" prop="currentWeekSale" :width="flexColumnWidth(list, '本周销售', 'currentWeekSale')">
+          <template slot-scope="{ row }">
+            <span v-if="row.currentWeekSale">
+              {{ row.currentWeekSale }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           align="left"
           label="最近四周销售"
           prop="recentlyFourWeekSale"
-          :width="flexColumnWidth('最近四周销售', 'flexColumnWidth')"
-        />
+          :width="flexColumnWidth(list,'最近四周销售', 'flexColumnWidth')"
+        >
+          <template slot-scope="{ row }">
+            <span v-if="row.recentlyFourWeekSale">
+              {{ row.recentlyFourWeekSale }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           align="left"
           label="最近四周销售平均"
           prop="recentlyFourWeekAvgSale"
-          :width="flexColumnWidth('最近四周销售平均', 'recentlyFourWeekAvgSale')"
-        />
+          :width="flexColumnWidth(list, '最近四周销售平均', 'recentlyFourWeekAvgSale')"
+        >
+          <template slot-scope="{ row }">
+            <span v-if="row.recentlyFourWeekAvgSale">
+              {{ row.recentlyFourWeekAvgSale }}
+            </span>
+            <span v-else>
+              -
+            </span>
+          </template>
+        </el-table-column>
 
       </el-table>
       <el-pagination
@@ -164,8 +298,8 @@
         :current-page="page"
         :page-size="size"
         align="center"
-        @size-change="getList(page)"
-        @current-change="getList(page)"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
 
       <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" />
@@ -176,9 +310,18 @@
 
 <script>
 import { getBrandEnum } from '@/api/enum'
-import { confirmFeedback, executeFeedback, exportFeedbackOrder, queryFeedbackOrder } from '@/api/feedback'
+import {
+  addFeedbackOrder,
+  confirmFeedback,
+  executeFeedback,
+  exportFeedbackOrder,
+  queryFeedbackOrder
+} from '@/api/feedback'
 import ProduceMaterialList from '@/views/product/component/produceMaterialList.vue'
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
+import { flexColumnWidth } from '@/common/util'
+import { getTrsNoEnumListByComponentType } from '@/api/bom'
+import sk from 'element-ui/src/locale/lang/sk'
 
 export default {
   name: 'User',
@@ -196,10 +339,17 @@ export default {
       list: null,
       total: null,
       listLoading: true,
+      addProduceOrderDialogFormVisible: false,
+      newOrder: {},
+      componentTypeList: ['成品', '鞋面半成品', '鞋底半成品'],
       listQuery: {
         page: 1,
         size: 10
       },
+      finishedTrsNosList: [],
+      semiFinishTrsNoList1: [],
+      semiFinishTrsNoList2: [],
+      currentTrsNoList: [],
       titleMap: {
         create: '新增商品',
         update: '编辑商品'
@@ -210,12 +360,25 @@ export default {
       brands: []
     }
   },
+
+  watch: {
+    dialogFormVisible(newVal, oldVal) {
+      console.log('dialogFormVisible update')
+      if (oldVal) {
+        if (!newVal) {
+          this.getList(this.page)
+        }
+      }
+      // 这里可以添加更多的逻辑来响应变量的变化
+    }
+  },
   created() {
+    this.initTrsNoList()
     this.getBrands()
     this.getList(1)
   },
   methods: {
-    executeFeedback,
+    flexColumnWidth,
     exportFeedbackOrder,
     reset() {
       this.listQuery = {
@@ -224,39 +387,16 @@ export default {
       }
     },
 
-    getMaxLength(arr) {
-      return arr.reduce((acc, item) => {
-        if (item) {
-          const calcLen = this.getTextWidth(item)
-          if (acc < calcLen) {
-            acc = calcLen
-          }
-        }
-        return acc
-      }, 0)
-    },
-
-    getTextWidth(str) {
-      let width = 0
-      const html = document.createElement('span')
-      html.innerText = str
-      html.className = 'getTextWidth'
-      document.querySelector('body').appendChild(html)
-      width = document.querySelector('.getTextWidth').offsetWidth
-      document.querySelector('.getTextWidth').remove()
-      return width
-    },
-    /**
-     * el-table-column 自适应列宽
-     * @param prop_label: 表名
-     * @param table_data: 表格数据
-     */
-    flexColumnWidth(label, prop) {
-      // 1.获取该列的所有数据
-      const arr = this.list.map((x) => x[prop])
-      arr.push(label) // 把每列的表头也加进去算
-      // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 20 + 'px'
+    initTrsNoList() {
+      getTrsNoEnumListByComponentType('成品').then(res => {
+        this.finishedTrsNosList = res?.data ?? []
+      })
+      getTrsNoEnumListByComponentType('鞋面半成品').then(res => {
+        this.semiFinishTrsNoList1 = res?.data ?? []
+      })
+      getTrsNoEnumListByComponentType('鞋底半成品').then(res => {
+        this.semiFinishTrsNoList2 = res?.data ?? []
+      })
     },
 
     popProduceMaterialList(skuId, feedbackOrderId) {
@@ -267,10 +407,40 @@ export default {
       }
     },
 
-    popProduceMaterialListReader(skuId, feedbackOrderId) {
-      this.readerDialogFormVisible = true
-      this.$nextTick(() => {
+    async popProduceMaterialListReader(skuId, feedbackOrderId) {
+      if (!this.$refs.produceMaterialReader) {
+        await this.$nextTick(() => {
+          this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
+        })
+      } else {
         this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
+      }
+      this.readerDialogFormVisible = true
+    },
+
+    addNewProductOrder() {
+      if (!this.newOrder.trsNo) {
+        this.$message.warning('trsNo不能为空')
+        return
+      }
+      if (!this.newOrder.materialQuantity) {
+        this.$message.warning('数量不能为空')
+        return
+      }
+      if (!this.newOrder.startProduceDate) {
+        this.$message.warning('开始时间不能为空')
+      }
+      addFeedbackOrder(this.newOrder).then(res => {
+        if (res.data) {
+          this.$message.success('添加成功')
+          this.getList(1)
+        } else {
+          this.$message.error('添加失败')
+        }
+        this.addProduceOrderDialogFormVisible = false
+      }).catch(res => {
+        this.$message.error('添加失败')
+        this.addProduceOrderDialogFormVisible = false
       })
     },
 
@@ -282,6 +452,17 @@ export default {
       this.list = data
       this.total = total
       this.listLoading = false
+    },
+
+    handleComponentTypeChange(value) {
+      console.log(value)
+      if (value === '成品') {
+        this.currentTrsNoList = this.finishedTrsNosList
+      } else if (value === '鞋底半成品') {
+        this.currentTrsNoList = this.semiFinishTrsNoList2
+      } else {
+        this.currentTrsNoList = this.semiFinishTrsNoList1
+      }
     },
 
     async getBrands() {
@@ -305,6 +486,15 @@ export default {
           this.$forceUpdate()
         }
       })
+    },
+
+    handleSizeChange(pageSize) {
+      this.size = pageSize
+      this.getList(1)
+    },
+    handleCurrentChange(pageNum) {
+      this.page = pageNum
+      this.getList(this.page)
     }
   }
 }

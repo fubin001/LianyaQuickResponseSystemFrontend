@@ -19,6 +19,17 @@ export function getBom(skuId) {
   })
 }
 
+export function getBomTreeNodeListByRootTrs(skuId, rtsNo) {
+  return request({
+    url: '/bom/getBomTreeNodeListByRootTrs',
+    method: 'get',
+    params: {
+      skuId: skuId,
+      rtsNo: rtsNo
+    }
+  })
+}
+
 export function exportBom(param) {
   return downloadFile('/feedback/export', param, 'Bom.xlsx')
 }
@@ -52,5 +63,15 @@ export function getTrsNoEnumList() {
   return request({
     url: '/bom/getTrsNoEnumList',
     method: 'get'
+  })
+}
+
+export function getTrsNoEnumListByComponentType(componentType) {
+  return request({
+    url: '/bom/getTrsNoEnumListByComponentType',
+    method: 'get',
+    params: {
+      componentType: componentType
+    }
   })
 }

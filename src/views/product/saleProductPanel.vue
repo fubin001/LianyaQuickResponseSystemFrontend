@@ -46,16 +46,17 @@
               <span
                 :class="{ heightAll: currentShow == 4 }"
                 class="border-all border-left"
+                style="height: 80px;"
               >
                 货号
               </span>
-              <span :class="{ heightAll: currentShow == 4 }" class="border-all">
+              <span :class="{ heightAll: currentShow == 4 }" class="border-all" style="height: 80px;">
                 {{ this.skuProduct.skuId }}
               </span>
-              <span :class="{ heightAll: currentShow == 4 }" class="border-all">
+              <span :class="{ heightAll: currentShow == 4 }" class="border-all" style="height: 80px;">
                 商品名
               </span>
-              <span :class="{ heightAll: currentShow == 4 }" class="border-all">
+              <span :class="{ heightAll: currentShow == 4 }" class="border-all" style="height: 80px;">
                 {{ this.skuProduct.fullName }}
               </span>
             </div>
