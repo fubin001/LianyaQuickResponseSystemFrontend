@@ -219,6 +219,17 @@ export const constantRoutes = [
         component: () => import('@/views/user/user'),
         name: '用户信息',
         meta: { title: '用户信息', icon: 'user', affix: true }
+      }, {
+        path: '/user/role',
+        component: () => import('@/views/user/role'),
+        name: '角色信息',
+        meta: { title: '角色信息', icon: 'edit' }
+      },
+      {
+        path: '/user/userRole',
+        component: () => import('@/views/user/userRole'),
+        name: '用户与角色权限',
+        meta: { title: '用户与角色权限', icon: 'edit' }
       }
     ]
   }

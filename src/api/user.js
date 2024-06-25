@@ -45,3 +45,12 @@ export function deleteUserById(id) {
     method: 'delete'
   })
 }
+
+// 获取角色信息
+export function getRoleBrand(data) {
+  return request({
+    url: '/newRole/getRoleBrand',
+    method: 'post',
+    data: data
+  })
+}
