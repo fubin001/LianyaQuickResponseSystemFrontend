@@ -299,6 +299,9 @@
       />
 
       <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" @close="getList" />
+      <el-dialog title="物料单" :visible.sync="readerDialogFormVisible" width="1500px">
+        <ProduceMaterialListReader ref="produceMaterialReader" />
+      </el-dialog>
 
     </div>
   </div>
