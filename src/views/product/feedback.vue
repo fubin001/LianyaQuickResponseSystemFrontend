@@ -93,10 +93,6 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="物料单预览" :visible.sync="dialogFormVisible" width="1500px">
-      <ProduceMaterialList ref="produceMaterial" />
-    </el-dialog>
-
     <div class="table-list">
       <el-table
         ref="dragTable"
@@ -302,7 +298,7 @@
         @current-change="handleCurrentChange"
       />
 
-      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" />
+      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" @close="getList" />
 
     </div>
   </div>
@@ -362,15 +358,15 @@ export default {
   },
 
   watch: {
-    dialogFormVisible(newVal, oldVal) {
-      console.log('dialogFormVisible update')
-      if (oldVal) {
-        if (!newVal) {
-          this.getList(this.page)
-        }
-      }
-      // 这里可以添加更多的逻辑来响应变量的变化
-    }
+    // dialogFormVisible(newVal, oldVal) {
+    //   console.log('dialogFormVisible update')
+    //   if (oldVal) {
+    //     if (!newVal) {
+    //       this.getList(this.page)
+    //     }
+    //   }
+    //   // 这里可以添加更多的逻辑来响应变量的变化
+    // }
   },
   created() {
     this.initTrsNoList()
