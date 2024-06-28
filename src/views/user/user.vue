@@ -1,205 +1,88 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      员工工号：<el-input
-        v-model="listQuery.useNo"
-        placeholder="请输入员工工号"
-        style="width: 150px; margin: 5px 8px 5px 0"
-        class="filter-item"
-      />
-      员工姓名：<el-input
-        v-model="listQuery.usename"
-        placeholder="请输入员工姓名"
-        style="width: 150px; margin: 5px 8px 5px 0"
-        class="filter-item"
-      />
+      员工工号：<el-input v-model="listQuery.useNo" placeholder="请输入员工工号" style="width: 150px; margin: 5px 8px 5px 0"
+        class="filter-item" />
+      员工姓名：<el-input v-model="listQuery.usename" placeholder="请输入员工姓名" style="width: 150px; margin: 5px 8px 5px 0"
+        class="filter-item" />
       <div style="float: right">
-        <el-button
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          style="margin: 5px 8px 5px 0; background-color: #244496"
-          @click="getList(1)"
-        >
+        <el-button class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 5px 8px 5px 0; background-color: #244496" @click="getList(1)">
           搜索
         </el-button>
-        <el-button
-          class="filter-item"
-          type="primary"
-          icon="el-icon-edit"
-          style="margin: 5px 8px 5px 0; background-color: #244496"
-          @click="beforeCreate"
-        >
+        <el-button class="filter-item" type="primary" icon="el-icon-edit"
+          style="margin: 5px 8px 5px 0; background-color: #244496" @click="beforeCreate">
           增加
         </el-button>
       </div>
     </div>
 
     <div class="table-list">
-      <el-table
-        ref="dragTable"
-        v-loading="listLoading"
-        :data="list"
-        row-key="id"
-        fit
-        highlight-current-row
-        :header-cell-style="{ background: '#e4e7f0' }"
-      >
+      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row
+        :header-cell-style="{ background: '#e4e7f0' }">
         <el-table-column align="center" label="ID" prop="id" width="65" />
-        <el-table-column
-          prop="userNo"
-          width="180px"
-          align="center"
-          label="员工工号"
-        />
-        <el-table-column
-          prop="username"
-          width="180px"
-          align="center"
-          label="员工姓名"
-        />
+        <el-table-column prop="userNo" width="180px" align="center" label="员工工号" />
+        <el-table-column prop="username" width="180px" align="center" label="员工姓名" />
         <el-table-column prop="roles" label="角色">
           <template slot-scope="{ row }">
-            <el-tag
-              v-for="role in row.roles"
-              :key="role"
-              style="margin: 2px 2px"
-              type="danger"
-            >
-              {{ role }}</el-tag
-            >
+            <el-tag v-for="role in row.roles" :key="role" style="margin: 2px 2px" type="danger">
+              {{ role }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="brands" label="管理品牌">
           <template slot-scope="{ row }">
-            <el-tag
-              v-for="brand in row.brands"
-              :key="brand"
-              style="margin: 2px 2px"
-            >
-              {{ brand }}</el-tag
-            >
+            <el-tag v-for="brand in row.brands" :key="brand" style="margin: 2px 2px">
+              {{ brand }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          min-width="200"
-          class-name="small-padding fixed-width"
-        >
+        <el-table-column label="操作" align="center" min-width="200" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button
-              size="mini"
-              style="color: #244496; border: none;"
-              icon="el-icon-edit-outline"
-              @click="beforeUpdate(row)"
-            >
+            <el-button size="mini" style="color: #244496; border: none;" icon="el-icon-edit-outline"
+              @click="beforeUpdate(row)">
               编辑
             </el-button>
-            <el-button
-              size="mini"
-              icon="el-icon-delete"
-              style="color: #244496; border: none;"
-
-              @click="deleteUser(row)"
-            >
+            <el-button size="mini" icon="el-icon-delete" style="color: #244496; border: none;" @click="deleteUser(row)">
               删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        :page-sizes="[10, 20, 50, 100]"
-        :current-page="page"
-        :page-size="size"
-        align="center"
-        @size-change="getList(page)"
-        @current-change="getList(page)"
-      />
+      <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" :page-sizes="[10, 20, 50, 100]"
+        :current-page="page" :page-size="size" align="center" @size-change="getList(page)"
+        @current-change="getList(page)" />
     </div>
 
-    <el-dialog
-      :title="titleMap[dialogStatus]"
-      :visible.sync="dialogFormVisible"
-      width="500px"
-    >
-      <el-form
-        ref="dataForm"
-        :model="temp"
-        label-position="left"
-        label-width="70px"
-        style="width: 300px; margin-left: 50px"
-      >
+    <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogFormVisible" width="500px">
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px"
+        style="width: 300px; margin-left: 50px">
         <el-form-item label="员工工号" prop="userNo">
-          <el-input
-            v-if="dialogStatus === 'create'"
-            v-model="temp.userNo"
-            style="width: 300px"
-          />
-          <el-input
-            v-else
-            v-model="temp.userNo"
-            style="width: 300px"
-            disabled
-          />
+          <el-input v-if="dialogStatus === 'create'" v-model="temp.userNo" style="width: 300px" />
+          <el-input v-else v-model="temp.userNo" style="width: 300px" disabled />
         </el-form-item>
         <el-form-item label="员工姓名" prop="username">
           <el-input v-model="temp.username" style="width: 300px" />
         </el-form-item>
 
         <el-form-item v-if="dialogStatus === 'create'" label="登陆密码">
-          <el-input
-            v-model="temp.password"
-            show-password
-            style="width: 300px"
-          />
+          <el-input v-model="temp.password" show-password style="width: 300px" />
         </el-form-item>
 
         <el-form-item label="负责品牌">
-          <el-select
-            v-model="temp.brandIds"
-            class="filter-item"
-            multiple
-            clearable
-            filterable
-            placeholder="请选择"
-            style="width: 300px"
-          >
-            <el-option
-              v-for="item in brands"
-              :key="item.name"
-              :label="item.name"
-              :value="item.value"
-            />
+          <el-select v-model="temp.brandIds" class="filter-item" multiple clearable filterable placeholder="请选择"
+            style="width: 300px">
+            <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="管理权限">
-          <el-select
-            v-model="temp.roleIds"
-            class="filter-item"
-            multiple
-            clearable
-            filterable
-            placeholder="请选择"
-            style="width: 300px"
-          >
-            <el-option
-              v-for="item in roles"
-              :key="item.name"
-              :label="item.name"
-              :value="item.value"
-            />
+          <el-select v-model="temp.roleIds" class="filter-item" multiple clearable filterable placeholder="请选择"
+            style="width: 300px">
+            <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.value" />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> 取消 </el-button>
-        <el-button
-          type="primary"
-          @click="createOrUpdateUser(dialogStatus, temp)"
-        >
+        <el-button type="primary" @click="createOrUpdateUser(dialogStatus, temp)">
           确定
         </el-button>
       </div>
@@ -309,7 +192,7 @@ export default {
 }
 </style>
 
-<style lang="scss"scoped>
+<style lang="scss" scoped>
 .app-container {
   background-color: #f7f8fc;
 
@@ -328,11 +211,13 @@ export default {
 .icon-star {
   margin-right: 2px;
 }
+
 .drag-handler {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
+
 .show-d {
   margin-top: 15px;
 }

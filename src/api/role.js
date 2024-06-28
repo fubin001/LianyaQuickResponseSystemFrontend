@@ -36,3 +36,20 @@ export function deleteRole(id) {
     method: 'delete'
   })
 }
+//注册申请
+export function getNewRole(data) {
+  return request({
+    url: '/newRole/getNewRole',
+    method: 'post',
+    data: data
+  })
+}
+
+//sy
+export function sy(data) {
+  return request({
+    url: '/newRole/sy',
+    method: 'post',
+    data: data
+  })
+}

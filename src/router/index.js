@@ -106,7 +106,7 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     name: '销售管理',
-    noCache:true,
+    noCache: true,
     redirect: '/skuProduct/info',
     meta: {
       title: '销售管理',
@@ -117,7 +117,7 @@ export const constantRoutes = [
         path: '/product/brand',
         component: () => import('@/views/product/brand'),
         name: '品牌信息',
-        noCache:true,
+        noCache: true,
         meta: { title: '品牌信息', icon: 'edit' }
       },
       // {
@@ -130,14 +130,14 @@ export const constantRoutes = [
         path: '/skuProduct/info',
         component: () => import('@/views/product/saleProduct'),
         name: '销售商品',
-        noCache:true,
+        noCache: true,
         meta: { title: '销售商品', icon: 'edit' }
       },
       {
         path: '/skuProduct/feedback',
         component: () => import('@/views/product/feedback'),
         name: '生产订单',
-        noCache:true,
+        noCache: true,
         meta: { title: '生产订单', icon: 'edit' }
       },
       // {
@@ -150,7 +150,7 @@ export const constantRoutes = [
         path: '/product/saleProductPanel',
         component: () => import('@/views/product/saleProductPanel'),
         name: '销售面板',
-        noCache:true,
+        noCache: true,
         hidden: true,
         meta: { title: '销售面板', icon: 'edit' }
       }
@@ -223,7 +223,7 @@ export const constantRoutes = [
         path: '/user/info',
         component: () => import('@/views/user/user'),
         name: '用户信息',
-        meta: { title: '用户信息', icon: 'user', affix: true }
+        meta: { title: '用户信息', icon: 'user'}
       }, {
         path: '/user/role',
         component: () => import('@/views/user/role'),
@@ -235,6 +235,23 @@ export const constantRoutes = [
         component: () => import('@/views/user/userRole'),
         name: '用户与角色权限',
         meta: { title: '用户与角色权限', icon: 'edit' }
+      }
+    ]
+  },
+  {
+    path: '/sy',
+    component: Layout,
+    redirect: '/sy',
+    meta: {
+      title: '实验',
+      icon: 'sy'
+    },
+    children: [
+      {
+        path: '/sy',
+        component: () => import('@/views/user/sy'),
+        name: '实验',
+        meta: { title: '实验', icon: 'sy', affix: true }
       }
     ]
   }

@@ -1,4 +1,5 @@
 <template>
+  <div class="login-containers">
   <div class="login-container">
     <el-row :gutter="0">
       <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="3"><br></el-col>
@@ -37,6 +38,8 @@
         <div>
           <el-button :loading="loading" type="primary" style="width: 60%; margin-bottom: 30px"
             @click.native.prevent="handleLogin">登录</el-button>
+          <el-button :loading="loading" type="primary" 
+            @click.native.prevent="dialogFormVisible=!dialogFormVisible">注册</el-button>
         </div>
         <!--        <div>-->
         <!--          <span>请使用手机号</span>-->
@@ -53,15 +56,22 @@
       </el-col>
     </el-row>
   </div>
+    <!-- 注册弹窗 -->
+    <el-dialog title="注册申请" :visible.sync="dialogFormVisible" width="500px">
+      <register></register>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+import { userApplyOfr} from "@/api/user"
+import Register  from "./register.vue"; 
 
 export default {
   name: 'Login',
-  components: { SocialSign },
+  components: { SocialSign,Register},
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -95,7 +105,13 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      titleMap: {
+        create: "新增用户",
+        update: "编辑用户",
+      },
+      temp: {},
+      dialogFormVisible:false,//注册弹窗口
     }
   },
   watch: {
@@ -124,7 +140,17 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-
+//注册申请
+on_userApplyOfr(data) {
+      
+      userApplyOfr(data).then((res) => {
+        if (res.data) {
+          this.$message.success("操作成功");
+          this.getList(this.page);
+        }
+        this.dialogFormVisible = false;
+      });
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
@@ -238,7 +264,7 @@ $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
 
-.login-container {
+.login-containers {
   background-color: #081b3a;
   height: 100%;
   color: #fff;
