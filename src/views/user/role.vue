@@ -113,7 +113,7 @@ export default {
     this.on_getNewRole();
   },
   methods: {
-    //获取角色详细信息
+    //获取角色详细信息e
     on_getNewRole() {
       getNewRole(this.search_role).then((res) => {
         this.dataList = res.data.roleList
