@@ -51,19 +51,27 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, username } = data
+        const { roles, username,roleList } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
-        commit('SET_ROLES', roles)
+        let newSale=[]
+        //获取角色菜单权限
+        roleList.forEach(item => {
+          item.permissionList.forEach(items => {
+            newSale.push(items.code)
+          });
+        });
+        // console.log("75user",newSale);
+        // roles=["admin"]
+        commit('SET_ROLES', newSale)
         commit('SET_NAME', username)
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
         // commit('SET_INTRODUCTION', introduction)

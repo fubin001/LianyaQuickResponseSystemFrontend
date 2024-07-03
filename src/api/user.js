@@ -105,3 +105,39 @@ export function newUserBecome(data) {
   })
 }
 
+//查询用户
+export function getNewUsersList(data) {
+  return request({
+    url: '/newUser/getNewUsersList',
+    method: 'post',
+    data: data
+  })
+}
+
+//获取指定用户没有的角色
+export function getRoleNotUserNoList(data) {
+  return request({
+    url: '/newUser/getRoleNotUserNoList',
+    method: 'post',
+    data: data
+  })
+}
+
+//删除指定用户与角色的绑定
+export function delUserRoleRelations(data) {
+  return request({
+    url: '/newUser/delUserRoleRelations',
+    method: 'post',
+    data: data
+  })
+}
+
+
+//用户新增角色
+export function addUserRoleRelations(data) {
+  return request({
+    url: '/newUser/addUserRoleRelations',
+    method: 'post',
+    data: data
+  })
+}

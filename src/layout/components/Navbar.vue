@@ -78,9 +78,11 @@ export default {
     async logout() {
       // 清除token
       removeToken()
+      //刷新网页
+      window.location.reload();
       // 返回登录页面
       // await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      // this.$router.push(`/login`)
     },
     
   }

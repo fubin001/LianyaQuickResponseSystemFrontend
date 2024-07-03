@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-button @click="on_updUserApplyFor()">on_updUserApplyFor</el-button>
     <template>
       <el-table :data="userApplyOfrList" style="width: 100%">
         <el-table-column label="申请账号" width="180">
@@ -14,7 +13,7 @@
             <span style="margin-left: 10px">{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="申请角色" width="900">
+        <el-table-column label="申请角色" width="700">
           <template slot-scope="scope">
             <el-tag v-for="item in scope.row.roleList" :key="item.name" closable :type="item.name"
               @close="handleClose(scope.row.id, item.id)">
@@ -23,7 +22,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="on_delUserApplyFor(scope.row.id)">删除</el-button>
             <el-button size="mini" @click="on_newUserBecome(scope.row)">通过</el-button>
@@ -38,14 +37,12 @@
 import { updUserApplyFor, getUserApplyOfrList, newUserBecome, delUserApplyForRole, delUserApplyFor } from "@/api/user";
 
 export default {
-  name: "sy13",
+  name: "sy",
   data() {
     return {
       formData: {},
       userApplyOfrList: [],
       search: {
-        userName: '',
-        userNo: '',
         currentPage: 0,
         sizePage: 9999
       }, sy: {

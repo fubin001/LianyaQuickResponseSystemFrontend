@@ -89,8 +89,8 @@ export default {
     }
     return {
       loginForm: {
-        // username: 'admin',
-        // password: '111111'
+        userNo: 'admin1',
+        password: '123456'
       },
       loginRules: {
         userNo: [
@@ -140,17 +140,6 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-//注册申请
-on_userApplyOfr(data) {
-      
-      userApplyOfr(data).then((res) => {
-        if (res.data) {
-          this.$message.success("操作成功");
-          this.getList(this.page);
-        }
-        this.dialogFormVisible = false;
-      });
-    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'

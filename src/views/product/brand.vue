@@ -59,7 +59,7 @@
 import { query } from '@/api/brand'
 
 export default {
-  name: '品牌信息',
+  name: 'brand',
   data() {
     return {
       list: null,
