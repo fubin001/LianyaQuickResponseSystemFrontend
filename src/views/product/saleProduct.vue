@@ -249,7 +249,6 @@
         v-loading="listLoading"
         :data="list"
         row-key="id"
-        :header-cell-style="{ background: '#e4e7f0' }"
         fit
         highlight-current-row
         style="width: 100%"
@@ -331,7 +330,7 @@
           type="index"
           :index="Nindex"
         />
-        <el-table-column label="基础属性">
+        <el-table-column label="基础属性" align="center">
           <el-table-column
             prop="brand"
             label="品牌"
@@ -392,7 +391,7 @@
             :width="flexColumnWidth('面料成分', 'fabricComposition')"
           />
         </el-table-column>
-        <el-table-column label="预测">
+        <el-table-column label="预测" align="center" show-overflow-tooltip>
           <el-table-column
             prop="predictModel"
             align="left"
@@ -411,8 +410,19 @@
             label="预测系数"
             :width="flexColumnWidth('预测系数', 'predictCoe')"
           />
+          <el-table-column
+            prop="feedbackDay"
+            align="left"
+            label="反馈天数"
+          />
+          <el-table-column
+            prop="feedbackDayBom"
+            align="left"
+            width="115px"
+            label="BOM反馈天数"
+          />
         </el-table-column>
-        <el-table-column label="关联指标" width="90">
+        <el-table-column label="关联指标" width="90" align="center">
           <el-table-column
             prop="ytdSaleOutRate"
             align="left"
