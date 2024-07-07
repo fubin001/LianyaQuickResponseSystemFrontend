@@ -298,10 +298,8 @@
         @current-change="handleCurrentChange"
       />
 
-      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" @close="getList" />
-      <el-dialog title="物料单" :visible.sync="readerDialogFormVisible" width="1500px">
-        <ProduceMaterialListReader ref="produceMaterialReader" />
-      </el-dialog>
+      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" @close="getList(page)" />
+      <ProduceMaterialListReader :params="produceMaterialReaderListObj.params" :visible.sync="produceMaterialReaderListObj.visible" @close="getList(page)" />
 
     </div>
   </div>
@@ -329,6 +327,10 @@ export default {
     return {
       dialogStatus: 'create',
       produceMaterialListObj: {
+        visible: false,
+        params: {}
+      },
+      produceMaterialReaderListObj: {
         visible: false,
         params: {}
       },
@@ -360,17 +362,6 @@ export default {
     }
   },
 
-  watch: {
-    // dialogFormVisible(newVal, oldVal) {
-    //   console.log('dialogFormVisible update')
-    //   if (oldVal) {
-    //     if (!newVal) {
-    //       this.getList(this.page)
-    //     }
-    //   }
-    //   // 这里可以添加更多的逻辑来响应变量的变化
-    // }
-  },
   created() {
     this.initTrsNoList()
     this.getBrands()
@@ -407,14 +398,11 @@ export default {
     },
 
     async popProduceMaterialListReader(skuId, feedbackOrderId) {
-      if (!this.$refs.produceMaterialReader) {
-        await this.$nextTick(() => {
-          this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
-        })
-      } else {
-        this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
+      this.produceMaterialReaderListObj.visible = true
+      this.produceMaterialReaderListObj.params = {
+        skuId: skuId,
+        feedbackOrderId: feedbackOrderId
       }
-      this.readerDialogFormVisible = true
     },
 
     addNewProductOrder() {
