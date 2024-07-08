@@ -35,3 +35,23 @@ export function getNewPermissionNotRoleIDList(data) {
 }
 
 
+/**
+ * 角色新增页面权限
+ */
+export function addPermissionManu(data) {
+  return request({
+    url: '/newPermissions/addPermissionManu',
+    method: 'post',
+    data: data
+  })
+}
+
+/**查询指定角色ID，所拥有的权限 */
+export function getRoleIDPermission(data) {
+  return request({
+    url: '/newPermissions/getRoleIDPermission',
+    method: 'post',
+    data: data
+  })
+}
+

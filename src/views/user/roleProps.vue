@@ -63,9 +63,10 @@ export default {
       const a= this.$refs.tree.getCheckedNodes()
       const b = a.map(obj=>({
         ...obj,
-        "roleID":this.propRoleID
+        "type":1
       }))
-      addPermissionManu(b).then((res)=>{}).finally(()=>{
+      // console.log(this.propRoleID);
+      addPermissionManu({roleID:this.propRoleID, permissionList:b}).then((res)=>{}).finally(()=>{
         this.emitCustomEvent()
       })
     },

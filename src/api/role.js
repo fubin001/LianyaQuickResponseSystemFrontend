@@ -52,6 +52,14 @@ export function getNewRole(data) {
     data: data
   })
 }
+//删除角色
+export function delRole(data) {
+  return request({
+    url: '/newRole/delRole',
+    method: 'post',
+    data: data
+  })
+}
 //sy
 export function sy(data) {
   return request({
@@ -60,3 +68,5 @@ export function sy(data) {
     data: data
   })
 }
+
+
