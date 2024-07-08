@@ -525,7 +525,8 @@ export const asyncRoutes = [
   {
     path: '/sy',
     component: Layout,
-    redirect:'sy/info',
+    redirect:'sy/info', 
+    hidden: true , //不展示
     meta: {
       title: '实验',
       icon: 'sy'
