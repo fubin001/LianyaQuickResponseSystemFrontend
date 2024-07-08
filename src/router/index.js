@@ -256,6 +256,39 @@ export const constantRoutes = [
   //     }
   //   ]
   // }
+  
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/home',
+    children: [
+      {
+        path: '/other/404',
+        component: () => import('@/views/error-page/404'),
+        name: '404',
+        noCache: true,
+        hidden: true,
+        meta: { title: '404', icon: 'edit', roles:['admin','sale']}
+      },
+      {
+        path: '/home',
+        component: () => import('@/views/error-page/401'),
+        name: 'home',
+        noCache: true,
+        meta: { title: 'home', icon: 'edit', roles:['admin','sale']}
+      },
+      {
+        path: '/other/401',
+        component: () => import('@/views/error-page/401'),
+        name: '401',
+        noCache: true,
+        hidden: true,
+        meta: { title: '401', icon: 'edit', roles:['admin','sale']}
+      },
+    ],
+  },
+  { path: '*',  redirect: 'other/404', hidden: true }
+  
 ]
 
 /**
@@ -348,7 +381,7 @@ export const asyncRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/other/401',
+    redirect: '/other/404',
     hidden: true,
     children: [
       {
@@ -761,7 +794,7 @@ export const asyncRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', name: '404', redirect: '/other/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
