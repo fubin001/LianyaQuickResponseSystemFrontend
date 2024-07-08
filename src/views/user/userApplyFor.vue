@@ -39,7 +39,7 @@
       :page-sizes="[10, 20, 30, 100]"
       :page-size="search.size"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="search.maxSizePage">
+      :total="search.total">
     </el-pagination>
   </div>
 </template>
@@ -58,6 +58,7 @@ export default {
         userNo: '',
         current: 0,
         size: 10,
+        total:0,
       }, sy: {
         uid: 1,
         size: 1,
