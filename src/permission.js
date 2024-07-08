@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/register', '/auth-redirect'] // no redirect whitelist
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // start progress bar
   NProgress.start()
 
@@ -28,6 +28,8 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      // debugger
+      console.log(store.getters.roles);
       if (hasRoles) {
         next()
       } else {
@@ -35,10 +37,19 @@ router.beforeEach(async(to, from, next) => {
           // console.log('35perm');
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { roles } = await store.dispatch('user/getInfo')
-          //console.log('39perm',roles);
+          //获取user文件下的getInfo方法下的roles,menu数据
+          const { roles, menus } = await store.dispatch('user/getInfo')
+          // console.log('39perm',store.dispatch('user/getInfo'));
+          menus.push("/other/404")
+          menus.push("/")
+          menus.push("/other/401")
           // generate accessible routes map based on roles
-          const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+          // console.log(menus.length>0?menus:['/404']);
+          // const menus = ['/skuProduct/info','/skuProduct'] // 第三个参数
+          // debugger
+          //根据已有权限，获取动态路由
+          const accessRoutes = await store.dispatch('permission/generateRoutes', { roles:roles, menus })
+          console.log('45accessRoutes', accessRoutes);
           // console.log('42perm');
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)

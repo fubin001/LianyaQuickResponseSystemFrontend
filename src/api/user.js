@@ -114,6 +114,15 @@ export function getNewUsersList(data) {
   })
 }
 
+//删除用户
+export function delNewUser(data) {
+  return request({
+    url: '/newUser/delNewUser',
+    method: 'post',
+    data: data
+  })
+}
+
 //获取指定用户没有的角色
 export function getRoleNotUserNoList(data) {
   return request({

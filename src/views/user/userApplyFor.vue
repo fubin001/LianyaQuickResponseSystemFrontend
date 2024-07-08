@@ -1,6 +1,8 @@
 <template>
   <div>
     <template>
+    <el-input v-model="search.userNo" placeholder="请输入查询工号" @input="
+      on_getUserApplyOfrList()"></el-input>
       <el-table :data="userApplyOfrList" style="width: 100%">
         <el-table-column label="申请账号" width="180">
           <template slot-scope="scope">
@@ -30,6 +32,15 @@
         </el-table-column>
       </el-table>
     </template>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="search.current"
+      :page-sizes="[10, 20, 30, 100]"
+      :page-size="search.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="search.maxSizePage">
+    </el-pagination>
   </div>
 </template>
 
@@ -45,12 +56,12 @@ export default {
       search: {
         userName: '',
         userNo: '',
-        currentPage: 0,
-        sizePage: 9999
+        current: 0,
+        size: 10,
       }, sy: {
         uid: 1,
-        sizePage: 1,
-        currentPage: 10,
+        size: 1,
+        current: 10,
       },
       dataList: [],
       dojon: "",
@@ -72,7 +83,7 @@ export default {
     //获取申请用户
     on_getUserApplyOfrList() {
       getUserApplyOfrList(this.search).then((res) => {
-        this.userApplyOfrList = res.data.list
+        this.userApplyOfrList = res.data.records
         console.log("199", res.data.list);
       })
     },
@@ -109,7 +120,17 @@ export default {
       }).finally(()=>{
         this.on_getUserApplyOfrList()
       })
-    }
+    },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.search.size = val
+        this.on_getUserApplyOfrList()
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.search.current = val
+        this.on_getUserApplyOfrList()
+      },
   },
 };
 </script>

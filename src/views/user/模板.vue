@@ -11,8 +11,8 @@ export default {
     return {
       formData: {},
       search: {
-        currentPage: 0,
-        sizePage: 10
+        current: 0,
+        size: 10
       },
       dataList: [],
       dojon: "",

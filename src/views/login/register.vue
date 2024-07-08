@@ -45,8 +45,8 @@ export default {
             },
             searchRole:{
                 name:'',
-                sizePage:0, 
-                currentPage:1,
+                size:0, 
+                current:1,
             },
             roleList: [
             ],
