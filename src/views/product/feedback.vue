@@ -76,6 +76,9 @@
         <el-form-item label="数量">
           <el-input v-model="newOrder.materialQuantity" style="width: 300px" />
         </el-form-item>
+        <el-form-item label="尺寸">
+          <el-input v-model="newOrder.size" style="width: 300px" />
+        </el-form-item>
         <el-form-item label="生产时间">
           <el-date-picker v-model="newOrder.startProduceDate" style="width: 300px" value-format="yyyy-MM-dd" />
         </el-form-item>
@@ -298,10 +301,8 @@
         @current-change="handleCurrentChange"
       />
 
-      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" @close="getList" />
-      <el-dialog title="物料单" :visible.sync="readerDialogFormVisible" width="1500px">
-        <ProduceMaterialListReader ref="produceMaterialReader" />
-      </el-dialog>
+      <ProduceMaterialList :params="produceMaterialListObj.params" :visible.sync="produceMaterialListObj.visible" @close="getList(page)" />
+      <ProduceMaterialListReader :params="produceMaterialReaderListObj.params" :visible.sync="produceMaterialReaderListObj.visible" @close="getList(page)" />
 
     </div>
   </div>
@@ -310,7 +311,7 @@
 <script>
 import { getBrandEnum } from '@/api/enum'
 import {
-  addFeedbackOrder,
+  addFeedbackOrder, addProduceOrder,
   confirmFeedback,
   executeFeedback,
   exportFeedbackOrder,
@@ -320,7 +321,6 @@ import ProduceMaterialList from '@/views/product/component/produceMaterialList.v
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
 import { flexColumnWidth } from '@/common/util'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
-import sk from 'element-ui/src/locale/lang/sk'
 
 export default {
   name: '生产订单',
@@ -329,6 +329,10 @@ export default {
     return {
       dialogStatus: 'create',
       produceMaterialListObj: {
+        visible: false,
+        params: {}
+      },
+      produceMaterialReaderListObj: {
         visible: false,
         params: {}
       },
@@ -360,17 +364,6 @@ export default {
     }
   },
 
-  watch: {
-    // dialogFormVisible(newVal, oldVal) {
-    //   console.log('dialogFormVisible update')
-    //   if (oldVal) {
-    //     if (!newVal) {
-    //       this.getList(this.page)
-    //     }
-    //   }
-    //   // 这里可以添加更多的逻辑来响应变量的变化
-    // }
-  },
   created() {
     this.listQuery.skuId = this.$route.query.skuId?this.$route.query.skuId:''
     this.initTrsNoList()
@@ -408,14 +401,11 @@ export default {
     },
 
     async popProduceMaterialListReader(skuId, feedbackOrderId) {
-      if (!this.$refs.produceMaterialReader) {
-        await this.$nextTick(() => {
-          this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
-        })
-      } else {
-        this.$refs.produceMaterialReader.render(skuId, feedbackOrderId)
+      this.produceMaterialReaderListObj.visible = true
+      this.produceMaterialReaderListObj.params = {
+        skuId: skuId,
+        feedbackOrderId: feedbackOrderId
       }
-      this.readerDialogFormVisible = true
     },
 
     addNewProductOrder() {
@@ -430,7 +420,7 @@ export default {
       if (!this.newOrder.startProduceDate) {
         this.$message.warning('开始时间不能为空')
       }
-      addFeedbackOrder(this.newOrder).then(res => {
+      addProduceOrder(this.newOrder).then(res => {
         if (res.data) {
           this.$message.success('添加成功')
           this.getList(1)

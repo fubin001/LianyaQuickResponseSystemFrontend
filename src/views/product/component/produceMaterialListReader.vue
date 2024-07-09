@@ -1,5 +1,6 @@
 <template>
-  <div>
+
+  <el-dialog title="物料单" :visible.sync="visible" :before-close="handleClose">
     <h2>物料需求计划</h2>
     <div class="size-info" style="width: 100%">
       <div style="height: 2rem; line-height: 2rem; padding: 0 0.1rem;">
@@ -40,7 +41,7 @@
       <el-table-column prop="useStorageQuantity" label="锁定库存用量" :min-width="flexColumnWidth(useBomList, '锁定库存用量', 'useStorageQuantity')" />
       <el-table-column prop="useNeedFeedbackQuantity" label="快反用量" :min-width="flexColumnWidth(useBomList, '快反用量', 'useNeedFeedbackQuantity')" />
     </el-table>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -55,13 +56,16 @@ import {
 export default {
   name: 'ProduceMaterialListReader',
   props: {
-    skuId: {
-      type: String,
-      default: null
+    visible: {
+      type: Boolean,
+      default: false
     },
-    feedbackOrderId: {
-      type: String,
-      default: null
+
+    params: {
+      type: Object,
+      default: () => {
+        return 0
+      }
     }
   },
 
@@ -80,19 +84,26 @@ export default {
   computed: {
   },
 
+  watch: {
+    params(newValue, oldValue) {
+      this.skuId = newValue.skuId
+      this.feedbackOrderId = newValue.feedbackOrderId
+      if (this.skuId && this.feedbackOrderId) {
+        this.getFeedbackOrder(this.feedbackOrderId)
+      }
+    }
+  },
+
   created() {
-    this.render(this.$props.skuId)
   },
 
   methods: {
     exportProduceMaterialUseBomList,
     flexColumnWidth,
-    render(skuId, feedbackOrderId) {
-      if (skuId && feedbackOrderId) {
-        this.getFeedbackOrder(feedbackOrderId)
-        this.$props.skuId = skuId
-        this.$props.feedbackOrderId = feedbackOrderId
-      }
+
+    handleClose() {
+      this.$emit('update:visible', false)
+      this.$emit('close', 1)
     },
     async getFeedbackOrder(feedbackOrderId) {
       await getFeedbackOrder(feedbackOrderId).then(res => {

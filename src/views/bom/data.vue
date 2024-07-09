@@ -2,20 +2,30 @@
   <div class="app-container">
     <div class="filter-container">
       <span>
-        款号：<el-input
+        skuId：
+        <el-select
           v-model="listQuery.skuId"
-          placeholder="请输入款号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
-        />
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
       </span>
       <span>
-        TRS编号：<el-input
+        TRS编号：
+        <el-select
           v-model="listQuery.trsNo"
-          placeholder="请输入TRS编号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
-        />
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
       </span>
       <span>
         物料类型：
@@ -24,17 +34,28 @@
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
           clearable
-          allow-create
           filterable
         >
-          <el-option v-for="item in componentTypeList" :key="item.name" :label="item.name" :value="item.value" />
+          <el-option v-for="item in componentTypeEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span>
+      <span>
+        创建类型：
+        <el-select
+          v-model="listQuery.createType"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          filterable
+        >
+          <el-option v-for="item in createTypeEnumList" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>
       </span>
       <span style="float: right">
         <el-button
           class="filter-item"
           plain
-          style="margin: 5px 8px 5px 0"
+          style="margin: 3px 5px"
           @click="reset"
         >
           重置
@@ -43,7 +64,7 @@
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496"
+          style="margin: 3px 5px; background-color: #244496"
           @click="getList(1)"
         >
           搜索
@@ -52,17 +73,225 @@
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496"
+          style="margin: 3px 5px; background-color: #244496"
+          @click="addBomDialogVisible = true"
+        >
+          新增
+        </el-button>
+        <el-button
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496"
           @click="exportBom(listQuery)"
         >
           下载
         </el-button>
       </span>
-
-      <!--      <el-button class="filter-item" type="primary" icon="el-icon-edit" style="margin: 5px 8px 5px 0" @click="beforeCreate">-->
-      <!--        增加-->
-      <!--      </el-button>-->
     </div>
+
+    <el-dialog title="新增BOM" :visible.sync="addBomDialogVisible" width="500px">
+      <el-form ref="dataForm" :model="addBomForm" label-position="left" label-width="120px" style="width: 300px; margin-left:30px;">
+        <el-form-item label="skuId" prop="skuId">
+          <el-select
+            v-model="addBomForm.skuId"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            allow-create
+            filterable
+          >
+            <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="TRS编号" prop="parentTrsNo">
+          <el-input
+            v-model="addBomForm.trsNo"
+            style="width: 300px"
+          />
+        </el-form-item>
+        <el-form-item label="颜色代码">
+          <el-input v-model="addBomForm.colorCode" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="层">
+          <el-select
+            v-model="addBomForm.layer"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            allow-create
+            filterable
+          >
+            <el-option v-for="item in LayerEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="供应商">
+          <el-input v-model="addBomForm.supplier" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="供应商物料编号">
+          <el-input v-model="addBomForm.supplierMaterialComponentNo" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="物料描述">
+          <el-input v-model="addBomForm.materialDescription" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="物料描述">
+          <el-input v-model="addBomForm.materialDescription" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="区分尺寸">
+          <el-select
+            v-model="addBomForm.size"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            allow-create
+            filterable
+          >
+            <el-option v-for="item in DistinguishSizeEnum" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="单位名称">
+          <el-input v-model="addBomForm.unitName" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="单位成本">
+          <el-input-number v-model="addBomForm.unitCost" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="单位用量">
+          <el-input-number v-model="addBomForm.useQuantity" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="生产天数">
+          <el-input-number v-model="addBomForm.produceDay" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="组件类型" prop="id">
+          <el-select
+            v-model="addBomForm.componentType"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            filterable
+          >
+            <el-option v-for="item in componentTypeEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="父组件编号" prop="parentTrsNo">
+          <el-select
+            v-model="addBomForm.parentTrsNo"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            filterable
+            allow-create
+          >
+            <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addBomDialogVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="handleAddBom">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="修改BOM" :visible.sync="modBomDialogVisible" width="500px">
+      <el-form ref="dataForm" :model="modBomForm" label-position="left" label-width="120px" style="width: 300px; margin-left:30px;">
+        <el-form-item label="skuId" prop="skuId">
+          <el-input
+            v-model="modBomForm.skuId"
+            style="width: 300px"
+            disabled
+          />
+        </el-form-item>
+        <el-form-item label="TRS编号" prop="trsNo">
+          <el-input
+            v-model="modBomForm.trsNo"
+            style="width: 300px"
+            disabled
+          />
+        </el-form-item>
+        <el-form-item label="颜色代码">
+          <el-input v-model="modBomForm.colorCode" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="层">
+          <el-select
+            v-model="modBomForm.layer"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            allow-create
+            filterable
+          >
+            <el-option v-for="item in LayerEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="供应商">
+          <el-input v-model="modBomForm.supplier" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="供应商物料编号">
+          <el-input v-model="modBomForm.supplierMaterialComponentNo" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="物料描述">
+          <el-input v-model="modBomForm.materialDescription" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="区分尺寸">
+          <el-select
+            v-model="modBomForm.size"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            allow-create
+            filterable
+          >
+            <el-option v-for="item in DistinguishSizeEnum" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="单位名称">
+          <el-input v-model="modBomForm.unitName" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="单位成本">
+          <el-input-number v-model="modBomForm.unitCost" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="生产天数">
+          <el-input-number v-model="modBomForm.produceDay" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="单位用量">
+          <el-input-number v-model="modBomForm.useQuantity" style="width: 300px" />
+        </el-form-item>
+        <el-form-item label="组件类型" prop="id">
+          <el-select
+            v-model="modBomForm.componentType"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            filterable
+          >
+            <el-option v-for="item in componentTypeEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="父组件编号" prop="parentTrsNo">
+          <el-select
+            v-model="modBomForm.parentTrsNo"
+            style="width: 300px"
+            class="filter-item"
+            clearable
+            filterable
+            allow-create
+          >
+            <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="modBomDialogVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="handleModBom">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
 
     <el-dialog title="BOM可视化结构" :visible.sync="bomTreeDialogVisble" width="1500px">
       <BomTree ref="bomTree" />
@@ -105,22 +334,48 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="center" type="index" width="50" :index="Nindex" />
-        <el-table-column align="left" label="款号" prop="skuId" :min-width="flexColumnWidth('款号', 'skuId')" />
-        <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth('颜色', 'color')" />
-        <el-table-column align="left" label="层" prop="layer" :min-width="flexColumnWidth('层', 'layer')" />
-        <el-table-column align="left" label="TRS 编号" prop="trsNo" :min-width="flexColumnWidth('TRS 编号', 'trs')" />
-        <el-table-column align="left" label="供应商" prop="supplier" :min-width="flexColumnWidth('供应商', 'supplier')" />
-        <el-table-column align="left" label="供应商物料编号" prop="supplierMaterialComponentNo" :min-width="flexColumnWidth('供应商物料编号', 'supplierMaterialComponentNo')" />
-        <el-table-column align="left" label="物料描述" prop="materialDescription" :min-width="flexColumnWidth('物料描述', 'materialDescription')" />
-        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth('颜色代码', 'colorCode')" />
-        <el-table-column align="left" label="尺码" prop="size" :width="flexColumnWidth('尺码', 'colorDescription')" />
-        <el-table-column align="left" label="单位名称" prop="unitName" :min-width="flexColumnWidth('单位名称', 'unitName')" />
-        <el-table-column align="left" label="单位成本" prop="unitCode" :min-width="flexColumnWidth('单位成本', 'unitCode')" />
-        <el-table-column align="left" label="用量" prop="useQuantity" :min-width="flexColumnWidth('用量', 'useQuantity')" />
-        <el-table-column align="left" label="生产天数" prop="produceDay" :min-width="flexColumnWidth('生产天数', 'produceDay')" />
-        <el-table-column align="left" label="上层TRS编号" prop="parentTrsNo" :min-width="flexColumnWidth('上层TRS编号', 'parentTrsNo')" />
-        <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth('组件类型', 'componentType')" />
+        <el-table-column align="left" label="编号" type="index" width="50" :index="Nindex" />
+        <el-table-column align="left" label="操作" width="180px">
+          <template slot-scope="{row}">
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-edit"
+              @click="popModBomDialog(row)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="el-icon-scissors"
+              @click="handleRemoveBom(row.id)"
+            >
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="skuId" prop="skuId" :width="flexColumnWidth(list,'skuId', 'skuId')" />
+        <el-table-column align="left" label="TRS 编号" prop="trsNo" :min-width="flexColumnWidth(list,'TRS 编号', 'trs')" />
+        <el-table-column align="left" label="创建类型" prop="createType" :min-width="flexColumnWidth(list,'创建类型', 'createType')" />
+        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list,'颜色代码', 'colorCode')" />
+        <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth(list, '颜色', 'color')" />
+        <el-table-column align="left" label="层" prop="layer" :min-width="flexColumnWidth(list, '层', 'layer')" />
+        <el-table-column align="left" label="供应商" prop="supplier" :min-width="flexColumnWidth(list, '供应商', 'supplier')" />
+        <el-table-column align="left" label="供应商物料编号" prop="supplierMaterialComponentNo" :min-width="flexColumnWidth(list,'供应商物料编号', 'supplierMaterialComponentNo')" />
+        <el-table-column align="left" label="物料描述" prop="materialDescription" :min-width="flexColumnWidth(list,'物料描述', 'materialDescription')" />
+        <el-table-column align="left" label="区分尺码" prop="size" :width="flexColumnWidth(list,'区分尺码', 'size')">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.size === 'Y'">区分</el-tag>
+            <el-tag v-else type="success">不区分</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="单位名称" prop="unitName" :min-width="flexColumnWidth(list,'单位名称', 'unitName')" />
+        <el-table-column align="left" label="单位成本" prop="unitCode" :min-width="flexColumnWidth(list,'单位成本', 'unitCode')" />
+        <el-table-column align="left" label="用量" prop="useQuantity" :min-width="flexColumnWidth(list,'用量', 'useQuantity')" />
+        <el-table-column align="left" label="生产天数" prop="produceDay" :min-width="flexColumnWidth(list,'生产天数', 'produceDay')" />
+        <el-table-column align="left" label="上层TRS编号" prop="parentTrsNo" :min-width="flexColumnWidth(list,'上层TRS编号', 'parentTrsNo')" />
+        <el-table-column align="left" label="组件类型" prop="componentType" :min-width="flexColumnWidth(list,'组件类型', 'componentType')" />
         <el-table-column>
           <template slot-scope="{row}">
             <el-button
@@ -161,19 +416,33 @@
 </template>
 
 <script>
-import { exportBom, queryBom, queryComponentTypeList } from '@/api/bom'
+import { addBom, exportBom, modifyBom, queryBom, queryComponentTypeList, removeBomById } from '@/api/bom'
 import BomTree from '@/views/bom/tree.vue'
+import {
+  DistinguishSizeEnum,
+  getBomCreateTypeEnumList,
+  getSkuIdEnumList,
+  getTrsNoEnumList,
+  LayerEnumList
+} from '@/api/enum'
+import { flexColumnWidth } from '@/common/util'
 
 export default {
   name: 'BOM数据',
   components: { BomTree },
   data() {
     return {
-      dialogStatus: 'create',
+      addBomForm: {},
+      modBomForm: {},
+      addBomDialogVisible: false,
+      modBomDialogVisible: false,
       dialogFormVisible: false,
       salePlanDialogFormVisible: false,
       upLoading: false,
-      componentTypeList: [],
+      componentTypeEnumList: [],
+      createTypeEnumList: [],
+      trsEnumList: [],
+      skuIdEnumList: [],
       page: 1,
       size: 10,
       list: null,
@@ -183,14 +452,27 @@ export default {
         page: 1,
         size: 10
       },
-      bomTreeDialogVisble: false
+      bomTreeDialogVisible: false
+    }
+  },
+  computed: {
+    LayerEnumList() {
+      return LayerEnumList
+    },
+    DistinguishSizeEnum() {
+      return DistinguishSizeEnum
     }
   },
   created() {
     this.initComponentTypeList()
+    this.initCreateTypeList()
+    this.initSkuIdList()
+    this.initTrsList()
     this.getList(1)
   },
   methods: {
+
+    flexColumnWidth,
     exportBom,
     reset() {
       this.listQuery = {
@@ -199,47 +481,28 @@ export default {
       }
     },
 
-    getMaxLength(arr) {
-      return arr.reduce((acc, item) => {
-        if (item) {
-          const calcLen = this.getTextWidth(item)
-          if (acc < calcLen) {
-            acc = calcLen
-          }
-        }
-        return acc
-      }, 0)
-    },
-
     async initComponentTypeList() {
-      const { data } = await queryComponentTypeList()
-      this.componentTypeList = data
+      await queryComponentTypeList().then(res => {
+        this.componentTypeEnumList = res?.data ?? []
+      })
     },
 
-    getTextWidth(str) {
-      let width = 0
-      const html = document.createElement('span')
-      html.innerText = str
-      html.className = 'getTextWidth'
-      document.querySelector('body').appendChild(html)
-      width = document.querySelector('.getTextWidth').offsetWidth
-      document.querySelector('.getTextWidth').remove()
-      return width
+    async initCreateTypeList() {
+      await getBomCreateTypeEnumList().then(res => {
+        this.createTypeEnumList = res?.data ?? []
+      })
     },
-    /**
-     * el-table-column 自适应列宽
-     * @param prop_label: 表名
-     * @param table_data: 表格数据
-     */
-    flexColumnWidth(label, prop) {
-      // 1.获取该列的所有数据
-      let arr = []
-      if (this.list && this.list.length > 0) {
-        arr = this.list.map((x) => x[prop])
-      }
-      arr.push(label) // 把每列的表头也加进去算
-      // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
-      return this.getMaxLength(arr) + 20 + 'px'
+
+    async initTrsList() {
+      await getTrsNoEnumList().then(res => {
+        this.trsEnumList = res?.data ?? []
+      })
+    },
+
+    async initSkuIdList() {
+      await getSkuIdEnumList().then(res => {
+        this.skuIdEnumList = res?.data ?? []
+      })
     },
 
     handleFileUploadSuccess(res) {
@@ -290,6 +553,57 @@ export default {
     handleCurrentChange(pageNum) {
       this.page = pageNum
       this.getList(this.page)
+    },
+
+    popModBomDialog(row) {
+      this.modBomForm = JSON.parse(JSON.stringify(row))
+      this.modBomDialogVisible = true
+    },
+
+    handleModBom() {
+      modifyBom(this.modBomForm).then(res => {
+        if (res && res.data) {
+          this.$message.success('修改成功')
+          this.addBomForm = {}
+          this.modBomDialogVisible = false
+          this.getList(this.page)
+        } else {
+          this.$message.error('修改失败')
+        }
+      }).catch(res => {
+        console.error(res)
+        this.$message.error('修改失败')
+      })
+    },
+    handleAddBom() {
+      this.addBomForm.createType = '人工创建'
+      // 参数检查
+      addBom(this.addBomForm).then(res => {
+        if (res && res.data) {
+          this.$message.success('新增成功')
+          this.addBomForm = {}
+          this.addBomDialogVisible = false
+          this.getList(this.page)
+        } else {
+          this.$message.error('新增失败')
+        }
+      }).catch(res => {
+        console.error(res)
+        this.$message.error('新增失败')
+      })
+    },
+    handleRemoveBom(id) {
+      removeBomById(id).then(res => {
+        if (res && res.data) {
+          this.$message.success('删除成功')
+          this.getList(this.page)
+        } else {
+          this.$message.error('删除失败')
+        }
+      }).catch(res => {
+        console.error(res)
+        this.$message.error('删除失败')
+      })
     }
   }
 }
