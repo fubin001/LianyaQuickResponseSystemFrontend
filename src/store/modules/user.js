@@ -7,7 +7,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  menus:[],
 }
 
 const mutations = {
@@ -24,8 +25,12 @@ const mutations = {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
+    console.log("setRoles:",roles);
     state.roles = roles
-  }
+  },
+  SET_MENUS:(state, menus)=>{
+    state.menus = menus
+  },
 }
 
 const actions = {
@@ -51,18 +56,29 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, username } = data
+        const { roles,menus, username,roleList } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
+        // let newSale=[]
+        // //获取角色菜单权限
+        // roleList.forEach(item => {
+        //   item.permissionList.forEach(items => {
+        //     newSale.push(items.code)
+        //   });
+        // });
+        // console.log("75user",newSale);
+        // roles=["admin"]
+        
+        console.log("80newSale",roles);
+        commit('SET_MENUS',menus)
         commit('SET_ROLES', roles)
         commit('SET_NAME', username)
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')

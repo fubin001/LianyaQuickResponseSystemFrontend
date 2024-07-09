@@ -428,7 +428,7 @@ import {
 import { flexColumnWidth } from '@/common/util'
 
 export default {
-  name: 'User',
+  name: 'BOM数据',
   components: { BomTree },
   data() {
     return {

@@ -54,3 +54,99 @@ export function getRoleBrand(data) {
     data: data
   })
 }
+//注册申请
+export function userApplyOfr(data) {
+  return request({
+    url: '/newUser/userApplyFor',
+    method: 'post',
+    data: data
+  })
+}
+//查询注册申请
+export function getUserApplyOfrList(data) {
+  return request({
+    url: '/newUser/getUserApplyForList',
+    method: 'post',
+    data: data
+  })
+}
+
+//修改注册申请
+export function updUserApplyFor(data) {
+  return request({
+    url: '/newUser/updUserApplyFor',
+    method: 'post',
+    data: data
+  })
+}
+//取下指定用户的申请
+export function delUserApplyFor(data) {
+  return request({
+    url: '/newUser/delUserApplyFor',
+    method: 'post',
+    data: data
+  })
+}
+
+//删除指定注册用户的申请权限
+export function delUserApplyForRole(data) {
+  return request({
+    url: '/newUser/delUserApplyForRole',
+    method: 'post',
+    data: data
+  })
+}
+//确定注册用户通过
+export function newUserBecome(data) {
+  return request({
+    url: '/newUser/newUserBecome',
+    method: 'post',
+    data: data
+  })
+}
+
+//查询用户
+export function getNewUsersList(data) {
+  return request({
+    url: '/newUser/getNewUsersList',
+    method: 'post',
+    data: data
+  })
+}
+
+//删除用户
+export function delNewUser(data) {
+  return request({
+    url: '/newUser/delNewUser',
+    method: 'post',
+    data: data
+  })
+}
+
+//获取指定用户没有的角色
+export function getRoleNotUserNoList(data) {
+  return request({
+    url: '/newUser/getRoleNotUserNoList',
+    method: 'post',
+    data: data
+  })
+}
+
+//删除指定用户与角色的绑定
+export function delUserRoleRelations(data) {
+  return request({
+    url: '/newUser/delUserRoleRelations',
+    method: 'post',
+    data: data
+  })
+}
+
+
+//用户新增角色
+export function addUserRoleRelations(data) {
+  return request({
+    url: '/newUser/addUserRoleRelations',
+    method: 'post',
+    data: data
+  })
+}

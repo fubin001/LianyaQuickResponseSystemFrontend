@@ -59,7 +59,7 @@
 import { query } from '@/api/brand'
 
 export default {
-  name: 'User',
+  name: 'brand',
   data() {
     return {
       list: null,

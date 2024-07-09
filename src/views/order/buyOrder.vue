@@ -251,7 +251,7 @@
 import { queryBuyOrder } from '@/api/buyOrder'
 
 export default {
-  name: 'User',
+  name: '采购数据',
   data() {
     return {
       list: [],

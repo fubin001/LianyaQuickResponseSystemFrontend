@@ -14,13 +14,13 @@ export function getRoles() {
   })
 }
 
-export function addRole(data) {
-  return request({
-    url: '/vue-element-admin/role',
-    method: 'post',
-    data
-  })
-}
+// export function addRole(data) {
+//   return request({
+//     url: '/newRole/add',
+//     method: 'post',
+//     data
+//   })
+// }
 
 export function updateRole(id, data) {
   return request({
@@ -36,3 +36,37 @@ export function deleteRole(id) {
     method: 'delete'
   })
 }
+//新增角色
+export function addRole(data) {
+  return request({
+    url: '/newRole/add',
+    method: 'post',
+    data: data
+  })
+}
+//查询角色
+export function getNewRole(data) {
+  return request({
+    url: '/newRole/getNewRole',
+    method: 'post',
+    data: data
+  })
+}
+//删除角色
+export function delRole(data) {
+  return request({
+    url: '/newRole/delRole',
+    method: 'post',
+    data: data
+  })
+}
+//sy
+export function sy(data) {
+  return request({
+    url: '/newRole/sy',
+    method: 'post',
+    data: data
+  })
+}
+
+

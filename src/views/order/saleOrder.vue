@@ -359,7 +359,7 @@
 import { querySaleOrder } from "@/api/saleOrder";
 
 export default {
-  name: "User",
+  name: "销售数据",
   data() {
     return {
       list: null,

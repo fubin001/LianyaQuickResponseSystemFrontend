@@ -583,7 +583,7 @@ import {
 import request from '@/utils/request'
 
 export default {
-  name: 'User',
+  name: 'saleProduct',
   data() {
     return {
       list: [],

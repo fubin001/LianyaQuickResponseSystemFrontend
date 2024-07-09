@@ -111,7 +111,7 @@ import { exportMaterialOrder, queryMaterialOrder } from '@/api/materialOrder'
 import { flexColumnWidth } from '@/common/util'
 
 export default {
-  name: 'User',
+  name: '备料数据',
   data() {
     return {
       dialogStatus: 'create',

@@ -321,7 +321,7 @@ import { getTrsNoEnumListByComponentType } from '@/api/bom'
 import sk from 'element-ui/src/locale/lang/sk'
 
 export default {
-  name: 'User',
+  name: '生产订单',
   components: { ProduceMaterialListReader, ProduceMaterialList },
   data() {
     return {

@@ -339,7 +339,7 @@ import {
 import { refreshRelatedData } from '@/api/skuProduct'
 import SaleLineChart from '@/views/product/component/SaleLineChart.vue'
 export default {
-  name: 'User',
+  name: '销售面板',
   components: { SaleLineChart },
   data() {
     return {

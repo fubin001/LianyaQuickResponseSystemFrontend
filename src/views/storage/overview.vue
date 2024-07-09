@@ -226,7 +226,7 @@ import { getTrsNoEnumList } from '@/api/bom'
 import { flexColumnWidth } from '@/common/util'
 
 export default {
-  name: 'User',
+  name: '库存数据',
   data() {
     return {
       addForm: {},
