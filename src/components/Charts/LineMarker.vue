@@ -19,11 +19,11 @@ export default {
     },
     width: {
       type: String,
-      default: '200px'
+      default: '100px'
     },
     height: {
       type: String,
-      default: '200px'
+      default: '100px'
     }
   },
   data() {
@@ -46,14 +46,14 @@ export default {
       this.chart = echarts.init(document.getElementById(this.id))
 
       this.chart.setOption({
-        backgroundColor: '#394056',
+        backgroundColor: 'white',
         title: {
           top: 20,
           text: 'Requests',
           textStyle: {
             fontWeight: 'normal',
             fontSize: 16,
-            color: '#F1F1F3'
+            color: 'black'
           },
           left: '1%'
         },
@@ -61,7 +61,7 @@ export default {
           trigger: 'axis',
           axisPointer: {
             lineStyle: {
-              color: '#57617B'
+              color: 'black'
             }
           }
         },
@@ -75,7 +75,7 @@ export default {
           right: '4%',
           textStyle: {
             fontSize: 12,
-            color: '#F1F1F3'
+            color: 'black'
           }
         },
         grid: {

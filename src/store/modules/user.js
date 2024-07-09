@@ -7,7 +7,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  menus:[],
 }
 
 const mutations = {
@@ -24,16 +25,22 @@ const mutations = {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
+    console.log("setRoles:",roles);
     state.roles = roles
-  }
+  },
+  SET_MENUS:(state, menus)=>{
+    state.menus = menus
+  },
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    console.log('test')
+    const { userNo, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ userNo: userNo.trim(), password: password }).then(response => {
+        console.log(response)
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
@@ -49,22 +56,33 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { roles,menus, username,roleList } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
+        // let newSale=[]
+        // //获取角色菜单权限
+        // roleList.forEach(item => {
+        //   item.permissionList.forEach(items => {
+        //     newSale.push(items.code)
+        //   });
+        // });
+        // console.log("75user",newSale);
+        // roles=["admin"]
+        
+        console.log("80newSale",roles);
+        commit('SET_MENUS',menus)
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
+        commit('SET_NAME', username)
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+        // commit('SET_INTRODUCTION', introduction)
         resolve(data)
       }).catch(error => {
         reject(error)

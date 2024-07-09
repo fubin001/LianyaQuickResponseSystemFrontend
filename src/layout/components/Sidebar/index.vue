@@ -52,3 +52,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.el-menu-item .is-active {
+  background-color: pink !important;
+  color: #fff;
+  span {
+    color: #fff !important;
+  }
+}
+</style>>

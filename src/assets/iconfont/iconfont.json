@@ -1,0 +1,72 @@
+{
+  "id": "4553166",
+  "name": "xs",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "579551",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e782",
+      "unicode_decimal": 59266
+    },
+    {
+      "icon_id": "40475862",
+      "name": "ly-serach",
+      "font_class": "a-zu12211",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "40475863",
+      "name": "ly-look",
+      "font_class": "a-zu1221",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "40475860",
+      "name": "ly-pass",
+      "font_class": "mima1",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "11490918",
+      "name": "最小化",
+      "font_class": "zuixiaohua",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "11490920",
+      "name": "最大化",
+      "font_class": "zuidahua",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "14656461",
+      "name": "品牌设计",
+      "font_class": "pinpaisheji",
+      "unicode": "e73f",
+      "unicode_decimal": 59199
+    },
+    {
+      "icon_id": "6299298",
+      "name": "个人",
+      "font_class": "geren",
+      "unicode": "e71d",
+      "unicode_decimal": 59165
+    },
+    {
+      "icon_id": "12163503",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    }
+  ]
+}
