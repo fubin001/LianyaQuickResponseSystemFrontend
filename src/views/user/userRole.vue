@@ -114,7 +114,7 @@ export default {
     //指定用户删除绑定角色
     on_delUserRoleRelations(uid, rid) {
       this.submit.delUserRole.uid = uid
-      this.submit.delUserRole.roleIDList.push(rid)
+      this.submit.delUserRole.roleIDList=[rid]
       delUserRoleRelations(this.submit.delUserRole).then((res) => {
 
       }).finally(() => {
@@ -148,6 +148,7 @@ export default {
         if (!newVal) {
           this.roleList = []
           this.submit.addUserRole.roleIDList = []
+        
           this.submit.addUserRole.userNo = ''
         }
       }

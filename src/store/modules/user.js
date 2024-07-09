@@ -80,7 +80,7 @@ const actions = {
         // console.log("75user",newSale);
         // roles=["admin"]
 
-        console.log("80newSale", roles);
+        // console.log("80newSale", roles);
         commit('SET_MENUS', menus)
         commit('SET_ROLES', roles)
         commit('SET_NAME', username)

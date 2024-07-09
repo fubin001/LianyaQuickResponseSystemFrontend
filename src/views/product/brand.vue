@@ -39,7 +39,7 @@ export default {
   name: '品牌信息',
   data() {
     return {
-      list: null,
+      list: [],
       total: null,
       page: 1,
       size: 10,

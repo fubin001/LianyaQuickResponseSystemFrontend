@@ -271,7 +271,7 @@ export const asyncRoutes = [
     ]
   },
 
-  { path: '*', name:'无权限调转' ,redirect: 'other/404', hidden: true },
+  { path: '*' ,redirect: 'other/404', hidden: true },
   // /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
   // chartsRouter,
