@@ -268,6 +268,7 @@ export default {
     }
   },
   created() {
+    this.listQuery.skuId = this.$route.query.skuId?this.$route.query.skuId:null
     this.getList(1)
   },
   methods: {

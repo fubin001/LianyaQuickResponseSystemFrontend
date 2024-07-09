@@ -372,6 +372,7 @@ export default {
     // }
   },
   created() {
+    this.listQuery.skuId = this.$route.query.skuId?this.$route.query.skuId:''
     this.initTrsNoList()
     this.getBrands()
     this.getList(1)

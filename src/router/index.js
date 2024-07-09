@@ -99,14 +99,14 @@ export const asyncRoutes = [
       {
         path: '/product/brand',
         component: () => import('@/views/product/brand'),
-        name: 'brand',
+        name: '品牌信息',
         noCache: true,
         meta: { title: '品牌信息', icon: 'edit', roles:['admin','sale']}
       },
       {
         path: '/skuProduct/info',
         component: () => import('@/views/product/saleProduct'),
-        name: 'saleProduct',
+        name: '销售商品',
         noCache: true,
         meta: { title: '销售商品', icon: 'edit', roles:['admin','sale','sale_commodity'] }
       },
@@ -271,7 +271,7 @@ export const asyncRoutes = [
     ]
   },
 
-  { path: '*',  redirect: 'other/404', hidden: true },
+  { path: '*', name:'无权限调转' ,redirect: 'other/404', hidden: true },
   // /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
   // chartsRouter,
