@@ -2,8 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <span>
-        品牌名称：<el-input v-model="listQuery.brand" placeholder="请输入品牌名称" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
+        品牌：
+        <el-select v-model="listQuery.brand" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
+          allow-create filterable>
+          <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.name" />
+        </el-select>
       </span>
       <span>
         款式：<el-input v-model="listQuery.styleId" placeholder="请输入款式" style="width: 150px; margin: 5px 8px 5px 0"
@@ -22,10 +25,19 @@
         名称：<el-input v-model="listQuery.fullName" placeholder="请输入名称" style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item" />
       </span>
-      <span>
+      <!-- <span>
         skuId：<el-input v-model="listQuery.skuId" placeholder="请输入skuId" style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item" />
+      </span> -->
+
+      <span>
+        skuId：
+        <el-select v-model="listQuery.skuId" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
+          allow-create filterable>
+          <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
       </span>
+
       <span>
         上市日期：<el-date-picker v-model="listQuery.listingMonth" type="month" placeholder="上市日期" class="filter-item"
           style="width: 150px; margin: 5px 8px 5px 0" value-format="yyyy-MM-01" />
@@ -157,7 +169,7 @@
               </div>
             </div> -->
 
-            <el-dialog title="关联指标" :visible.sync="relevanceShow" width="40%" :before-close="handleClose">
+            <el-dialog title="关联指标" :visible.sync="relevanceShow" width="40%">
               <div style="height: 200px">
                 <div v-for="metric in metricValueList" :key="metric.metricName" class="border-set">
                   <div style="width: 24%; float: left">
@@ -266,9 +278,9 @@
     </div>
 
     <el-dialog :visible.sync="centerDialogVisible" title="路由跳转" width="500" align-center>
-          <el-button @click="goToDetails(1)">销售数据</el-button>
-          <el-button @click="goToDetails(2)">采购数据</el-button>
-          <el-button @click="goToDetails(3)" disabled title="生产订单尚未完善查询功能">生产订单</el-button>
+      <el-button @click="goToDetails(1)">销售数据</el-button>
+      <el-button @click="goToDetails(2)">采购数据</el-button>
+      <el-button @click="goToDetails(3)" disabled title="生产订单尚未完善查询功能">生产订单</el-button>
     </el-dialog>
   </div>
 </template>
@@ -280,6 +292,13 @@ import {
   refreshAllRelatedData,
   refreshRelatedData
 } from '@/api/skuProduct'
+import {
+  DistinguishSizeEnum,
+  getBomCreateTypeEnumList,
+  getSkuIdEnumList,
+  getTrsNoEnumList,
+  getBrandEnum
+} from '@/api/enum'
 import request from '@/utils/request'
 
 export default {
@@ -293,6 +312,7 @@ export default {
       listLoading: true,
       allLoad: false,
       listQuery: {
+        brand: '',
         page: 1,
         size: 10
       },
@@ -302,15 +322,34 @@ export default {
       metricValueList: [],
       editDialogVisible: false,
       modForm: {},
+      skuIdEnumList: [], //搜索框数据
+      brands: [],// brand 搜索框数据
       centerDialogVisible: false, // 弹窗，路由跳转选择器
       routerSkuId: 0 //跳转参数
     }
   },
-  created() {
-    
-    this.listQuery.brand = this.$route.query.brand?this.$route.query.brand:null
+  async created() {
+    const { data } = await getBrandEnum()
+    this.brands = data
+    await this.initSkuIdList()
+    this.listQuery.brand = this.$route.query.brand ? this.$route.query.brand : ''
     this.getList(1)
   },
+
+  watch: {
+    '$route.query.brand': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.brand = newId ? newId : ''
+        this.id = newId;
+      }
+    }
+  },
+  // beforeRouteUpdate (to, from, next) {
+  //   console.log(1);
+  //   this.listQuery.brand= to.query.brand?this.$route.query.brand:''
+  //   next();
+  // },
   methods: {
     refreshRelatedData,
     exportSkuProductExcel() {
@@ -474,12 +513,12 @@ export default {
       })
     },
     onDialog(skuId) {
-      this.centerDialogVisible=true;
+      this.centerDialogVisible = true;
       console.log(this.centerDialogVisible)
       this.routerSkuId = skuId
     },
     goToDetails(type) {
-      this.centerDialogVisible=false
+      this.centerDialogVisible = false
       var paths = '/data/saleOrder'
       if (type == 1) {
         paths = '/data/saleOrder'
@@ -494,6 +533,12 @@ export default {
         query: {
           skuId: this.routerSkuId
         }
+      })
+    },
+    // SUKID搜索框数据 查询
+    async initSkuIdList() {
+      await getSkuIdEnumList().then(res => {
+        this.skuIdEnumList = res?.data ?? []
       })
     },
   }

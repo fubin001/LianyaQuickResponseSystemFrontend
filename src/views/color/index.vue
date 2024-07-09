@@ -3,56 +3,29 @@
     <div class="filter-container">
       <span>
         品牌：
-        <el-select
-          v-model="listQuery.brand"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        >
+        <el-select v-model="listQuery.brand" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item">
           <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>
       </span>
       <span>
-        颜色代码：<el-input
-          v-model="listQuery.colorCode"
-          placeholder="请输入颜色代码"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
+        颜色代码：<el-input v-model="listQuery.colorCode" placeholder="请输入颜色代码" style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item" />
       </span>
       <span>
-        颜色描述：<el-input
-          v-model="listQuery.colorDescription"
-          placeholder="请输入颜色描述"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
+        颜色描述：<el-input v-model="listQuery.colorDescription" placeholder="请输入颜色描述"
+          style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
       </span>
 
       <span style="float: right">
-        <el-button
-          class="filter-item"
-          plain
-          style="margin: 5px 8px 5px 0"
-          @click="reset"
-        >
+        <el-button class="filter-item" plain style="margin: 5px 8px 5px 0" @click="reset">
           重置
         </el-button>
-        <el-button
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496"
-          @click="getList(1)"
-        >
+        <el-button class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 5px 0px 5px 0; background-color: #244496" @click="getList(1)">
           搜索
         </el-button>
-        <el-button
-          class="filter-item"
-          icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496"
-          type="primary"
-          @click="exportColor(listQuery)"
-        >
+        <el-button class="filter-item" icon="el-icon-search" style="margin: 5px 0px 5px 0; background-color: #244496"
+          type="primary" @click="exportColor(listQuery)">
           下载
         </el-button>
       </span>
@@ -63,53 +36,26 @@
         <span style="float: left;">颜色数据</span>
         <span style="float: right;">
           <span style="text-align: right">
-            <el-upload
-              action="/api/color/importExcel"
-              style="display: inline-block"
-              :show-file-list="false"
-              :on-success="handleFileUploadSuccess"
-              :on-error="handleFileUploadError"
-            >
-              <el-button
-                type="primary"
-                class="ml-5"
-                style="background-color: #244496"
-                size="mini"
-                :loading="upLoading"
-                @click="upLoading = true"
-              >上传<i
-                class="el-icon-top"
-              /></el-button>
+            <el-upload action="/api/color/importExcel" style="display: inline-block" :show-file-list="false"
+              :on-success="handleFileUploadSuccess" :on-error="handleFileUploadError">
+              <el-button type="primary" class="ml-5" style="background-color: #244496" size="mini" :loading="upLoading"
+                @click="upLoading = true">上传<i class="el-icon-top" /></el-button>
             </el-upload>
           </span>
         </span>
       </div>
 
-      <el-table
-        ref="dragTable"
-        v-loading="listLoading"
-        :data="list"
-        row-key="id"
-        :header-cell-style="{background:'#e4e7f0'}"
-        fit
-        highlight-current-row
-        style="width: 100%"
-      >
+      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id"
+        :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row style="width: 100%">
         <el-table-column align="center" type="index" width="50" :index="Nindex" />
         <el-table-column align="left" label="品牌" prop="skuId" :min-width="flexColumnWidth('品牌', 'brand')" />
         <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth('颜色代码', 'colorCode')" />
-        <el-table-column align="left" label="颜色描述" prop="colorDescription" :min-width="flexColumnWidth('颜色描述', 'colorDescription')" />
+        <el-table-column align="left" label="颜色描述" prop="colorDescription"
+          :min-width="flexColumnWidth('颜色描述', 'colorDescription')" />
       </el-table>
-      <el-pagination
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        :page-sizes="[10, 20, 50, 100]"
-        :current-page="page"
-        :page-size="size"
-        align="center"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" :page-sizes="[10, 20, 50, 100]"
+        :current-page="page" :page-size="size" align="center" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
 
     </div>
   </div>
@@ -261,14 +207,17 @@ export default {
     padding: 10px;
   }
 }
+
 .icon-star {
   margin-right: 2px;
 }
+
 .drag-handler {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
+
 .show-d {
   margin-top: 15px;
 }

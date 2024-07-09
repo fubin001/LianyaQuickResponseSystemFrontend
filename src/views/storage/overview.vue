@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <span>
+      <!-- <span>
         TRS编号：<el-input
           v-model="listQuery.trsNo"
           placeholder="请输入TRS编号"
@@ -9,6 +9,15 @@
           class="filter-item"
         />
       </span>
+       -->
+      <span>
+        TRS编号：
+        <el-select v-model="listQuery.trsNo" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
+          allow-create filterable>
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span>
+
       <span style="float: right">
         <el-button
           class="filter-item"
@@ -232,6 +241,7 @@ export default {
       addForm: {},
       editForm: {},
       storageForm: {},
+      trsEnumList:[],// 搜索框 数据
       addDialogVisible: false,
       editDialogVisible: false,
       storageDialogVisible: false,
@@ -262,6 +272,7 @@ export default {
   computed: {
   },
   async created() {
+    await this.initTrsList()
     await this.initEnums()
     this.getList(1)
   },
@@ -273,6 +284,12 @@ export default {
         page: 1,
         size: 10
       }
+    },
+
+    async initTrsList() {
+      await getTrsNoEnumList().then(res => {
+        this.trsEnumList = res?.data ?? []
+      })
     },
 
     popOperateStorageDialog(id, trsNo, recordType) {

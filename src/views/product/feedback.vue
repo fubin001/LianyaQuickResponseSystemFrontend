@@ -1,13 +1,27 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <span>
+      <!-- <span>
         TRS编号：<el-input
           v-model="listQuery.skuId"
           placeholder="TRS编号"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
+      </span> -->
+      
+      <span>
+        TRS编号：
+        <el-select
+          v-model="listQuery.skuId"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
       </span>
       <span>
         反馈类型：<el-select
@@ -309,7 +323,7 @@
 </template>
 
 <script>
-import { getBrandEnum } from '@/api/enum'
+import { getBrandEnum ,getTrsNoEnumList} from '@/api/enum'
 import {
   addFeedbackOrder, addProduceOrder,
   confirmFeedback,
@@ -346,9 +360,11 @@ export default {
       newOrder: {},
       componentTypeList: ['成品', '鞋面半成品', '鞋底半成品'],
       listQuery: {
+        skuId:'',
         page: 1,
         size: 10
       },
+      trsEnumList:[],// SUKID 搜索框 数据查询
       finishedTrsNosList: [],
       semiFinishTrsNoList1: [],
       semiFinishTrsNoList2: [],
@@ -364,10 +380,11 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     this.listQuery.skuId = this.$route.query.skuId?this.$route.query.skuId:''
-    this.initTrsNoList()
-    this.getBrands()
+    await this.initTrsNoList()
+    await  this.getBrands()
+    await this.initTrsList()
     this.getList(1)
   },
   methods: {
@@ -392,6 +409,11 @@ export default {
       })
     },
 
+    async initTrsList() {
+      await getTrsNoEnumList().then(res => {
+        this.trsEnumList = res?.data ?? []
+      })
+    },
     popProduceMaterialList(skuId, feedbackOrderId) {
       this.produceMaterialListObj.visible = true
       this.produceMaterialListObj.params = {
@@ -468,6 +490,8 @@ export default {
         }
       })
     },
+
+    
 
     executeFeedbackOrder(row) {
       executeFeedback(row.id).then((res) => {
