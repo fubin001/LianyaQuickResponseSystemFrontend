@@ -51,6 +51,21 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
-})
+  render: h => h(App),
+  // async created() {
+  //   const hasToken = getToken();
+  //   if (hasToken) {
+  //     try {
+  //       // 获取用户信息和动态路由
+  //       const { roles, menus } = await store.dispatch('user/getInfo');
+  //       const accessRoutes = await store.dispatch('permission/generateRoutes', { roles, menus });
+  //       accessRoutes.forEach(route => {
+  //         router.addRoute(route);
+  //       });
+  //     } catch (error) {
+  //       console.error('Failed to fetch user info:', error);
+  //     }
+  //   }
+  // },
+}).$mount('#app');
 

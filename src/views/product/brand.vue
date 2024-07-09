@@ -39,7 +39,12 @@
           width="180px"
           align="center"
           label="品牌名称"
-        />
+        >
+            <template slot-scope="scope">
+              <el-link type="primary" @click="onDialog(scope.row.name)">
+                {{ scope.row.name }}
+              </el-link>
+            </template></el-table-column>
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -85,6 +90,9 @@ export default {
       this.list = data
       this.total = total
       this.listLoading = false
+    },
+    onDialog(brand){
+      this.$router.push({path:'/skuProduct/info',query:{brand:brand}})
     }
   }
 }
