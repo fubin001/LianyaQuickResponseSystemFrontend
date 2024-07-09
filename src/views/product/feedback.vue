@@ -76,6 +76,9 @@
         <el-form-item label="数量">
           <el-input v-model="newOrder.materialQuantity" style="width: 300px" />
         </el-form-item>
+        <el-form-item label="尺寸">
+          <el-input v-model="newOrder.size" style="width: 300px" />
+        </el-form-item>
         <el-form-item label="生产时间">
           <el-date-picker v-model="newOrder.startProduceDate" style="width: 300px" value-format="yyyy-MM-dd" />
         </el-form-item>
@@ -308,7 +311,7 @@
 <script>
 import { getBrandEnum } from '@/api/enum'
 import {
-  addFeedbackOrder,
+  addFeedbackOrder, addProduceOrder,
   confirmFeedback,
   executeFeedback,
   exportFeedbackOrder,
@@ -318,7 +321,6 @@ import ProduceMaterialList from '@/views/product/component/produceMaterialList.v
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
 import { flexColumnWidth } from '@/common/util'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
-import sk from 'element-ui/src/locale/lang/sk'
 
 export default {
   name: 'User',
@@ -417,7 +419,7 @@ export default {
       if (!this.newOrder.startProduceDate) {
         this.$message.warning('开始时间不能为空')
       }
-      addFeedbackOrder(this.newOrder).then(res => {
+      addProduceOrder(this.newOrder).then(res => {
         if (res.data) {
           this.$message.success('添加成功')
           this.getList(1)

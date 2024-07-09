@@ -52,3 +52,11 @@ export function addFeedbackOrder(order) {
     data: order
   })
 }
+
+export function addProduceOrder(order) {
+  return request({
+    url: '/feedback/addProduceOrder',
+    method: 'post',
+    data: order
+  })
+}
