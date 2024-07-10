@@ -51,7 +51,7 @@ export const constantRoutes = [
     redirect: '/home',
     children: [
       {
-        path: '/other/404',
+        path: '/404',
         component: () => import('@/views/error-page/404'),
         name: '404',
         noCache: true,
@@ -66,7 +66,7 @@ export const constantRoutes = [
         meta: { title: 'home', icon: 'edit', roles:['admin','sale'], affix: true ,}
       },
       {
-        path: '/other/401',
+        path: '/401',
         component: () => import('@/views/error-page/401'),
         name: '401',
         noCache: true,
@@ -127,46 +127,11 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index')
-      }
-    ]
-  },
-  {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true,
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    hidden: true,
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
-  },
   
   {
     path: '/data',
     component: Layout,
-    name: 'data',
+    name: '数据管理',
     redirect: '/data/buyOrder',
     meta: {
       title: '数据管理',
@@ -271,7 +236,7 @@ export const asyncRoutes = [
     ]
   },
 
-  { path: '*' ,redirect: 'other/404', hidden: true },
+  { path: '*' ,redirect: '/404', hidden: true },
   // /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
   // chartsRouter,

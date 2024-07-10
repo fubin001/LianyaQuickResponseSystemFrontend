@@ -39,6 +39,8 @@ router.beforeEach(async (to, from, next) => {
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           //获取user文件下的getInfo方法下的roles,menu数据
           const { roles, menus } = await store.dispatch('user/getInfo')
+          menus.push('/404')
+          console.log('per43:',menus);
           //根据已有权限，获取动态路由
           const accessRoutes = await store.dispatch('permission/generateRoutes', { roles:roles, menus })
 
