@@ -18,7 +18,7 @@
         <el-table-column label="页面权限" width="550">
           <template slot-scope="scope">
             <el-tag v-for="item in scope.row.permissionList" :key="item.name" closable :type="item.name"
-              disable-transitions @close="on_delNewPermissionRole(item.id)" style="margin:5px 0px 0px 10px;">
+              disable-transitions @close="on_delNewPermissionRole(scope.row.id,item.id)" style="margin:5px 0px 0px 10px;">
               {{ item.name }}
             </el-tag>
             <el-tag @click="on_getNewPermissionNotRoleIDList(scope.row)" type="success" style="margin:5px 0px 0 10px;">
@@ -183,8 +183,8 @@ export default {
       })
     },
     //删除指定角色的页面权限
-    on_delNewPermissionRole(pid) {
-      delNewPermissionRole({ permissionIDS: [pid] }).then((res) => {
+    on_delNewPermissionRole(rid,pid) {
+      delNewPermissionRole({roleID:rid, permissionIDS: [pid] }).then((res) => {
 
       }).finally(() => {
         this.on_getNewRole()
