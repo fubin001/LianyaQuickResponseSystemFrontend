@@ -60,7 +60,7 @@ export const constantRoutes = [
       },
       {
         path: '/home',
-        component: () => import('@/views/error-page/401'),
+        component: () => import('@/views/home/index'),
         name: 'home',
         noCache: true,
         meta: { title: 'home', icon: 'edit', roles:['admin','sale'], affix: true ,}
