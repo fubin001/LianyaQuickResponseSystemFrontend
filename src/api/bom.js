@@ -31,7 +31,7 @@ export function getBomTreeNodeListByRootTrs(skuId, rtsNo) {
 }
 
 export function exportBom(param) {
-  return downloadFile('/feedback/export', param, 'Bom.xlsx')
+  return downloadFile('/bom/export', param, 'Bom.xlsx')
 }
 
 export function queryBomTree(skuId) {
