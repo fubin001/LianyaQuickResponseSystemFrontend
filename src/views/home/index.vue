@@ -1,100 +1,113 @@
 <template>
-    <div class="errPage-container">
-      <!-- <el-button icon="el-icon-arrow-left" class="pan-back-btn" @click="back">
+  <div class="errPage-container">
+    <!-- <el-button icon="el-icon-arrow-left" class="pan-back-btn" @click="back">
         返回
       </el-button> -->
-      <el-row>
-        <el-col :span="12">
-          <h1 class="text-jumbo text-ginormous">
-            首页
-          </h1>
-          <!-- gif来源<a href="https://zh.airbnb.com/" target="_blank">airbnb</a> 页面
-          <h2>欢迎</h2>
-          <h6>首页</h6>
-          <ul class="list-unstyled">
-            <li>或者你可以去:</li>
-            <li class="link-type">
-              <router-link to="/dashboard">
-                回首页
-              </router-link>
-            </li>
-            <li class="link-type">
-              <a href="https://www.taobao.com/">随便看看</a>
-            </li>
-            <li><a href="#" @click.prevent="dialogVisible=true">点我看图</a></li>
-          </ul> -->
-        </el-col>
-        <!-- <el-col :span="12">
-          <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream.">
-        </el-col> -->
-      </el-row>
-      <el-dialog :visible.sync="dialogVisible" title="随便看">
-        <img :src="ewizardClap" class="pan-img">
-      </el-dialog>
-    </div>
-  </template>
-  
-  <script>
-  import errGif from '@/assets/401_images/401.gif'
-  
-  export default {
-    name: 'Page401',
-    data() {
-      return {
-        errGif: errGif + '?' + +new Date(),
-        ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
-        dialogVisible: false
-      }
+    <el-row>
+      <el-col :span="12">
+        <h1 class="text-jumbo text-ginormous">
+          首页
+        </h1>
+        <h2>{{ newTime }}</h2>
+        <h3>{{ openweathermap.weather[0].description }}
+
+          <i v-if="weatherico == 5" class="el-icon-lightning"></i>
+          <i v-else-if="weatherico == 6" class="el-icon-heavy-rain"></i>
+          <i v-else-if="weatherico == 1" class="el-icon-sunny"></i>
+          <i v-else-if="weatherico == 2 || weatherico == 3" class="el-icon-cloudy"></i>
+        </h3>
+        <h3>
+          {{ "℃" + " " + (openweathermap.main.temp - 273.15).toFixed(2) }}
+        </h3>
+      </el-col>
+      <el-col :span="10">
+        <Temperature></Temperature>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+<style scoped></style>
+
+<script>
+import axios from 'axios'
+import Temperature from './temperature.vue';
+
+export default {
+  name: 'home',
+  components: {
+    Temperature
+  },
+  data() {
+    return {
+      newTime: '',
+      openweathermap: {
+        weather: [
+          { description: '....', }
+        ],
+        main: {
+          temp: 0,
+        },
+      },
+      weatherico: 0,
+    }
+  },
+
+  async created() {
+    await axios('https://api.openweathermap.org/data/2.5/weather?q=hefei&appid=29ce1c9da84c9e2bade5556ff6e63acb&lang=zh_cn').then((res) => {
+      console.log(1);
+      this.openweathermap = res.data
+      console.log(res.data);
+    }).finally(() => {
+      this.onweatherico()
+    })
+  },
+  mounted() {
+    this.getNowTime();//进入页面调用该方法获取当前时间
+    clearInterval(myTimeDisplay);//销毁之前定时器
+    var myTimeDisplay = setInterval(() => {
+      this.getNowTime(); //每秒更新一次时间
+    }, 1000);
+  },
+
+  methods: {
+    getNowTime() {
+      var date = new Date();
+      var time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      this.newTime = time;
     },
-    methods: {
-      back() {
-        if (this.$route.query.noGoBack) {
-          this.$router.push({ path: '/dashboard' })
-        } else {
-          this.$router.go(-1)
-        }
+    //根据自己的需求，看要不要在时间不大于10的时候在前面补0，如果需要直接this.addZero(date.getMinutes()),其它与之相同，如果不需要删掉addZero（）方法即可。
+    //小于10的拼接上0字符串
+    addZero(s) {
+      return s < 10 ? ('0' + s) : s;
+    },
+    //判断展示天气类型
+    onweatherico() {
+      console.log(this.openweathermap.weather[0].description);
+      if (this.openweathermap.weather[0].description.indexOf("晴") != -1) {
+        this.weatherico = 1
+      } else if (this.openweathermap.weather[0].description.indexOf("云") != -1) {
+        this.weatherico = 2
+      } else if (this.openweathermap.weather[0].description.indexOf("阴") != -1) {
+        this.weatherico = 3
+      } else if (this.openweathermap.weather[0].description.indexOf("雷") != -1) {
+        this.weatherico = 5
+      } else if (this.openweathermap.weather[0].description.indexOf("雨") != -1) {
+        this.weatherico = 6
+      } else {
+        this.weatherico = 0
       }
-    }
+
+
+
+
+
+
+
+
+
+    },
   }
-  </script>
-  
-  <style lang="scss" scoped>
-    .errPage-container {
-      width: 800px;
-      max-width: 100%;
-      margin: 100px auto;
-      .pan-back-btn {
-        background: #008489;
-        color: #fff;
-        border: none!important;
-      }
-      .pan-gif {
-        margin: 0 auto;
-        display: block;
-      }
-      .pan-img {
-        display: block;
-        margin: 0 auto;
-        width: 100%;
-      }
-      .text-jumbo {
-        font-size: 60px;
-        font-weight: 700;
-        color: #484848;
-      }
-      .list-unstyled {
-        font-size: 14px;
-        li {
-          padding-bottom: 5px;
-        }
-        a {
-          color: #008489;
-          text-decoration: none;
-          &:hover {
-            text-decoration: underline;
-          }
-        }
-      }
-    }
-  </style>
-  
+}
+</script>
+
+<style lang="scss" scoped></style>
