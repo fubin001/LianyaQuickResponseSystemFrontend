@@ -25,6 +25,14 @@
       fit
       highlight-current-row
     >
+      <el-table-column label="操作" width="200px">
+        <template slot-scope="row">
+          <el-button v-if="!row.supplyState && row.needFeedbackQuantity > 0.0001" size="mini" type="primary">确认补货</el-button>
+          <el-button v-else disabled size="small">补货完成</el-button>
+          <el-button v-if="!row.produceState" size="mini" type="primary">确认生产</el-button>
+          <el-button v-else disabled size="small">生产完成</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="layer" label="层" :min-width="flexColumnWidth(useBomList, '层', 'layer')" />
       <el-table-column prop="trsNo" label="TRS编号" :min-width="flexColumnWidth(useBomList, 'TRS编号', 'trsNo')" />
       <el-table-column prop="colorCode" label="颜色代码" :min-width="flexColumnWidth(useBomList, '颜色代码', 'colorCode')" />
@@ -37,9 +45,9 @@
       <el-table-column prop="totalQuantity" label="数量" :min-width="flexColumnWidth(useBomList, '数量', 'totalQuantity')" />
       <el-table-column prop="totalUseQuantity" label="总用量" :min-width="flexColumnWidth(useBomList, '总用量', 'totalUseQuantity')" />
       <el-table-column prop="storageQuantity" label="锁定库存数量" :min-width="flexColumnWidth(useBomList, '锁定库存数量', 'storageQuantity')" />
-      <el-table-column prop="needFeedbackQuantity" label="快反数量" :min-width="flexColumnWidth(useBomList, '快反数量', 'needFeedbackQuantity')" />
+      <el-table-column prop="needFeedbackQuantity" label="补货数量" :min-width="flexColumnWidth(useBomList, '快反数量', 'needFeedbackQuantity')" />
       <el-table-column prop="useStorageQuantity" label="锁定库存用量" :min-width="flexColumnWidth(useBomList, '锁定库存用量', 'useStorageQuantity')" />
-      <el-table-column prop="useNeedFeedbackQuantity" label="快反用量" :min-width="flexColumnWidth(useBomList, '快反用量', 'useNeedFeedbackQuantity')" />
+      <el-table-column prop="useNeedFeedbackQuantity" label="补货用量" :min-width="flexColumnWidth(useBomList, '快反用量', 'useNeedFeedbackQuantity')" />
     </el-table>
   </el-dialog>
 </template>
