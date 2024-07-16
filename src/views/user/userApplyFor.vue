@@ -1,8 +1,8 @@
 <template>
   <div>
     <template>
-    <el-input v-model="search.userNo" placeholder="请输入查询工号" @input="
-      on_getUserApplyOfrList()"></el-input>
+      <el-input v-model="search.userNo" placeholder="请输入查询工号" @input="
+        on_getUserApplyOfrList()"></el-input>
       <el-table :data="userApplyOfrList" style="width: 100%">
         <el-table-column label="申请账号" width="180">
           <template slot-scope="scope">
@@ -32,13 +32,8 @@
         </el-table-column>
       </el-table>
     </template>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="search.current"
-      :page-sizes="[10, 20, 30, 100]"
-      :page-size="search.size"
-      layout="total, sizes, prev, pager, next, jumper"
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="search.current"
+      :page-sizes="[10, 20, 30, 100]" :page-size="search.size" layout="total, sizes, prev, pager, next, jumper"
       :total="search.total">
     </el-pagination>
   </div>
@@ -58,7 +53,7 @@ export default {
         userNo: '',
         current: 0,
         size: 10,
-        total:0,
+        total: 0,
       }, sy: {
         uid: 1,
         size: 1,
@@ -85,6 +80,7 @@ export default {
     on_getUserApplyOfrList() {
       getUserApplyOfrList(this.search).then((res) => {
         this.userApplyOfrList = res.data.records
+        this.search.total = res.data.total
         console.log("199", res.data.list);
       })
     },
@@ -93,7 +89,7 @@ export default {
       console.log(data);
       console.log(data.id);
       newUserBecome({ id: data.id }).then((res) => {
-      }).finally(()=>{
+      }).finally(() => {
         this.on_getUserApplyOfrList()
       })
     },
@@ -101,7 +97,7 @@ export default {
     on_updUserApplyFor() {
       updUserApplyFor(this.updUser).then((res) => {
 
-      }).finally(()=>{
+      }).finally(() => {
         this.on_getUserApplyOfrList()
       })
     },
@@ -110,28 +106,28 @@ export default {
       console.log(uid, rid);
       delUserApplyForRole({ uid: uid, rid: rid }).then((res) => {
 
-      }).finally(()=>{
+      }).finally(() => {
         this.on_getUserApplyOfrList()
       })
     },
     //取消该用户的申请
-    on_delUserApplyFor(id){
-      delUserApplyFor({id:id}).then((res)=>{
-        
-      }).finally(()=>{
+    on_delUserApplyFor(id) {
+      delUserApplyFor({ id: id }).then((res) => {
+
+      }).finally(() => {
         this.on_getUserApplyOfrList()
       })
     },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-        this.search.size = val
-        this.on_getUserApplyOfrList()
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-        this.search.current = val
-        this.on_getUserApplyOfrList()
-      },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.search.size = val
+      this.on_getUserApplyOfrList()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.search.current = val
+      this.on_getUserApplyOfrList()
+    },
   },
 };
 </script>

@@ -14,12 +14,12 @@
 
 <script>
 import { asyncRoutes, constantRoutes } from '@/router'
-import { weather, getAllByCityVoList,getWeatherForecast } from "@/api/sy";
+import { getAllByCityVoList,getWeatherForecast } from "@/api/sy";
 import axios from 'axios'
 export default {
-  props: {
-    propRoleID: 0
-  },
+  // props: {
+  //   propRoleID: 0
+  // },
   data() {
     return {
       data: [],
@@ -36,12 +36,12 @@ export default {
   },
   methods: {
 
-    adds() {
-      console.log(1);
-      weather().then((res) => { }).finally(() => {
+    // adds() {
+    //   console.log(1);
+    //   weather().then((res) => { }).finally(() => {
 
-      })
-    },
+    //   })
+    // },
     ongetAllByCityVoList() {
       getAllByCityVoList().then((res) => {
         this.optionsCityt = res.data

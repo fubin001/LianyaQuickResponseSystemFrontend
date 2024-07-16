@@ -201,19 +201,36 @@ export const asyncRoutes = [
         path: '/user/role',
         component: () => import('@/views/user/role'),
         name: '角色信息',
-        meta: { title: '角色信息', icon: 'edit' , roles:['admin']}
+        meta: { title: '角色信息', icon: 'tree' , roles:['admin']}
       },
       {
         path: '/user/userRole',
         component: () => import('@/views/user/userRole'),
         name: '用户与角色权限',
-        meta: { title: '用户与角色权限', icon: 'edit', roles:['admin'] }
+        meta: { title: '用户与角色权限', icon: 'peoples', roles:['admin'] }
       },
       {
         path: '/user/userApplyFor',
         component: () => import('@/views/user/userApplyFor'),
         name: '用户申请',
-        meta: { title: '用户申请', icon: 'edit', roles:['admin'] }
+        meta: { title: '用户申请', icon: 'form', roles:['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/store',
+    component: Layout,
+    redirect: '/store/index',
+    meta: {
+      title: '商铺',
+      icon: 'shopping',
+    },
+    children: [
+      {
+        path: '/store/index',
+        component: () => import('@/views/store/index'),
+        name: '商铺',
+        meta: { title: '商铺', icon: 'shopping', roles:['admin']}
       }
     ]
   },
@@ -232,7 +249,20 @@ export const asyncRoutes = [
         component: () => import('@/views/user/sy'),
         name: '实验',
         meta: { title: '实验', icon: 'sy'}
-      }
+      },
+      
+      {
+        path: '/sy/info1',
+        component: () => import('@/views/user/sy1'),
+        name: '实验1',
+        meta: { title: '实验', icon: 'sy'}
+      },
+      {
+        path: '/sy/info2',
+        component: () => import('@/views/user/sy2'),
+        name: '实验2',
+        meta: { title: '实验', icon: 'sy'}
+      },
     ]
   },
 
