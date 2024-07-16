@@ -264,7 +264,7 @@ import ProduceMaterialListReader from '@/views/product/component/produceMaterial
 import { flexColumnWidth } from '@/common/util'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
 import {
-  updFeedbackOrderIDState,getProduceMaterialUseBomList
+  updFeedbackOrderIDState, getProduceMaterialUseBomList
 } from '@/api/produceMaterial'
 export default {
   name: '生产订单',
@@ -339,9 +339,9 @@ export default {
       })
     },
     //全部完成
-    onupdFeedbackOrderIDState(row) {
+    async onupdFeedbackOrderIDState(row) {
       console.log(row);
-      updFeedbackOrderIDState({ feedbackOrderId: row.id, supplyState: 1, produceState: 1 }).then((res)=>{
+      await updFeedbackOrderIDState({ feedbackOrderId: row.id, supplyState: 1, produceState: 1 }).then((res) => {
       }).finally(() => {
         this.getList(1)
       })
@@ -421,32 +421,43 @@ export default {
     //确认到货
     async confirmFeedbackOrder(row) {
       var hasZero = false
-      await getProduceMaterialUseBomList(row.id).then((res)=>{
+      await getProduceMaterialUseBomList(row.id).then((res) => {
         console.log(res.data);
-        hasZero = res.data.some(item=>item['produceState']<=0 || item['supplyState']<=0)
-      }).finally(()=>{
+        hasZero = res.data.some(item => item['produceState'] <= 0 || item['supplyState'] <= 0)
+      }).finally(() => {
         // console.log(hasZero);
       })
       console.log(hasZero);
-      if(hasZero){
-        this.$confirm('请查看物料确认所有物流均已完成生产和补货', {
-          confirmButtonText: '一键全部完成',
-          cancelButtonText: '去查看',
-          type: 'warning'
-        }).then(() => {
-          this.onupdFeedbackOrderIDState(row.id)
-
-        }).catch(() => {
-          this.popProduceMaterialListReader(row.skuId, row.id)          
-        });
-      }
-        
-      await confirmFeedback(row.id).then((res) => {
-        if (res.data) {
-          this.$message.success('已确认')
-          this.getList(this.page)
+      try {
+        if (hasZero) {
+          await this.$confirm('请查看物料确认所有物流均已完成生产和补货', {
+            confirmButtonText: '一键全部完成',
+            cancelButtonText: '去查看',
+            type: 'warning'
+          }).then(() => {
+            console.log(437);
+            this.onupdFeedbackOrderIDState(row)
+          }).catch(() => {
+            this.popProduceMaterialListReader(row.skuId, row.id)
+            throw new Error('Terminating all functions');
+          });
         }
-      })
+        console.log(439);
+        //确认到货  
+        await confirmFeedback(row.id).then((res) => {
+          if (res.data) {
+            this.$message.success('已确认')
+            this.getList(this.page)
+          }
+        })
+      } catch (error) {
+
+      }
+
+
+
+
+
     },
 
 
