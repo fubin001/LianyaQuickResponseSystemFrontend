@@ -206,6 +206,8 @@
         <el-table-column align="left" label="预留库存" prop="preserveQuantity" show-overflow-tooltip />
         <el-table-column align="left" label="可用库存" prop="availableQuantity" show-overflow-tooltip />
         <el-table-column align="left" label="安全库存" prop="safeQuantity" show-overflow-tooltip />
+        <el-table-column align="left" label="采购中库存" prop="buyingQuantity" show-overflow-tooltip />
+        <el-table-column align="left" label="生产中库存" prop="producingQuantity" show-overflow-tooltip />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"

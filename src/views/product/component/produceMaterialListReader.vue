@@ -45,11 +45,11 @@
         :min-width="flexColumnWidth(useBomList, '总用量', 'totalUseQuantity')" />
       <el-table-column prop="storageQuantity" label="锁定库存数量"
         :min-width="flexColumnWidth(useBomList, '锁定库存数量', 'storageQuantity')" />
-      <el-table-column prop="needFeedbackQuantity" label="补货数量"
+      <el-table-column prop="needFeedbackQuantity" label="快反数量"
         :min-width="flexColumnWidth(useBomList, '快反数量', 'needFeedbackQuantity')" />
       <el-table-column prop="useStorageQuantity" label="锁定库存用量"
         :min-width="flexColumnWidth(useBomList, '锁定库存用量', 'useStorageQuantity')" />
-      <el-table-column prop="useNeedFeedbackQuantity" label="补货用量"
+      <el-table-column prop="useNeedFeedbackQuantity" label="快反用量"
         :min-width="flexColumnWidth(useBomList, '快反用量', 'useNeedFeedbackQuantity')" />
     </el-table>
   </el-dialog>
