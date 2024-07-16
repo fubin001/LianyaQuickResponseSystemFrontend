@@ -46,17 +46,29 @@
               <span
                 :class="{ heightAll: currentShow == 4 }"
                 class="border-all border-left"
-                style="height: 80px;"
+                style="height: 80px"
               >
                 货号
               </span>
-              <span :class="{ heightAll: currentShow == 4 }" class="border-all" style="height: 80px;">
+              <span
+                :class="{ heightAll: currentShow == 4 }"
+                class="border-all"
+                style="height: 80px"
+              >
                 {{ this.skuProduct.skuId }}
               </span>
-              <span :class="{ heightAll: currentShow == 4 }" class="border-all" style="height: 80px;">
+              <span
+                :class="{ heightAll: currentShow == 4 }"
+                class="border-all"
+                style="height: 80px"
+              >
                 商品名
               </span>
-              <span :class="{ heightAll: currentShow == 4 }" class="border-all" style="height: 80px;">
+              <span
+                :class="{ heightAll: currentShow == 4 }"
+                class="border-all"
+                style="height: 80px"
+              >
                 {{ this.skuProduct.fullName }}
               </span>
             </div>
@@ -69,6 +81,10 @@
               <span class="border-all">款式 </span>
               <span class="border-all">
                 {{ this.skuProduct.styleId }}
+              </span>
+              <span class="border-all">参考SKU </span>
+              <span class="border-all">
+                {{ skuProduct.likeSku ? skuProduct.likeSku : "无" }}
               </span>
             </div>
 
@@ -281,7 +297,11 @@
               width="100px"
             >
               <template slot-scope="{ row }">
-                <el-input v-model="row.weekCoefficient" placeholder="周系数" @change="weekCoefficientChange(row)" />
+                <el-input
+                  v-model="row.weekCoefficient"
+                  placeholder="周系数"
+                  @change="weekCoefficientChange(row)"
+                />
               </template>
             </el-table-column>
           </el-table>
@@ -339,7 +359,7 @@ import {
 import { refreshRelatedData } from '@/api/skuProduct'
 import SaleLineChart from '@/views/product/component/SaleLineChart.vue'
 export default {
-  name: '销售面板',
+  name: '',
   components: { SaleLineChart },
   data() {
     return {
@@ -406,6 +426,7 @@ export default {
       const { data } = await querySkuProductSaleDate(this.listQuery.salePlanId)
       console.log(data)
       this.list = data.saleDataList
+      this.list2 = data.likeSkuSaleDataList
       this.skuProduct = data.skuProduct
       this.timeUint = this.skuProduct?.saleTimeUnit ?? 0
       this.metrics = data.metricValueList
@@ -414,6 +435,7 @@ export default {
       console.log(xs)
 
       const actualData = this.list.map((x) => x.quantity)
+      const ytdData = this.list.map((x) => x.ytd)
       const predictData = this.list.map((x) => x.predictQuantity)
       const storageData = []
       const storageXs = []
@@ -427,6 +449,12 @@ export default {
         }
       }
 
+      const ytdSeriesConfig = this.getChartSerialDataConfig(
+        ytdData,
+        'YTD',
+        'rgb(119,50,51)',
+        false
+      )
       const actualDataSeriesConfig = this.getChartSerialDataConfig(
         actualData,
         '销售数据',
@@ -452,29 +480,83 @@ export default {
         false
       )
 
+      const actualData2 = this.list2.map((x) => x.quantity)
+      const ytdData2 = this.list2.map((x) => x.ytd)
+      const predictData2 = this.list2.map((x) => x.predictQuantity)
+      const storageData2 = []
+      const storageXs2 = []
+      const fittingData2 = this.list2.map((x) => x.fittingPredictQuantity)
+
+      for (let i = 0; i < this.list2.length; i++) {
+        const item = this.list2[i]
+        if (item.storageQuantity != null) {
+          storageData2.push(item.storageQuantity)
+          storageXs2.push(item.date)
+        }
+      }
+
+      const ytdSeriesConfig2 = this.getChartSerialDataConfig(
+        ytdData2,
+        '参考sku-YTD',
+        'rgb(119,50,151)',
+        false
+      )
+      const actualDataSeriesConfig2 = this.getChartSerialDataConfig(
+        actualData2,
+        '参考sku-销售数据',
+        'rgb(219,50,151)',
+        false
+      )
+      const predictDataSeriesConfig2 = this.getChartSerialDataConfig(
+        predictData2,
+        '参考sku-预估销售',
+        'rgb(137, 189, 127)',
+        false
+      )
+      const fittingPredictDataSeriesConfig2 = this.getChartSerialDataConfig(
+        fittingData2,
+        '参考sku-三次拟合',
+        'rgb(100, 136, 212)',
+        false
+      )
+      const storageDataSeriesConfig2 = this.getChartSerialDataConfig(
+        storageData2,
+        '参考sku-库存数据',
+        'rgb(219,150,51)',
+        false
+      )
+
       this.$nextTick(() => {
         this.$refs.saleDataChart.initChart(xs, [
           actualDataSeriesConfig,
+          ytdSeriesConfig,
           predictDataSeriesConfig,
-          fittingPredictDataSeriesConfig
+          fittingPredictDataSeriesConfig,
+          actualDataSeriesConfig2,
+          ytdSeriesConfig2,
+          predictDataSeriesConfig2,
+          fittingPredictDataSeriesConfig2
         ])
         this.$refs.storageDataChart.initChart(storageXs, [
-          storageDataSeriesConfig
+          storageDataSeriesConfig,
+          storageDataSeriesConfig2
         ])
       })
     },
     refreshSkuRelatedData() {
       this.refreshLoading = true
-      refreshRelatedData(this.listQuery.salePlanId).then(res => {
-        if (res.data) {
-          this.$message.success('刷新成功')
-          this.getList()
-        }
-        this.refreshLoading = false
-      }).catch(res => {
-        this.$message.error('刷新失败')
-        this.refreshLoading = false
-      })
+      refreshRelatedData(this.listQuery.salePlanId)
+        .then((res) => {
+          if (res.data) {
+            this.$message.success('刷新成功')
+            this.getList()
+          }
+          this.refreshLoading = false
+        })
+        .catch((res) => {
+          this.$message.error('刷新失败')
+          this.refreshLoading = false
+        })
     },
 
     async fitting() {
