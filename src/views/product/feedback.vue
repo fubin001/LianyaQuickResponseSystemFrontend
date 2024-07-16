@@ -105,7 +105,7 @@
               </el-button>
             </span>
             <el-button size="mini" style="color: #244496; border: none" icon="el-icon-circle-check"
-              @click="onupdFeedbackOrderIDState(row)">
+              @click="confirmFeedbackOrder(row)">
               确认到货
             </el-button>
           </template>
@@ -264,7 +264,7 @@ import ProduceMaterialListReader from '@/views/product/component/produceMaterial
 import { flexColumnWidth } from '@/common/util'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
 import {
-  updFeedbackOrderIDState
+  updFeedbackOrderIDState,getProduceMaterialUseBomList
 } from '@/api/produceMaterial'
 export default {
   name: '生产订单',
@@ -338,15 +338,10 @@ export default {
         this.semiFinishTrsNoList2 = res?.data ?? []
       })
     },
-    //确认到货
+    //全部完成
     onupdFeedbackOrderIDState(row) {
       console.log(row);
       updFeedbackOrderIDState({ feedbackOrderId: row.id, supplyState: 1, produceState: 1 }).then((res)=>{
-        if (res.data) {
-          this.$message.success('成功')
-        } else {
-          this.$message.error('失败')
-        }
       }).finally(() => {
         this.getList(1)
       })
@@ -423,9 +418,30 @@ export default {
       const { data } = await getBrandEnum()
       this.brands = data
     },
+    //确认到货
+    async confirmFeedbackOrder(row) {
+      var hasZero = false
+      await getProduceMaterialUseBomList(row.id).then((res)=>{
+        console.log(res.data);
+        hasZero = res.data.some(item=>item['produceState']<=0 || item['supplyState']<=0)
+      }).finally(()=>{
+        // console.log(hasZero);
+      })
+      console.log(hasZero);
+      if(hasZero){
+        this.$confirm('请查看物料确认所有物流均已完成生产和补货', {
+          confirmButtonText: '一键全部完成',
+          cancelButtonText: '去查看',
+          type: 'warning'
+        }).then(() => {
+          this.onupdFeedbackOrderIDState(row.id)
 
-    confirmFeedbackOrder(row) {
-      confirmFeedback(row.id).then((res) => {
+        }).catch(() => {
+          this.popProduceMaterialListReader(row.skuId, row.id)          
+        });
+      }
+        
+      await confirmFeedback(row.id).then((res) => {
         if (res.data) {
           this.$message.success('已确认')
           this.getList(this.page)
