@@ -37,6 +37,7 @@
         <el-table-column label="操作">
           <template slot="header" slot-scope="scope">
             <el-input v-model="search.storeName" @input="getList()" size="mini" placeholder="输入关键字搜索" />
+            <el-button @click="onupdStoreCity()">更新所有商铺天气</el-button>
           </template>
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllByCityVoList } from '@/api/sy'
+import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllByCityVoList,updStoreCity } from '@/api/sy'
 export default {
   name: '商铺',
   data() {
@@ -181,6 +182,10 @@ export default {
           return false;
         }
       });
+    },
+    //更新所有商铺天气
+    onupdStoreCity(){
+      updStoreCity()
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

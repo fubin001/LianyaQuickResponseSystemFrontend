@@ -39,3 +39,11 @@ export function deleteStoreCityRelations(id) {
     method: 'delete'
   })
 }
+
+export function updStoreCity(query) {
+  return request({
+    url: '/storeCityRelations/updStoreCity',
+    method: 'get',
+    params: query
+  })
+}

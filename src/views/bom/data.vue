@@ -443,6 +443,7 @@ export default {
       createTypeEnumList: [],
       trsEnumList: [],
       skuIdEnumList: [],
+      bomTreeDialogVisble:false,
       page: 1,
       size: 10,
       list: null,
