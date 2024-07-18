@@ -235,6 +235,23 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/weather',
+    component: Layout,
+    redirect: '/weather/index',
+    meta: {
+      title: '城市天气',
+      icon: 'international',
+    },
+    children: [
+      {
+        path: '/weather/index',
+        component: () => import('@/views/weather/index'),
+        name: '城市天气',
+        meta: { title: '城市天气', icon: 'international', roles:['admin']}
+      }
+    ]
+  },
+  {
     path: '/sy',
     component: Layout,
     redirect:'sy/info', 

@@ -47,3 +47,11 @@ export function updStoreCity(query) {
     params: query
   })
 }
+
+export function getWeatherStoreCityList(data){
+  return request({
+    url: '/storeCityRelations/getWeatherStoreCityList',
+    method: 'post',
+    data: data
+  })
+}

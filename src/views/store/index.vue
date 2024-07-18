@@ -36,8 +36,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot="header" slot-scope="scope">
-            <el-input v-model="search.storeName" @input="getList()" size="mini" placeholder="输入关键字搜索" />
-            <el-button @click="onupdStoreCity()">更新所有商铺天气</el-button>
+            <el-input v-model="search.storeName" @input="getList()" size="mini" style="width: 250px;" placeholder="搜索：输入商户名称" />
+            <el-button @click="onupdStoreCity()" size="mini">更新所有商铺天气</el-button>
           </template>
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>

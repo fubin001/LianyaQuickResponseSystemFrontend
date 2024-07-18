@@ -59,7 +59,7 @@
 <script>
 import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllByCityVoList,getWeatherStoreCityList } from '@/api/sy'
 export default {
-  name: 'sy',
+  name: '城市天气',
   data() {
     return {
       fromData: {
