@@ -10,7 +10,9 @@
           :props="{ emitPath: false }"></el-cascader>
       </el-form-item>
       <el-form-item label="详细地址" prop="detailedAddress">
-        <el-input v-model="fromData.detailedAddress"></el-input>
+        <el-input v-model="fromData.detailedAddress" 
+  type="textarea"
+  :autosize="{ minRows: 1, maxRows: 4}"></el-input>
       </el-form-item>
       <el-button type="primary" @click="submitForm('fromData')">立即创建</el-button>
       <el-button @click="resetForm('fromData')">重置</el-button>
@@ -26,10 +28,13 @@
         <el-table-column label="商户地址" width="180">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
+              <p></p>
               <p>地区: {{ scope.row.cityID }}</p>
-              <p>详细地址: {{ scope.row.detailedAddress }}</p>
+              <!-- <p>详细地址: {{ scope.row.detailedAddress }}</p> -->
               <div slot="reference" class="name-wrapper">
+                <el-tag>{{ scope.row.provincial+'—'+scope.row.municipal+'—'+scope.row.city }}</el-tag>
                 <el-tag size="medium">{{ scope.row.detailedAddress }}</el-tag>
+
               </div>
             </el-popover>
           </template>
