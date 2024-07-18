@@ -50,4 +50,12 @@ export function updFeedbackOrderIDState(data) {
   })
 }
 
+// 初始化补货状态
+export function initializeSupplyState(data) {
+  return request({
+    url: '/produceMaterial/initializeSupplyState',
+    method: 'post',
+    data: data
+  })
+}
 

@@ -29,17 +29,24 @@
           重置
         </el-button>
         <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496" @click="getList(1)">
+          style="margin: 5px 8px 5px 0; background-color: #244496" @click="getList(1)">
           搜索
         </el-button>
-        <el-button class="filter-item" icon="el-icon-search" style="margin: 5px 0px 5px 0; background-color: #244496"
+        <el-button class="filter-item" icon="el-icon-search" style="margin: 5px 8px 5px 0; background-color: #244496"
           type="primary" @click="addProduceOrderDialogFormVisible = true">
           新增
         </el-button>
         <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496" @click="exportFeedbackOrder(listQuery)">
+          style="margin: 5px 8px 5px 0; background-color: #244496" @click="exportFeedbackOrder(listQuery)">
           下载
         </el-button>
+
+        <el-button class="filter-item" type="primary" icon="el-icon-edit"
+          style="margin: 5px 8px 5px 0; "@click="oninitializeSupplyState()">
+          <!-- <svg-icon icon-class="edit" /> -->
+          初始化补货状态
+        </el-button>
+        
       </span>
     </div>
 
@@ -264,7 +271,7 @@ import ProduceMaterialListReader from '@/views/product/component/produceMaterial
 import { flexColumnWidth } from '@/common/util'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
 import {
-  updFeedbackOrderIDState, getProduceMaterialUseBomList
+  updFeedbackOrderIDState, getProduceMaterialUseBomList,initializeSupplyState
 } from '@/api/produceMaterial'
 export default {
   name: '生产订单',
@@ -366,7 +373,17 @@ export default {
         feedbackOrderId: feedbackOrderId
       }
     },
-
+    // 初始化物料单的补货状态
+    async oninitializeSupplyState(){
+      initializeSupplyState().then((res)=>{
+        if (res.data) {
+          this.$message.success('初始化完成')
+          this.getList(1)
+        } else {
+          this.$message.error('初始化失败')
+        }
+      })
+    },
     addNewProductOrder() {
       if (!this.newOrder.trsNo) {
         this.$message.warning('trsNo不能为空')
