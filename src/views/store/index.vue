@@ -89,7 +89,7 @@ export default {
       },
       search: {
         storeID: '',
-        storeName: '',
+        name: '',
         current: 0,
         size: 10,
         total: 0,
