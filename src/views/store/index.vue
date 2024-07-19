@@ -10,9 +10,7 @@
           :props="{ emitPath: false }"></el-cascader>
       </el-form-item>
       <el-form-item label="详细地址" prop="detailedAddress">
-        <el-input v-model="fromData.detailedAddress" 
-  type="textarea"
-  :autosize="{ minRows: 1, maxRows: 4}"></el-input>
+        <el-input v-model="fromData.detailedAddress" type="textarea" :autosize="{ minRows: 1, maxRows: 4 }"></el-input>
       </el-form-item>
       <el-button type="primary" @click="submitForm('fromData')">立即创建</el-button>
       <el-button @click="resetForm('fromData')">重置</el-button>
@@ -32,7 +30,7 @@
               <p>地区: {{ scope.row.cityID }}</p>
               <!-- <p>详细地址: {{ scope.row.detailedAddress }}</p> -->
               <div slot="reference" class="name-wrapper">
-                <el-tag>{{ scope.row.provincial+'—'+scope.row.municipal+'—'+scope.row.city }}</el-tag>
+                <el-tag>{{ scope.row.provincial + '—' + scope.row.municipal + '—' + scope.row.city }}</el-tag>
                 <el-tag size="medium">{{ scope.row.detailedAddress }}</el-tag>
 
               </div>
@@ -41,7 +39,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot="header" slot-scope="scope">
-            <el-input v-model="search.storeName" @input="getList()" size="mini" style="width: 250px;" placeholder="搜索：输入商户名称" />
+            <el-input v-model="search.name" @input="getList()" size="mini" style="width: 250px;"
+              placeholder="搜索：输入商户名称" />
             <el-button @click="onupdStoreCity()" size="mini">更新所有商铺天气</el-button>
           </template>
           <template slot-scope="scope">
@@ -76,7 +75,7 @@
 </template>
 
 <script>
-import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllByCityVoList,updStoreCity } from '@/api/sy'
+import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllByCityVoList, updStoreCity } from '@/api/sy'
 export default {
   name: '商铺',
   data() {
@@ -89,7 +88,7 @@ export default {
       },
       search: {
         storeID: '',
-        storeName: '',
+        name: '',
         current: 0,
         size: 10,
         total: 0,
@@ -189,7 +188,7 @@ export default {
       });
     },
     //更新所有商铺天气
-    onupdStoreCity(){
+    onupdStoreCity() {
       updStoreCity()
     },
     resetForm(formName) {
