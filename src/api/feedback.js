@@ -27,6 +27,16 @@ export function getFeedbackOrder(feedbackOrderId) {
   })
 }
 
+export function getProduceTree(produceOrderId) {
+  return request({
+    url: '/feedback/getProduceTree',
+    method: 'get',
+    params: {
+      produceOrderId: produceOrderId
+    }
+  })
+}
+
 export function confirmFeedback(id) {
   return request({
     url: '/feedback/confirm/' + id,
