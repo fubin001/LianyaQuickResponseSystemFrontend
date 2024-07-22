@@ -44,6 +44,13 @@ export function confirmFeedback(id) {
   })
 }
 
+export function forwardProduceState(nodeId) {
+  return request({
+    url: '/feedback/forwardProduceState/' + nodeId,
+    method: 'POST'
+  })
+}
+
 export function executeFeedback(id) {
   return request({
     url: '/feedback/executeFeedback?feedbackOrderId=' + id,
