@@ -50,7 +50,7 @@
     </template>
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="search.current"
       :page-sizes="[10, 20, 30, 100]" :page-size="search.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="search.maxSizePage">
+      :total="search.total">
     </el-pagination>
     <el-dialog title="提示" :visible.sync="centerDialogVisible" width="30%" center>
       <el-checkbox-group v-model="submit.addUserRole.roleIDList">
@@ -76,7 +76,7 @@ export default {
         userNo: '',
         current: 0,
         size: 10,
-        maxSizePage: 0,
+        total: 0,
       },
       submit: {
         addUserRole: {
@@ -102,7 +102,7 @@ export default {
     //获取用户信息
     on_getNewUsersList() {
       getNewUsersList(this.search).then((res) => {
-        this.search.maxSizePage = res.data.maxSizePage
+        this.search.total = res.data.total
         this.userList = res.data.usersList
       })
     },

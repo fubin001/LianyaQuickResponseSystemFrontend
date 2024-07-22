@@ -27,14 +27,14 @@
           搜索
         </el-button>
         <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496" @click="addDialogVisible=true">
+          style="margin: 3px 5px; background-color: #244496" @click="addDialogVisible = true">
           新增
         </el-button>
       </span>
     </div>
     <div class="table-list">
-      <el-table :data="tableData" style="width: 100%" row-key="id" v-loading="listLoading" 
-      :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row>
+      <el-table :data="tableData" style="width: 100%" row-key="id" v-loading="listLoading"
+        :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row>
         <el-table-column label="商户" width="180">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -44,7 +44,7 @@
         <el-table-column label="商户地址" width="180">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
-              <p>地区: {{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city  }}</p>
+              <p>地区: {{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</p>
               <p>详细地址：{{ scope.row.detailedAddress }}</p>
               <div slot="reference" class="name-wrapper">
                 <el-tag>{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</el-tag>
@@ -56,7 +56,7 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot="header" slot-scope="scope">
-           操作
+            操作
           </template>
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -93,7 +93,14 @@
         </el-form-item>
         <el-form-item label="地区" prop="cityID">
           <el-cascader placeholder="试试搜索：安徽" v-model="fromData.cityID" :options="optionsCityt" filterable clearable
-            :props="{ emitPath: false }"></el-cascader>
+            :props="{ emitPath: false }">
+
+            <template slot="empty">
+              <div>
+                <li class="el-cascader__empty-text">没有找到该地区,请去【城市天气】菜单新增该城市</li>
+              </div>
+            </template>
+          </el-cascader>
         </el-form-item>
         <el-form-item label="详细地址" prop="detailedAddress">
           <el-input v-model="fromData.detailedAddress" type="textarea"
@@ -108,12 +115,12 @@
 </template>
 
 <script>
-import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllByCityVoList, updStoreCity } from '@/api/sy'
+import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllCityDataVoList, updStoreCity } from '@/api/sy'
 export default {
   name: '商铺',
   data() {
     return {
-      listLoading:false,
+      listLoading: false,
       fromData: {
         storeID: null,
         storeName: '',
@@ -136,7 +143,7 @@ export default {
         ]
       },
       dialogVisible: false,
-      addDialogVisible:false,
+      addDialogVisible: false,
       updFrom: {
         storeID: 2,
         storeName: '测试',
@@ -152,7 +159,7 @@ export default {
 
   async created() {
     await this.getList();
-    await this.ongetAllByCityVoList()
+    await this.ongetAllCityDataVoList()
   },
   mounted() {
     // this.initChart();
@@ -172,13 +179,13 @@ export default {
       })
     },
     getList() {
-      this.listLoading=true
+      this.listLoading = true
       getStoreCityRelationsList(this.search).then((res) => {
         console.log(res);
         this.tableData = res.data.records
         this.search.total = res.data.total
       }).finally(() => {
-        this.listLoading=false
+        this.listLoading = false
         // this.initChart()
       })
     },
@@ -203,8 +210,8 @@ export default {
       })
     },
     //获取城市数据
-    ongetAllByCityVoList() {
-      getAllByCityVoList().then((res) => {
+    ongetAllCityDataVoList() {
+      getAllCityDataVoList().then((res) => {
         this.optionsCityt = res.data
       }).finally(() => {
         // this.fromData.cityID = 1547
