@@ -1,9 +1,22 @@
 <template>
-  <div>
+  <div class="app-container">
+    <div class="filter-container">
+      <span>
+        查询名称：
+        <el-input v-model="search.userNo" placeholder="请输入查询名称" @input="on_getNewUsersList()"
+          style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+      </span>
+      <span style="float: right">
+
+        <el-button class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496" @click="on_getNewUsersList()">
+          搜索
+        </el-button>
+      </span>
+    </div>
     <template>
-      <el-input v-model="search.userNo" placeholder="请输入查询工号" @input="
-        on_getNewUsersList()"></el-input>
-      <el-table :data="userList" style="width: 100%">
+      <el-table :data="userList" row-key="id" :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row
+        style="width: 100%">
         <el-table-column label="员工工号" width="180">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -22,15 +35,15 @@
               {{ item.name }}
             </el-tag>
             <el-tag type="success" style="margin: 0px 0px 5px 10px;" @click="on_getRoleNotUserNoList(scope.row)">
-              new +
+              新增
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" >
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="on_delNewUser(scope.row.id)">删除</el-button>
-            <el-button size="mini" @click="on_newUserBecome(scope.row)">冻结</el-button>
+            <!-- <el-button size="mini" @click="on_newUserBecome(scope.row)">冻结</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -52,7 +65,7 @@
 import { delNewUser, addUserRoleRelations, delUserRoleRelations, getRoleNotUserNoList, getNewUsersList } from "@/api/user";
 
 export default {
-  name: "用户申请",
+  name: "用户与角色权限",
   data() {
     return {
       centerDialogVisible: false,
@@ -114,7 +127,7 @@ export default {
     //指定用户删除绑定角色
     on_delUserRoleRelations(uid, rid) {
       this.submit.delUserRole.uid = uid
-      this.submit.delUserRole.roleIDList=[rid]
+      this.submit.delUserRole.roleIDList = [rid]
       delUserRoleRelations(this.submit.delUserRole).then((res) => {
 
       }).finally(() => {
@@ -148,7 +161,7 @@ export default {
         if (!newVal) {
           this.roleList = []
           this.submit.addUserRole.roleIDList = []
-        
+
           this.submit.addUserRole.userNo = ''
         }
       }
@@ -156,3 +169,43 @@ export default {
   }
 };
 </script>
+
+
+<style>
+.sortable-ghost {
+  opacity: 0.8;
+  color: #fff !important;
+  background: #42b983 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.app-container {
+  background-color: #f7f8fc;
+
+  .filter-container {
+    background-color: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .table-list {
+    background-color: #ffffff;
+    padding: 10px;
+  }
+}
+
+.icon-star {
+  margin-right: 2px;
+}
+
+.drag-handler {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.show-d {
+  margin-top: 15px;
+}
+</style>
