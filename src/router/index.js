@@ -48,7 +48,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/home',
+    redirect: '/skuProduct',
     children: [
       {
         path: '/404',
@@ -62,9 +62,17 @@ export const constantRoutes = [
         path: '/home',
         component: () => import('@/views/home/index'),
         name: 'home',
+        hidden: true , //不展示
         noCache: true,
-        meta: { title: 'home', icon: 'edit', roles:['admin','sale'], affix: true ,}
+        meta: { title: 'home', icon: 'edit', roles:['admin','sale'],}
       },
+      // {
+      //   path: '/home',
+      //   component: () => import('@/views/home/index'),
+      //   name: 'home',
+      //   noCache: true,
+      //   meta: { title: 'home', icon: 'edit', roles:['admin','sale'], affix: true ,}
+      // },
       {
         path: '/401',
         component: () => import('@/views/error-page/401'),

@@ -1,14 +1,28 @@
 <template>
-  <div>
-    <el-input v-model="search_role.name" placeholder="请输入查询名称" @input="
-      on_getNewRole()"></el-input>
-    <el-button class="filter-item" type="primary" icon="el-icon-edit"
-      style="margin: 5px 8px 5px 0; background-color: #244496" @click="centerDialogVisible_role = true">
-      增加
-    </el-button>
+  <div class="app-container">
+    <div class="filter-container">
+      <span>
+        查询名称：
+        <el-input v-model="search_role.name" placeholder="请输入查询名称" @input="on_getNewRole()"
+          style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+      </span>
+      <span style="float: right">
+
+        <el-button class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496" @click="on_getNewRole()">
+          搜索
+        </el-button>
+        <el-button class="filter-item" type="primary" icon="el-icon-edit"
+          style="margin: 5px 8px 5px 0; background-color: #244496" @click="centerDialogVisible_role = true">
+          增加
+        </el-button>
+      </span>
+    </div>
+
     <!-- <el-button @click="on_sy">sy</el-button> -->
     <template>
-      <el-table :data="dataList" style="width: 100%">
+      <el-table :data="dataList" row-key="id" :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row
+        style="width: 100%">
         <el-table-column label="名称" width="180">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -18,11 +32,12 @@
         <el-table-column label="页面权限" width="550">
           <template slot-scope="scope">
             <el-tag v-for="item in scope.row.permissionList" :key="item.name" closable :type="item.name"
-              disable-transitions @close="on_delNewPermissionRole(scope.row.id,item.id)" style="margin:5px 0px 0px 10px;">
+              disable-transitions @close="on_delNewPermissionRole(scope.row.id, item.id)"
+              style="margin:5px 0px 0px 10px;">
               {{ item.name }}
             </el-tag>
             <el-tag @click="on_getNewPermissionNotRoleIDList(scope.row)" type="success" style="margin:5px 0px 0 10px;">
-              new+ </el-tag>
+              修改</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="数据权限" width="550">
@@ -31,30 +46,25 @@
               @close="on_delRoleBrandRelations(item.id)" style="margin:5px 0px 0px 10px;">
               {{ item.name }}
             </el-tag>
-            <el-tag @click="on_getBrandRoleNotIDList(scope.row)" type="success" style="margin:5px 0px 0 10px;"> new+
+            <el-tag @click="on_getBrandRoleNotIDList(scope.row)" type="success" style="margin:5px 0px 0 10px;">修改
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" width="150" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="on_delRole(scope.row.id)">删除</el-button>
-            <el-button size="mini" @click="on_newUserBecome(scope.row)">通过</el-button>
+            <!-- <el-button size="mini" @click="on_newUserBecome(scope.row)">通过</el-button> -->
           </template>
         </el-table-column>
       </el-table>
     </template>
-  <div class="block">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="search_role.current"
-      :page-sizes="[10, 20, 30, 100]"
-      :page-size="search_role.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="search_role.maxSizePage">
-    </el-pagination>
-  </div>
+    <div class="block">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        :current-page="search_role.current" :page-sizes="[10, 20, 30, 100]" :page-size="search_role.size"
+        layout="total, sizes, prev, pager, next, jumper" :total="search_role.maxSizePage">
+      </el-pagination>
+    </div>
     <!-- <el-dialog title="提示" :visible.sync="centerDialogVisible_perm" width="30%" center>
       <el-checkbox-group v-model="addRolePermission.permissionIDS">
         <el-checkbox v-for="item in permissionList" :label="item.id">{{ item.name }}</el-checkbox>
@@ -93,7 +103,7 @@
 </template>
 
 <script>
-import { getNewRole, addRole, sy,delRole } from "@/api/role";
+import { getNewRole, addRole, sy, delRole } from "@/api/role";
 import { getNewPermissionList, addNewPermissionRole, delNewPermissionRole, getNewPermissionNotRoleIDList } from "@/api/permission";
 import { getBrandRoleNotIDList, getRoleBrandRelations, delRoleBrandRelations, addRoleBrandRelations } from "@/api/brand";
 import { asyncRoutes, constantRoutes } from '@/router'
@@ -109,8 +119,8 @@ export default {
       search_role: {
         current: 0,
         size: 10,
-        name:'',
-        maxSizePage:0,
+        name: '',
+        maxSizePage: 0,
       },
       search_permission: {
         id: 0,
@@ -151,7 +161,7 @@ export default {
       dataList: [],
       permissionList: [],//页面权限列表
       brandList: [],//数据权限列表
-    
+
       currentPage: 1
     };
   },
@@ -183,8 +193,8 @@ export default {
       })
     },
     //删除指定角色的页面权限
-    on_delNewPermissionRole(rid,pid) {
-      delNewPermissionRole({roleID:rid, permissionIDS: [pid] }).then((res) => {
+    on_delNewPermissionRole(rid, pid) {
+      delNewPermissionRole({ roleID: rid, permissionIDS: [pid] }).then((res) => {
 
       }).finally(() => {
         this.on_getNewRole()
@@ -258,26 +268,26 @@ export default {
     },
     //删除角色
     on_delRole(rid) {
-      delRole({id:rid}).then((res)=>{
-        
-      }).finally(()=>{
+      delRole({ id: rid }).then((res) => {
+
+      }).finally(() => {
         // console.log(1);
         this.on_getNewRole();
       })
     },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-        this.search_role.size = val
-        this.on_getNewRole()
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-        this.search_role.current = val
-        this.on_getNewRole()
-        console.log(this.search_role);
-      },
-      // onInput(){
-      // },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.search_role.size = val
+      this.on_getNewRole()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.search_role.current = val
+      this.on_getNewRole()
+      console.log(this.search_role);
+    },
+    // onInput(){
+    // },
   },
   watch: {
     //监视弹窗格式化数据
@@ -305,3 +315,42 @@ export default {
   }
 };
 </script>
+
+<style>
+.sortable-ghost {
+  opacity: 0.8;
+  color: #fff !important;
+  background: #42b983 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.app-container {
+  background-color: #f7f8fc;
+
+  .filter-container {
+    background-color: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .table-list {
+    background-color: #ffffff;
+    padding: 10px;
+  }
+}
+
+.icon-star {
+  margin-right: 2px;
+}
+
+.drag-handler {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.show-d {
+  margin-top: 15px;
+}
+</style>

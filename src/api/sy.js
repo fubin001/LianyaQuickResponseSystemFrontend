@@ -39,7 +39,7 @@ export function deleteStoreCityRelations(id) {
     method: 'delete'
   })
 }
-
+/**更新所有商铺信息 */
 export function updStoreCity(query) {
   return request({
     url: '/storeCityRelations/updStoreCity',
