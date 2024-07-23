@@ -5,16 +5,22 @@
 <script>
 import * as echarts from 'echarts';
 import axios from 'axios';
-
 export default {
+  props:{
+    propData:{},
+  },
   name: 'LineChart',
   data() {
     return {
       chart: null,
       // 时间
-      weatherTime: [],
+      weatherTime: ["25日", "26日", "27日", "28日", "29日", "30日", "31日","1ri"],
       // 温度
-      temperature: [],
+      temperatureMax: ["16.3", "16.2", "17.6", "14.2", "17.6", "15.7", "14.3", "14.3"],
+      temperatureMin: ["13.4", "12.8", "13.5", "12.5", "12.4", "13.2", "13", "14.3"],
+      //天气
+      weatherName: ["小雨", "小雨", "阴", "小雨", "多云", "小雨", "小雨", "小雨"],
+      weatherNamez: ["小雨", "小雨", "阴", "小雨", "多云", "小雨", "小雨", "小雨"],
       option: {},
       openweathermap: {},
     };
@@ -22,13 +28,32 @@ export default {
 
 
   async created() {
+    if(this.propData.data){
+      var data = this.propData.data
+      this.weatherTime=[];
+      this.temperatureMax=[];
+      this.temperatureMin=[];
+      this.weatherName=[];
+      data.forEach(item => {
+        // console.log(item.predictDate.substri/ng(6,10));
+        this.weatherTime.push(item.predictDate.substring(6,10))
+        this.temperatureMax.push(item.tempDay)
+        this.temperatureMin.push(item.tempNight)
+        this.weatherName.push(item.conditionDay)
+        this.weatherNamez.push(item.conditionNight)
+      });
+    }
   },
   mounted() {
+    console.log(this.propData);
     this.initChart();
   },
   methods: {
     onoption() {
-      var weatherName = ["小雨", "小雨", "阴", "小雨", "多云", "小雨", "小雨"];
+      var weatherTime = this.weatherTime
+      var weatherName = this.weatherName
+      var temperatureMax = this.temperatureMax
+      var temperatureMin = this.temperatureMin
       this.option = {
         grid: {
           show: true,
@@ -48,9 +73,10 @@ export default {
           {
             type: 'inside',
             show: true,
-            xAxisIndex: [0, 1, 2],
+            // xAxisIndex: [0, 1, 2],
+            xAxisIndex: [0, 1],
             start: 0,
-            end: 60,
+            end: 140,
             filterMode: 'empty'
           }
         ],
@@ -83,39 +109,39 @@ export default {
             nameTextStyle: {
 
             },
-            data: ["25日", "26日", "27日", "28日", "29日", "30日", "31日"]
+            data: weatherTime
           },
           // 星期
-          {
-            type: 'category',
-            boundaryGap: false,
-            position: 'top',
-            offset: 110,
-            zlevel: 100,
-            axisLine: {
-              show: false
-            },
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              interval: 0,
-              formatter: [
-                '{a|{value}}'
-              ].join('\n'),
-              rich: {
-                a: {
-                  // color: 'white',
-                  fontSize: 14
-                }
-              }
-            },
-            nameTextStyle: {
-              fontWeight: 'bold',
-              fontSize: 19
-            },
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-          },
+          // {
+          //   type: 'category',
+          //   boundaryGap: false,
+          //   position: 'top',
+          //   offset: 110,
+          //   zlevel: 100,
+          //   axisLine: {
+          //     show: false
+          //   },
+          //   axisTick: {
+          //     show: false
+          //   },
+          //   axisLabel: {
+          //     interval: 0,
+          //     formatter: [
+          //       '{a|{value}}'
+          //     ].join('\n'),
+          //     rich: {
+          //       a: {
+          //         // color: 'white',
+          //         fontSize: 14
+          //       }
+          //     }
+          //   },
+          //   nameTextStyle: {
+          //     fontWeight: 'bold',
+          //     fontSize: 19
+          //   },
+          //   data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          // },
           // 天气图标
           {
             type: 'category',
@@ -206,7 +232,7 @@ export default {
             },
             // data: this.weatherdata.weather
             //data: ["小雨","小雨","阴","小雨","多云","小雨","小雨"]
-            data: [0, 1, 2, 3, 4, 5, 6]
+            data: [0, 1, 2, 3, 4, 5, 6, 7]
           }
         ],
         yAxis: {
@@ -221,7 +247,7 @@ export default {
           {
             name: '最高气温',
             type: 'line',
-            data: ["16.3", "16.2", "17.6", "14.2", "17.6", "15.7", "14.3"],
+            data: temperatureMax,
             symbol: 'emptyCircle',
             symbolSize: 10,
             showSymbol: true,
@@ -249,7 +275,7 @@ export default {
           {
             name: '最低气温',
             type: 'line',
-            data: ["13.4", "12.8", "13.5", "12.5", "12.4", "13.2", "13"],
+            data: temperatureMin,
             symbol: 'emptyCircle',
             symbolSize: 10,
             showSymbol: true,
@@ -276,102 +302,6 @@ export default {
           }
         ]
       }
-
-      // this.option = {
-      //   backgroundColor: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-      //     { offset: 0, color: '#c86589' },
-      //     { offset: 1, color: '#06a7ff' }
-      //   ], false),
-      //   title: {
-      //     text: "温度℃",
-      //     left: "center",
-      //     bottom: "5%",
-      //     textStyle: {
-      //       color: "#fff",
-      //       fontSize: 16
-      //     }
-      //   },
-      //   grid: {
-      //     top: '20%',
-      //     left: '10%',
-      //     right: '10%',
-      //     bottom: '15%',
-      //     containLabel: true
-      //   },
-      //   xAxis: {
-      //     type: 'category',
-      //     boundaryGap: false,
-      //     data: this.weatherTime,
-      //     axisLabel: {
-      //       margin: 30,
-      //       color: '#ffffff63'
-      //     },
-      //     axisLine: { show: false },
-      //     axisTick: {
-      //       show: true,
-      //       length: 25,
-      //       lineStyle: { color: "#ffffff1f" }
-      //     },
-      //     splitLine: {
-      //       show: true,
-      //       lineStyle: { color: '#ffffff1f' }
-      //     }
-      //   },
-      //   yAxis: [{
-      //     type: 'value',
-      //     position: 'right',
-      //     axisLabel: {
-      //       margin: 20,
-      //       color: '#ffffff63'
-      //     },
-      //     axisTick: {
-      //       show: true,
-      //       length: 15,
-      //       lineStyle: { color: "#ffffff1f" }
-      //     },
-      //     splitLine: {
-      //       show: true,
-      //       lineStyle: { color: '#ffffff1f' }
-      //     },
-      //     axisLine: {
-      //       lineStyle: {
-      //         color: '#fff',
-      //         width: 2
-      //       }
-      //     }
-      //   }],
-      //   series: [{
-      //     name: '注册总量',
-      //     type: 'line',
-      //     smooth: true,
-      //     showAllSymbol: true,
-      //     symbol: 'circle',
-      //     symbolSize: 6,
-      //     lineStyle: {
-      //       normal: { color: "#fff" }
-      //     },
-      //     label: {
-      //       show: true,
-      //       position: 'top',
-      //       textStyle: { color: '#fff' }
-      //     },
-      //     itemStyle: {
-      //       color: "red",
-      //       borderColor: "#fff",
-      //       borderWidth: 3
-      //     },
-      //     tooltip: { show: false },
-      //     areaStyle: {
-      //       normal: {
-      //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-      //           { offset: 0, color: '#eb64fb' },
-      //           { offset: 1, color: '#3fbbff0d' }
-      //         ], false)
-      //       }
-      //     },
-      //     data: this.temperature
-      //   }]
-      // }
     },
     // 初始化图，用于展示
     initChart() {

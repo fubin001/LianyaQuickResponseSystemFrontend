@@ -47,7 +47,10 @@
               <p>地区: {{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</p>
               <p>详细地址：{{ scope.row.detailedAddress }}</p>
               <div slot="reference" class="name-wrapper">
-                <el-tag>{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</el-tag>
+                <el-link type="primary" @click="onDialog(scope.row.cityID)">
+                  <el-tag>{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</el-tag>
+                
+                </el-link>
                 <el-tag size="medium" style="margin-top: 5px;">{{ scope.row.detailedAddress }}</el-tag>
 
               </div>
@@ -252,7 +255,12 @@ export default {
       this.updFrom = row
       this.dialogVisible = true;
     },
+    onDialog(val) {
+      console.log(val);
+      this.$router.push({ path: '/weather/index', query: { id: val } })
+    }
   },
+
   // watch: {
   //   search(newValue, preValue) {
   //     this.getList()

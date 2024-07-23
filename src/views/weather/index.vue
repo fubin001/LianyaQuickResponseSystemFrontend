@@ -46,7 +46,7 @@
 
         <!-- 动态表头 -->
         <el-table-column v-for="(item, index) in dataLists" :key="index" :label="item.title" :prop="item.key"
-          width="200">
+          width="250">
           <template slot-scope="scope">
 
             <!-- {{ scope.row[item.title] }} -->
@@ -70,7 +70,7 @@
             操作
           </template>
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" >查看视图</el-button>
+            <el-button size="mini" type="primary" @click="onpropDialog(scope.row)">查看视图</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -91,16 +91,23 @@
         <el-button @click="resetForm('fromData')">重置</el-button>
       </el-form>
     </el-dialog>
+    <el-dialog :visible.sync="propDialog">
+      <SYS v-if="propDialog" :propData="propData"></SYS>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getAllCityDataVoList, getCityDataWeather, addCityData, updWeatherCityData, getAllByCityVoList } from '@/api/sy'
+import SYS from "@/views/user/sy.vue"
 export default {
+  components:{SYS},
   name: '城市天气',
   data() {
     return {
       listLoading: true,
+      propDialog:false,
+      propData:{},
       // 原始数据
       data: [],
       // 表头数据
@@ -157,6 +164,7 @@ export default {
           itemData["city"] = item.city
           itemData["municipal"] = item.municipal
           itemData["provincial"] = item.provincial
+          itemData["data"] = item.dataLists
           item.dataLists.forEach(items => {
             itemData[items.predictDate] = {
               conditionDay: items.conditionDay,
@@ -202,6 +210,7 @@ export default {
       }).finally(() => {
       })
     },
+    // 新增使用城市
     onaddCityData() {
       addCityData(this.fromData).then((res) => {
         if (res.code == 0) {
@@ -214,6 +223,11 @@ export default {
       }).finally(() => {
         // this.getList()
       })
+    },
+    //打开试图
+    onpropDialog(val){
+      this.propDialog=true;
+      this.propData=val
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -254,6 +268,16 @@ export default {
     },
   },
   watch: {
+    '$route.query.id': {
+      immediate: true,
+      handler(newId,oldVal) {
+        console.log(newId,oldVal);
+        if(newId!=oldVal){
+          this.search.id=newId;
+          this.getList()
+        }
+      }
+    },
     'search.pickerDate'(newVal, oldVal) {
       if (newVal) {
         const dateArray = newVal.map(dateTime => {
@@ -264,6 +288,7 @@ export default {
         this.search.endDate = dateArray[1]
         // console.log(dateArray);
       }
+      
     },
     // search: {
     //   handler(newVal, oldVal) {
