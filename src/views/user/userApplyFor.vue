@@ -39,7 +39,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="on_newUserBecome(scope.row)">通过</el-button>
             <el-button size="mini" type="danger" @click="on_delUserApplyFor(scope.row.id)">删除</el-button>
@@ -104,6 +104,14 @@ export default {
       console.log(data);
       console.log(data.id);
       newUserBecome({ id: data.id }).then((res) => {
+        if (res.data) {
+          if (res.data) {
+            this.$message.success('成功')
+            this.getList(this.page)
+          } else {
+            this.$message.error('失败')
+          }
+        }
       }).finally(() => {
         this.on_getUserApplyOfrList()
       })

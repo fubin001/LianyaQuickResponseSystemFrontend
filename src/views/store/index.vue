@@ -85,6 +85,7 @@
         <el-form-item label="详细地址" prop="detailedAddress">
           <el-input v-model="updFrom.detailedAddress"></el-input>
         </el-form-item>
+        <br>
         <el-button type="primary" @click="submitForm('updFrom')">保存</el-button>
         <el-button @click="resetForm('updFrom')">重置</el-button>
       </el-form>
@@ -109,6 +110,7 @@
           <el-input v-model="fromData.detailedAddress" type="textarea"
             :autosize="{ minRows: 1, maxRows: 4 }"></el-input>
         </el-form-item>
+        <br>
         <el-button type="primary" @click="submitForm('fromData')">立即创建</el-button>
         <el-button @click="resetForm('fromData')">重置</el-button>
       </el-form>

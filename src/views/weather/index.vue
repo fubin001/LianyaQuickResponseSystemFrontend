@@ -91,7 +91,8 @@
         <el-button @click="resetForm('fromData')">重置</el-button>
       </el-form>
     </el-dialog>
-    <el-dialog :visible.sync="propDialog">
+    <el-dialog :visible.sync="propDialog" 
+     class="customs">
       <SYS v-if="propDialog" :propData="propData"></SYS>
     </el-dialog>
   </div>
@@ -317,6 +318,10 @@ background: #42b983 !important;
 </style>
 
 <style lang="scss" scoped>
+.customs {
+  // background: url('../../impage/weather.jpg') no-repeat center center;
+  // background-size: cover;
+}
 .app-container {
   background-color: #f7f8fc;
 

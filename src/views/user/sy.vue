@@ -1,26 +1,29 @@
 <template>
-  <div ref="chart" :style="{ width: '100%', height: '300px', 'min-width': '700px' }"></div>
+  <div ref="chart" class="customs" :style="{'width': '100%', height: '300px', 'min-width': '700px'}"></div>
+
 </template>
 
 <script>
 import * as echarts from 'echarts';
 import axios from 'axios';
 export default {
-  props:{
-    propData:{},
+  props: {
+    propData: {},
   },
   name: 'LineChart',
   data() {
     return {
       chart: null,
       // 时间
-      weatherTime: ["25日", "26日", "27日", "28日", "29日", "30日", "31日","1ri"],
+      weatherTime: ["25日", "26日", "27日", "28日", "29日", "30日", "31日", "1ri"],
       // 温度
       temperatureMax: ["16.3", "16.2", "17.6", "14.2", "17.6", "15.7", "14.3", "14.3"],
       temperatureMin: ["13.4", "12.8", "13.5", "12.5", "12.4", "13.2", "13", "14.3"],
       //天气
       weatherName: ["小雨", "小雨", "阴", "小雨", "多云", "小雨", "小雨", "小雨"],
       weatherNamez: ["小雨", "小雨", "阴", "小雨", "多云", "小雨", "小雨", "小雨"],
+      //图标展示
+      weatherImpage: [],
       option: {},
       openweathermap: {},
     };
@@ -28,20 +31,30 @@ export default {
 
 
   async created() {
-    if(this.propData.data){
+    if (this.propData.data) {
       var data = this.propData.data
-      this.weatherTime=[];
-      this.temperatureMax=[];
-      this.temperatureMin=[];
-      this.weatherName=[];
+      this.weatherTime = [];
+      this.temperatureMax = [];
+      this.temperatureMin = [];
+      this.weatherName = [];
+      this.weatherImpage=[];
       data.forEach(item => {
         // console.log(item.predictDate.substri/ng(6,10));
-        this.weatherTime.push(item.predictDate.substring(6,10))
+        this.weatherTime.push(item.predictDate.substring(6, 10))
         this.temperatureMax.push(item.tempDay)
         this.temperatureMin.push(item.tempNight)
         this.weatherName.push(item.conditionDay)
         this.weatherNamez.push(item.conditionNight)
+        console.log(item.conditionDay.indexOf('晴'),item.conditionDay);
+        if (item.conditionDay.indexOf('晴') > -1) { this.weatherImpage.push(1) } 
+        else if (item.conditionDay.indexOf('雨') > -1) { this.weatherImpage.push(5) }
+        else if(item.conditionDay.indexOf('雷')>-1){ this.weatherImpage.push(3) }
+        else if(item.conditionDay.indexOf('阴')>-1){ this.weatherImpage.push(4) }
+        else if(item.conditionDay.indexOf('云')>-1){ this.weatherImpage.push(2) }
+        else if(item.conditionDay.indexOf('雪')>-1){ this.weatherImpage.push(6) }
+        else { this.weatherImpage.push(9) }
       });
+      console.log(this.weatherImpage);
     }
   },
   mounted() {
@@ -52,8 +65,10 @@ export default {
     onoption() {
       var weatherTime = this.weatherTime
       var weatherName = this.weatherName
+      console.log(weatherName);
       var temperatureMax = this.temperatureMax
       var temperatureMin = this.temperatureMin
+      var weatherImpage = this.weatherImpage
       this.option = {
         grid: {
           show: true,
@@ -159,61 +174,61 @@ export default {
               interval: 0,
               formatter: function (value, index) {
                 //return '{' + index + '| }\n{b|' + value + '}'
-                return '{' + value + '| }\n{b|' + weatherName[value] + '}'
+                return '{' + value + '| }\n{b|' + weatherName[index] + '}'
               },
               rich: {
                 0: {
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[0]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/小雨.png'
+                    image: 'https://icons.qweather.com/assets/icons/102.svg'
                   },
                   height: 40,
                   width: 40
                 },
-                1: {
+                1: {//晴天
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[1]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/小雨.png'
+                    image: 'https://icons.qweather.com/assets/icons/100.svg'
                   },
                   height: 40,
                   width: 40
                 },
-                2: {
+                2: {// 多云
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[2]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/阴.png'
+                    image: 'https://icons.qweather.com/assets/icons/104.svg'
                   },
                   height: 40,
                   width: 40
                 },
-                3: {
+                3: {//雷雨
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[3]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/小雨.png'
+                    image: 'https://icons.qweather.com/assets/icons/302.svg'
                   },
                   height: 40,
                   width: 40
                 },
-                4: {
+                4: {//阴天
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[4]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/多云.png'
+                    image: 'https://icons.qweather.com/assets/icons/501.svg'
                   },
                   height: 40,
                   width: 40
                 },
-                5: {
+                5: {//雨天
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[5]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/小雨.png'
+                    image: 'https://icons.qweather.com/assets/icons/306.svg'
                   },
                   height: 40,
                   width: 40
                 },
-                6: {
+                6: {//雪天
                   backgroundColor: {
                     // image: require('@/assets/weather_icon/' + this.weatherIconDic[this.weatherdata.weather[6]] + '.png')
-                    image: 'https://d.scggqx.com/forecast/img/小雨.png'
+                    image: 'https://icons.qweather.com/assets/icons/403.svg'
                   },
                   height: 40,
                   width: 40
@@ -232,7 +247,7 @@ export default {
             },
             // data: this.weatherdata.weather
             //data: ["小雨","小雨","阴","小雨","多云","小雨","小雨"]
-            data: [0, 1, 2, 3, 4, 5, 6, 7]
+            data: weatherImpage
           }
         ],
         yAxis: {
@@ -323,5 +338,10 @@ export default {
   min-width: none;
 }
 
+.customs {
+  /* background: url('../../impage/weather.jpg') no-repeat center center;
+  background-size: cover; */
+  /* width: '100%'; height: '300px'; min-width: '700px' */
+}
 /* 添加样式以适应你的需求 */
 </style>
