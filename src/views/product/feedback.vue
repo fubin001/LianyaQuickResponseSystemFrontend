@@ -419,7 +419,7 @@ import {
   updFeedbackOrderIDState, getProduceMaterialUseBomList, initializeSupplyState
 } from '@/api/produceMaterial'
 export default {
-  name: '',
+  name: '生产订单',
   components: { ProduceMaterialListReader, ProduceMaterialList },
   data() {
     return {
@@ -468,6 +468,15 @@ export default {
     await this.getBrands()
     await this.initTrsList()
     this.getList(1)
+  },
+  watch: {
+    '$route.query.skuId': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.skuId = newId ? newId: ''
+        this.getList(1)
+      }
+    }
   },
   methods: {
     flexColumnWidth,

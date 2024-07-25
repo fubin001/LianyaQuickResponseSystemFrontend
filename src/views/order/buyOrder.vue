@@ -137,6 +137,16 @@ export default {
     await this.initSkuIdList()
     this.getList(1)
   },
+  
+  watch: {
+    '$route.query.skuId': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.skuId = newId ? newId: ''
+        this.getList(1)
+      }
+    }
+  },
   methods: {
     reset() {
       this.listQuery = {
