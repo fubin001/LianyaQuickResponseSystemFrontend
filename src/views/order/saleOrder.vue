@@ -170,13 +170,13 @@ export default {
     this.getList(1);
   },
   watch: {
-    // '$route.query.brand': {
-    //   immediate: true,
-    //   handler(newId) {
-    //     this.listQuery.brand= newId?newId:''
-    //     this.id = newId;
-    //   }
-    // }
+    '$route.query.skuId': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.skuId = newId ? newId: ''
+        this.getList(1)
+      }
+    }
   },
   methods: {
     reset() {

@@ -62,7 +62,7 @@
     <div class="block">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
         :current-page="search_role.current" :page-sizes="[10, 20, 30, 100]" :page-size="search_role.size"
-        layout="total, sizes, prev, pager, next, jumper" :total="search_role.maxSizePage">
+        layout="total, sizes, prev, pager, next, jumper" :total="search_role.total">
       </el-pagination>
     </div>
     <!-- <el-dialog title="提示" :visible.sync="centerDialogVisible_perm" width="30%" center>
@@ -120,7 +120,7 @@ export default {
         current: 0,
         size: 10,
         name: '',
-        maxSizePage: 0,
+        total: 0,
       },
       search_permission: {
         id: 0,
@@ -183,7 +183,7 @@ export default {
     on_getNewRole() {
       getNewRole(this.search_role).then((res) => {
         this.dataList = res.data.roleList
-        this.search_role.maxSizePage = res.data.maxSizePage
+        this.search_role.total = res.data.total
       })
     },
     //获取页面权限详细信息

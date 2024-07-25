@@ -1,23 +1,20 @@
 <template>
+
   <div class="app-container">
+
     <div class="filter-container">
       <span>
-        地区名称：
-        <el-input v-model="search.name" placeholder="请输入地区名称" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
-        <!-- <el-input v-model="search.name">
+        地区：
+        <el-cascader placeholder="试试搜索：安徽" v-model="search.id" :options="optionsCitytData" filterable clearable
+          :props="{ emitPath: false }"></el-cascader>
+      </span>
 
-        </el-input> -->
-        <!-- <el-select
-          v-model="listQuery.skuId"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-          clearable
-          allow-create
-          filterable
-        >
-          <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
-        </el-select> -->
+      <span>
+        时间范围：
+        <el-date-picker v-model="search.pickerDate" type="daterange" range-separator="至" start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
+        <!-- {{ value1 }} -->
       </span>
       <span style="float: right">
 
@@ -25,177 +22,218 @@
           style="margin: 3px 5px; background-color: #244496" @click="getList">
           搜索
         </el-button>
-        <el-button @click="onupdStoreCity()" class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496">更新所有商铺天气</el-button>
+        <el-button @click="onupdWeatherCityData()" class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496">更新天气</el-button>
+        <el-button class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496" @click="addDialogVisible = true">
+          新增
+        </el-button>
       </span>
     </div>
-
     <div class="table-list">
-      <!-- <div style="height: 2rem; line-height: 2rem; padding: 0 0.3rem;">
-        <span style="float: left;">颜色数据</span>
-        <span style="float: right;">
-          <span style="text-align: right">
-            <el-upload action="/api/materialOrder/importExcel" style="display: inline-block" :show-file-list="false"
-              :on-success="handleFileUploadSuccess" :on-error="handleFileUploadError">
-              <el-button type="primary" class="ml-5" style="background-color: #244496" size="mini" :loading="upLoading"
-                @click="upLoading = true">上传<i class="el-icon-top" /></el-button>
-            </el-upload>
-          </span>
-        </span>
-      </div> -->
-      <el-table :data="tableData" style="width: 100%" v-loading="listLoading" row-key="id"
+      <el-table :data="tableData" border v-loading="listLoading" style="width: 100%" row-key="id"
         :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row>
-        <el-table-column label="城市" width="200">
+        <!-- 静态表头 -->
+        <el-table-column prop="cityId" label="City ID"></el-table-column>
+        <el-table-column prop="country" label="地区" width="200">
           <template slot-scope="scope">
-            <!-- <i class="el-icon-time"></i> -->
+
             <svg-icon icon-class="international" />
-            <span style="margin-left: 10px">{{ scope.row.provincial + scope.row.municipal + scope.row.city }}</span>
+            <el-tag>{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</el-tag>
+            <!-- <span style="margin-left: 10px">{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</span> -->
           </template>
         </el-table-column>
-        <el-table-column label="天气" width="150">
-          <template slot-scope="scope">
-            <i class="el-icon-sunny" v-if="scope.row.conditionDay.indexOf('晴') > 0"></i>
-            <i class="el-icon-heavy-rain" v-else-if="scope.row.conditionDay.indexOf('雨') > 0"></i>
-            <i class="el-icon-lightning" v-else-if="scope.row.conditionDay.indexOf('雷') > 0"></i>
-            <i class="el-icon-cloudy"
-              v-else-if="scope.row.conditionDay.indexOf('云') > 0 || scope.row.conditionDay.indexOf('阴') > -1"></i>
-            <i class="el-icon-cloudy" v-else-if="scope.row.conditionDay.indexOf('阴') > 0"></i>
-            <i class="el-icon-sunny" v-else></i>
 
-            <span style="margin-left: 10px">{{ scope.row.conditionDay }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="温度" width="180">
-          <template slot-scope="scope">
-            <!-- <i class="el-icon-time"></i> -->
-            <span style="margin-left: 10px">{{ scope.row.tempNight }}</span>
-            <span>℃</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="时间" width="180">
-          <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ scope.row.predictDate }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="关联商铺">
+        <!-- 动态表头 -->
+        <el-table-column v-for="(item, index) in dataLists" :key="index" :label="item.title" :prop="item.key"
+          width="250">
           <template slot-scope="scope">
 
-            <el-tag v-for="item in scope.row.stores">{{ item.storeName }}</el-tag>
+            <!-- {{ scope.row[item.title] }} -->
+            <div slot="reference" class="name-wrapper" v-if="scope.row[item.title]">
+              天气：<el-tag>{{ scope.row[item.title].conditionDay }}</el-tag>
+              <i class="el-icon-d-arrow-right"></i>
+              <el-tag>{{ scope.row[item.title].conditionNight }}</el-tag>
+              <br>
+              温度：<el-tag>{{ scope.row[item.title].tempNight }}℃</el-tag>
+              <i class="el-icon-d-arrow-right"></i> <el-tag>
+                {{ scope.row[item.title].tempDay }}℃</el-tag>
+              <br>
+              湿度：<el-tag>{{ scope.row[item.title].humidity }}</el-tag>
+            </div>
+            <!-- <span style="margin-left: 10px">{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</span> -->
           </template>
         </el-table-column>
-        <!-- <el-table-column label="操作">
-          操作
+        
+        <el-table-column label="操作" fixed="right" width="150">
           <template slot="header" slot-scope="scope">
-            <el-input v-model="search.name" @input="getList()" size="mini" placeholder="输入搜索的城区" />
+            操作
           </template>
-        </el-table-column> -->
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="onpropDialog(scope.row)">查看视图</el-button>
+          </template>
+        </el-table-column>
       </el-table>
-
 
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
         :current-page="search.current" :page-sizes="[10, 20, 30, 100]" :page-size="search.size"
         layout="total, sizes, prev, pager, next, jumper" :total="search.total">
       </el-pagination>
     </div>
+    <el-dialog title="新增" :visible.sync="addDialogVisible" width="30%">
+      <el-form :model="fromData" :rules="rules" ref="fromData" :inline="true" label-width="80px">
+        <el-form-item label="地区" prop="cityId">
+          <el-cascader placeholder="试试搜索：安徽" v-model="fromData.cityId" :options="optionsCityt" filterable clearable
+            :props="{ emitPath: false }"></el-cascader>
+        </el-form-item>
+        <br>
+        <el-button type="primary" @click="submitForm('fromData')">立即创建</el-button>
+        <el-button @click="resetForm('fromData')">重置</el-button>
+      </el-form>
+    </el-dialog>
+    <el-dialog :visible.sync="propDialog" 
+     class="customs">
+      <SYS v-if="propDialog" :propData="propData"></SYS>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { addStoreCityRelations, deleteStoreCityRelations, updStoreCity, getWeatherStoreCityList } from '@/api/sy'
+import { getAllCityDataVoList, getCityDataWeather, addCityData, updWeatherCityData, getAllByCityVoList } from '@/api/sy'
+import SYS from "@/views/user/sy.vue"
 export default {
+  components:{SYS},
   name: '城市天气',
   data() {
     return {
+      listLoading: true,
+      propDialog:false,
+      propData:{},
+      // 原始数据
+      data: [],
+      // 表头数据
+      dataLists: [
+        { title: 'Population', key: 'population' },
+        { title: 'Area', key: 'area' },
+      ],
+      // 表格数据
+      tableData: [],
       fromData: {
-        storeID: null,
-        storeName: '',
-        cityID: null,
-        detailedAddress: '',
-      },
-      listLoading: false,
-      search: {
-        // storeID: '',
-        name: '',
-        current: 0,
-        size: 10,
-        total: 0,
+        cityId: null,
       },
       rules: {
-        storeName: [
-          { required: true, message: '商铺名称', trigger: 'blur' },
-        ],
-        cityID: [
+        cityId: [
           { required: true, message: '请选择活动区域', trigger: 'change' }
         ]
       },
 
-      updFrom: {
-        storeID: 2,
-        storeName: '测试',
-        cityID: '2',
-        detailedAddress: '一只蛆ei',
+      search: {
+        id: '',
+        name: '',
+        startDate: '',
+        endDate: '',
+        pickerDate: null,
+        current: 0,
+        size: 10,
+        total: 0,
       },
+      addDialogVisible: false,
       optionsCityt: [],
-      chart: null,
-      tableData: [],
+      optionsCitytData: [],
+      getListData: {},
     };
   },
 
-
   async created() {
-    await this.getList();
+    // await this.getList();
     // await this.ongetAllByCityVoList();
-  },
-  mounted() {
-    // this.initChart();
+    await this.getList();
+    await this.ongetAllCityDataVoList();
+    await this.ongetAllByCityVoList();
   },
   methods: {
-    onaddStoreCityRelations() {
-      addStoreCityRelations(this.fromData).then((res) => {
-      }).finally(() => {
-        this.getList()
-      })
-    },
-    getList() {
+    async getList() {
       this.listLoading = true
-      getWeatherStoreCityList(this.search).then((res) => {
-        console.log(res);
-        this.tableData = res.data.records
+      getCityDataWeather(this.search).then((res) => {
+        this.tableData = []
+        this.dataLists = []
+        this.data = res.data.data
         this.search.total = res.data.total
-      }).finally(() => {
-        // this.initChart()
-        this.listLoading = false
-      })
-    },
-    ondeleteStoreCityRelations(id) {
-      deleteStoreCityRelations(id).then((res) => {
+        this.data.forEach((item, index) => {
+          var itemData = {}
+          itemData["cityId"] = item.cityId
+          itemData["city"] = item.city
+          itemData["municipal"] = item.municipal
+          itemData["provincial"] = item.provincial
+          itemData["data"] = item.dataLists
+          item.dataLists.forEach(items => {
+            itemData[items.predictDate] = {
+              conditionDay: items.conditionDay,
+              conditionNight: items.conditionNight,
+              humidity: items.humidity,
+              predictDate: items.predictDate,
+              tempDay: items.tempDay,
+              tempNight: items.tempNight,
+            }
 
+            //动态时间表头，因此只需要一次
+            if (index == 0) {
+              var dataLists = {
+                title: items.predictDate,
+                key: items.predictDate
+              }
+
+              this.dataLists.push(dataLists)
+            }
+          })
+          this.tableData.push(itemData)
+        });
+        console.log(this.tableData);
       }).finally(() => {
-        this.getList()
+        this.listLoading = false
+        // this.getList()
       })
     },
-    onupdStoreCity() {
-      updStoreCity().then((res) => {
+
+    //获取正在使用的城市数据
+    ongetAllCityDataVoList() {
+      getAllCityDataVoList().then((res) => {
+        this.optionsCitytData = res.data
+      }).finally(() => {
+        // this.fromData.cityID = 1547
+      })
+    },
+
+    //获取墨迹城市数据
+    ongetAllByCityVoList() {
+      getAllByCityVoList().then((res) => {
+        this.optionsCityt = res.data
+      }).finally(() => {
+      })
+    },
+    // 新增使用城市
+    onaddCityData() {
+      addCityData(this.fromData).then((res) => {
         if (res.code == 0) {
+          this.resetForm("fromData")
           this.$message({
             message: '成功',
             type: 'success'
           });
-        } else {
-
         }
       }).finally(() => {
-        this.getList()
+        // this.getList()
       })
+    },
+    //打开试图
+    onpropDialog(val){
+      this.propDialog=true;
+      this.propData=val
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.onaddStoreCityRelations()
-          // alert('submit!');
-          console.log(this.fromData);
-          console.log(this.fromData.cityID);
+          this.onaddCityData()
         } else {
           console.log('error submit!!');
           return false;
@@ -215,14 +253,57 @@ export default {
       this.search.current = val
       this.getList()
     },
-  },
-  // watch: {
-  //   search(newValue, preValue) {
-  //     this.getList()
-  //   },
-  // },
-  beforeDestroy() {
+    onupdWeatherCityData() {
+      updWeatherCityData().then((res) => {
+        if (res.code == 0) {
+          this.$message({
+            message: '成功',
+            type: 'success'
+          });
+        } else {
 
+        }
+      }).finally(() => {
+        // this.getList()
+      })
+    },
+  },
+  watch: {
+    '$route.query.id': {
+      immediate: true,
+      handler(newId,oldVal) {
+        console.log(newId,oldVal);
+        if(newId!=oldVal){
+          this.search.id=newId;
+          this.getList()
+        }
+      }
+    },
+    'search.pickerDate'(newVal, oldVal) {
+      if (newVal) {
+        const dateArray = newVal.map(dateTime => {
+          const date = new Date(dateTime);
+          return date.toISOString().split('T')[0];
+        });
+        this.search.startDate = dateArray[0]
+        this.search.endDate = dateArray[1]
+        // console.log(dateArray);
+      }
+      
+    },
+    // search: {
+    //   handler(newVal, oldVal) {
+    //     // console.log(newVal.pickerDate.length);
+    //     if (newVal.pickerDate) {
+    //       const dateArray = newVal.pickerDate.map(dateTime => {
+    //         const date = new Date(dateTime);
+    //         return date.toISOString().split('T')[0];
+    //       });
+    //       console.log(dateArray);
+    //     }
+    //   },
+    //   deep: true // 深度监听
+    // }
   }
 };
 </script>
@@ -230,13 +311,17 @@ export default {
 
 <style>
 .sortable-ghost {
-  opacity: 0.8;
-  color: #fff !important;
-  background: #42b983 !important;
+opacity: 0.8;
+color: #fff !important;
+background: #42b983 !important;
 }
 </style>
 
 <style lang="scss" scoped>
+.customs {
+  // background: url('../../impage/weather.jpg') no-repeat center center;
+  // background-size: cover;
+}
 .app-container {
   background-color: #f7f8fc;
 
@@ -266,4 +351,3 @@ export default {
   margin-top: 15px;
 }
 </style>
-

@@ -9,12 +9,12 @@
                 <el-input v-model="ruleForm.userName" />
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input v-model="ruleForm.password" />
+                <el-input v-model="ruleForm.password"  type="password"/>
             </el-form-item>
             <el-form-item label="申请角色" prop="roleList">
-                <el-select v-model="ruleForm.roleList" placeholder="please select your zone" multiple @visible-change="on_getNewRole()"
+                <el-select v-model="ruleForm.roleList" :loading="roleLoading" placeholder="please select your zone" multiple @visible-change="on_getNewRole()"
                     style="width:300px">
-                    <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value" />
+                    <el-option v-for="item in roleList" :loading="roleLoading" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -36,6 +36,7 @@ export default {
         return {
             dialogStatus: 'create',
             dialogFormVisible: [],
+            roleLoading:true,
             ruleForm: {
                 userNo: '',
                 userName: '',
@@ -88,6 +89,7 @@ export default {
             });
         },
         on_getNewRole(){
+            this.roleLoading=true
             getNewRole(this.searchRole).then((res)=>{
                 this.roleList = res.data.roleList.map(item => ({
                     ...item,
@@ -96,6 +98,8 @@ export default {
                     label: item.name,
                     name: undefined,  // 可选，如果不希望在模板中显示
                 }));
+            }).finally(()=>{
+                this.roleLoading=false
             })
         },
         submitForm(formName) {

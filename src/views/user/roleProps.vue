@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span>{{ propRoleID }}</span>
+    <!-- <span>{{ propRoleID }}</span> -->
     <el-tree
       :data="data"
       show-checkbox
@@ -24,7 +24,7 @@
       <el-button @click="setCheckedNodes">通过 node 设置</el-button>
       <el-button @click="setCheckedKeys">通过 key 设置</el-button>
       <el-button @click="resetChecked">清空</el-button> -->
-      <el-button @click="adds">adds</el-button>
+      <el-button @click="adds">保存</el-button>
     </div>
   </div>
 </template>
