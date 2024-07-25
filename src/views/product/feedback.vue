@@ -190,7 +190,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth(list, 'skuId', 'skuId')" />
-        <el-table-column align="left" label="TRS编号" prop="rtsNo" :min-width="flexColumnWidth(list, 'RTS编号', 'rtsNo')" />
+        <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')" />
         <el-table-column
           align="left"
           label="订单类型"

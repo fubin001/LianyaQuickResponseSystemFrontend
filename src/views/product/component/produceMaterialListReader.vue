@@ -93,11 +93,20 @@
           <el-table-column prop="stateDescription" label="状态" :min-width="flexColumnWidth(useBomList, '生产状态生产状态', 'stateDescription')">
             <template slot-scope="{row}">
               <el-button
-                v-if="row.ready"
+                v-if="row.ready && !row.over"
                 size="mini"
-                style="color: #244496; border: none"
+                style="color: indianred; border: none"
                 icon="el-icon-arrow-right"
                 @click="handleForwardProduceState(row)"
+              >
+                {{ row.stateDescription }}
+              </el-button>
+              <el-button
+                v-else-if="row.ready && row.over"
+                size="mini"
+                style="color: green; border: none"
+                icon="el-icon-arrow-right"
+                disabled
               >
                 {{ row.stateDescription }}
               </el-button>
@@ -239,7 +248,8 @@ export default {
         '4': 'node-finish-supply',
         '5': 'node-not-confirm',
         '6': 'node-producing',
-        '7': 'node-finish-produce'
+        '7': 'node-finish-produce',
+        '8': 'node-finish-produce'
       }
     }
   },
