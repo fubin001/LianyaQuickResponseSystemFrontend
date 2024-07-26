@@ -8,7 +8,8 @@ const state = {
   avatar: '',
   introduction: '',
   roles: [],
-  menus:[],
+  menus: [],
+  currentPath: '/',
 }
 
 const mutations = {
@@ -25,18 +26,20 @@ const mutations = {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
-    console.log("setRoles:",roles);
+    console.log("setRoles:", roles);
     state.roles = roles
   },
-  SET_MENUS:(state, menus)=>{
+  SET_MENUS: (state, menus) => {
     state.menus = menus
+  },
+  SET_CURRENT_PATH(state, path) {
+    state.currentPath = path;
   },
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    console.log('test')
     const { userNo, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ userNo: userNo.trim(), password: password }).then(response => {
@@ -60,7 +63,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles,menus, username,roleList } = data
+        const { roles, menus, username, roleList } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -76,9 +79,9 @@ const actions = {
         // });
         // console.log("75user",newSale);
         // roles=["admin"]
-        
-        console.log("80newSale",roles);
-        commit('SET_MENUS',menus)
+
+        // console.log("80newSale", roles);
+        commit('SET_MENUS', menus)
         commit('SET_ROLES', roles)
         commit('SET_NAME', username)
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
@@ -138,7 +141,13 @@ const actions = {
 
     // reset visited views and cached views
     dispatch('tagsView/delAllViews', null, { root: true })
-  }
+  },
+
+
+
+  setCurrentPath({ commit }, path) {
+    commit('SET_CURRENT_PATH', path);
+  },
 }
 
 export default {

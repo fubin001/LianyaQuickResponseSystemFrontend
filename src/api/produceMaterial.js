@@ -24,3 +24,38 @@ export function getProduceMaterialUseBomList(feedbackOrderId) {
 export function exportProduceMaterialUseBomList(feedbackOrderId) {
   return downloadFile('/produceMaterial/exportFeedbackOrderUseBomInfoExcel/' + feedbackOrderId, {}, '物料详情.xlsx')
 }
+
+
+export function updIDSupplyState(data) {
+  return request({
+    url: '/produceMaterial/updIDSupplyState',
+    method: 'post',
+    data: data
+  })
+}
+
+export function updIDProduceState(data) {
+  return request({
+    url: '/produceMaterial/updIDProduceState',
+    method: 'post',
+    data: data
+  })
+}
+
+export function updFeedbackOrderIDState(data) {
+  return request({
+    url: '/produceMaterial/updFeedbackOrderIDState',
+    method: 'post',
+    data: data
+  })
+}
+
+// 初始化补货状态
+export function initializeSupplyState(data) {
+  return request({
+    url: '/produceMaterial/initializeSupplyState',
+    method: 'post',
+    data: data
+  })
+}
+

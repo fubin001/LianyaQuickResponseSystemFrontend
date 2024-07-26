@@ -1,13 +1,21 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <span>
+      <!-- <span>
         TRS编号：
         <el-input
           v-model="listQuery.trsNo"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
+      </span> -->
+
+      <span>
+        TRS编号：
+        <el-select v-model="listQuery.trsNo" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
+          allow-create filterable>
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
       </span>
 
       <span style="float: right">
@@ -84,6 +92,13 @@
 
 <script>
 import { getBrandEnum } from '@/api/enum'
+import {
+  DistinguishSizeEnum,
+  getBomCreateTypeEnumList,
+  getSkuIdEnumList,
+  getTrsNoEnumList,
+  LayerEnumList
+} from '@/api/enum'
 import { exportMaterialOrder, queryMaterialOrder } from '@/api/materialOrder'
 import { flexColumnWidth } from '@/common/util'
 import { exportStorageDetail, queryStorageDetail } from '@/api/storage'
@@ -101,6 +116,7 @@ export default {
       size: 10,
       list: null,
       total: null,
+      trsEnumList:[],
       listLoading: true,
       listQuery: {
         trsNo: this.$route.query.trsNo || '',
@@ -112,6 +128,7 @@ export default {
   },
   async created() {
     const { data } = await getBrandEnum()
+    await this.initTrsList()
     this.brands = data
     this.getList(1)
   },
@@ -126,6 +143,12 @@ export default {
       }
     },
 
+
+    async initTrsList() {
+      await getTrsNoEnumList().then(res => {
+        this.trsEnumList = res?.data ?? []
+      })
+    },
     async getList(page) {
       console.log(this.page, this.size)
       this.listQuery.page = page
