@@ -1,21 +1,34 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <span>
-        TRS编号：<el-input
+      <span>
+        TRS编号：
+        <el-select
           v-model="listQuery.trsNo"
-          placeholder="请输入TRS编号"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span>
+      <span>
+        颜色代码：
+        <el-input
+          v-model="listQuery.colorCode"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
         />
       </span>
-       -->
       <span>
-        TRS编号：
-        <el-select v-model="listQuery.trsNo" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
-          allow-create filterable>
-          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
-        </el-select>
+        尺寸：
+        <el-input
+          v-model="listQuery.sizeCode"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
 
       <span style="float: right">
@@ -155,7 +168,7 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="left" label="操作" width="350px">
+        <el-table-column align="left" label="操作" width="400px">
           <template slot-scope="{row}">
             <el-button
               size="mini"
@@ -191,23 +204,23 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="TRS编号" prop="trsNo" show-overflow-tooltip>
+        <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-link type="primary" @click="goToPage(scope.row)">
               {{ scope.row.trsNo }}
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="颜色代码" prop="colorCode" show-overflow-tooltip />
-        <el-table-column align="left" label="颜色描述" prop="colorDescription" show-overflow-tooltip />
-        <el-table-column align="left" label="尺寸" prop="size" show-overflow-tooltip />
-        <el-table-column align="left" label="单位" prop="unitName" show-overflow-tooltip />
-        <el-table-column align="left" label="库存" prop="quantity" show-overflow-tooltip />
-        <el-table-column align="left" label="预留库存" prop="preserveQuantity" show-overflow-tooltip />
-        <el-table-column align="left" label="可用库存" prop="availableQuantity" show-overflow-tooltip />
-        <el-table-column align="left" label="安全库存" prop="safeQuantity" show-overflow-tooltip />
-        <el-table-column align="left" label="采购中库存" prop="buyingQuantity" show-overflow-tooltip />
-        <el-table-column align="left" label="生产中库存" prop="producingQuantity" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list, '颜色代码', 'colorCode')" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色描述" prop="colorDescription" :min-width="flexColumnWidth(list, '颜色描述', 'colorDescription')" show-overflow-tooltip />
+        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth(list, '尺寸', 'size')" show-overflow-tooltip />
+        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth(list, '单位', 'unitName')" show-overflow-tooltip />
+        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth(list, '库存', 'quantity')" show-overflow-tooltip />
+        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth(list, '预留库存', 'preserveQuantity')" show-overflow-tooltip />
+        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth(list, '可用库存', 'availableQuantity')" show-overflow-tooltip />
+        <el-table-column align="left" label="安全库存" prop="safeQuantity" :min-width="flexColumnWidth(list, '安全库存', 'safeQuantity')" show-overflow-tooltip />
+        <el-table-column align="left" label="补货中库存" prop="buyingQuantity" :min-width="flexColumnWidth(list, '补货中库存', 'buyingQuantity')" show-overflow-tooltip />
+        <el-table-column align="left" label="生产中库存" prop="producingQuantity" :min-width="flexColumnWidth(list, '生产中库存', 'producingQuantity')" show-overflow-tooltip />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -237,13 +250,13 @@ import { getTrsNoEnumList } from '@/api/bom'
 import { flexColumnWidth } from '@/common/util'
 
 export default {
-  name: '库存数据',
+  name: '',
   data() {
     return {
       addForm: {},
       editForm: {},
       storageForm: {},
-      trsEnumList:[],// 搜索框 数据
+      trsEnumList: [], // 搜索框 数据
       addDialogVisible: false,
       editDialogVisible: false,
       storageDialogVisible: false,

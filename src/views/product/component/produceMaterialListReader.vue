@@ -39,37 +39,66 @@
             prop="useQuantity"
             label="用量(单件)"
             :min-width="flexColumnWidth(useBomList, '单位用量', 'useQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.useQuantity).toFixed(2) }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="totalQuantity"
             label="数量"
             :min-width="flexColumnWidth(useBomList, '数量', 'totalQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.totalQuantity).toFixed(0) }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="totalUseQuantity"
             label="总用量"
             :min-width="flexColumnWidth(useBomList, '总用量', 'totalUseQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.totalUseQuantity).toFixed(2) }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="storageQuantity"
             label="锁定库存数量"
             :min-width="flexColumnWidth(useBomList, '锁定库存数量', 'storageQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.storageQuantity).toFixed(2) }}
+            </template>
+          </el-table-column>
+
           <el-table-column
             prop="needFeedbackQuantity"
             label="快反数量"
             :min-width="flexColumnWidth(useBomList, '快反数量', 'needFeedbackQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.needFeedbackQuantity).toFixed(2) }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="useStorageQuantity"
             label="锁定库存用量"
             :min-width="flexColumnWidth(useBomList, '锁定库存用量', 'useStorageQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.useStorageQuantity).toFixed(2) }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="useNeedFeedbackQuantity"
             label="快反用量"
             :min-width="flexColumnWidth(useBomList, '快反用量', 'useNeedFeedbackQuantity')"
-          />
+          >
+            <template slot-scope="{row}">
+              {{ Number(row.useNeedFeedbackQuantity).toFixed(2) }}
+            </template>
+          </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="生产节点" name="second">
