@@ -271,14 +271,17 @@ export default {
       treeConfig: { nodeWidth: 150, nodeHeight: 80, levelHeight: 200 },
       nodeClasses: {
         '0': 'node-not-confirm',
-        '1': 'node-supplying',
-        '2': 'node-finish-supply',
-        '3': 'node-producing',
-        '4': 'node-finish-supply',
-        '5': 'node-not-confirm',
-        '6': 'node-producing',
-        '7': 'node-finish-produce',
-        '8': 'node-finish-produce'
+        '1': 'node-not-confirm',
+        '1000': 'node-not-confirm',
+        '1001': 'node-supplying',
+        '1002': 'node-finish-supply',
+        '2000': 'node-not-confirm',
+        '2001': 'node-finish-supply',
+        '3000': 'node-not-confirm',
+        '3001': 'node-finish-supply',
+        '3002': 'node-producing',
+        '3003': 'node-finish-produce',
+        '10000': 'node-finish-produce'
       }
     }
   },

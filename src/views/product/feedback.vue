@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <span>
-        TRS编号：<el-input
-          v-model="listQuery.skuId"
-          placeholder="TRS编号"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span> -->
 
       <span>
         TRS编号：
@@ -153,39 +145,22 @@
         <el-table-column align="center" label="ID" prop="id" width="50" />
         <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <!--            <span v-if="row.orderState < 2">-->
-            <!--              <el-button-->
-            <!--                size="mini"-->
-            <!--                style="color: #244496; border: none"-->
-            <!--                icon="el-icon-edit-outline"-->
-            <!--                @click="popProduceMaterialList(row.skuId, row.id)"-->
-            <!--              >-->
-            <!--                配置物料-->
-            <!--              </el-button>-->
-            <!--            </span>-->
             <el-button
               size="mini"
               style="color: #244496; border: none"
               icon="el-icon-search"
               @click="popProduceMaterialListReader(row.skuId, row.id)"
             >
-              查看物料
+              生产控制
             </el-button>
-            <!--              <el-button-->
-            <!--                size="mini"-->
-            <!--                style="color: #244496; border: none"-->
-            <!--                icon="el-icon-arrow-right"-->
-            <!--                @click="executeFeedbackOrder(row)"-->
-            <!--              >-->
-            <!--                执行反馈-->
-            <!--              </el-button>-->
             <el-button
               size="mini"
-              style="color: #244496; border: none"
+              style="color:gray; border: none"
               icon="el-icon-circle-check"
+              disabled
               @click="confirmFeedbackOrder(row)"
             >
-              生产完成
+              {{ row.produceStateDescription }}
             </el-button>
           </template>
         </el-table-column>
@@ -613,7 +588,7 @@ export default {
           }
         })
       } catch (error) {
-
+        console.log(error)
       }
     },
 
