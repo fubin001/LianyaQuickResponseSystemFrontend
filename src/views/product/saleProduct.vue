@@ -280,7 +280,7 @@
     <el-dialog :visible.sync="centerDialogVisible" title="路由跳转" width="500" align-center>
       <el-button @click="goToDetails(1)">销售数据</el-button>
       <el-button @click="goToDetails(2)">采购数据</el-button>
-      <el-button @click="goToDetails(3)" disabled title="生产订单尚未完善查询功能">生产订单</el-button>
+      <el-button @click="goToDetails(3)">生产订单</el-button>
     </el-dialog>
   </div>
 </template>

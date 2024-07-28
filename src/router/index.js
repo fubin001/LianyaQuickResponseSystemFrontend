@@ -48,7 +48,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/skuProduct',
+    redirect: '/home',
     children: [
       {
         path: '/404',

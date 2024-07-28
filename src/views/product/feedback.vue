@@ -384,7 +384,8 @@ import {
   confirmFeedback,
   executeFeedback,
   exportFeedbackOrder,
-  queryFeedbackOrder
+  queryFeedbackOrder,
+  getProduceTree,
 } from '@/api/feedback'
 import ProduceMaterialList from '@/views/product/component/produceMaterialList.vue'
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
@@ -394,7 +395,7 @@ import {
   updFeedbackOrderIDState, getProduceMaterialUseBomList, initializeSupplyState
 } from '@/api/produceMaterial'
 export default {
-  name: '',
+  name: '生产订单',
   components: { ProduceMaterialListReader, ProduceMaterialList },
   data() {
     return {
@@ -444,6 +445,15 @@ export default {
     await this.initTrsList()
     this.getList(1)
   },
+  watch: {
+    '$route.query.skuId': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.skuId = newId ? newId: ''
+        this.getList(1)
+      }
+    }
+  },
   methods: {
     flexColumnWidth,
     exportFeedbackOrder,
@@ -468,7 +478,7 @@ export default {
     // 全部完成
     async onupdFeedbackOrderIDState(row) {
       console.log(row)
-      await updFeedbackOrderIDState({ feedbackOrderId: row.id, supplyState: 1, produceState: 1 }).then((res) => {
+      await updFeedbackOrderIDState({ produceOrderId: row.id, state: 7, }).then((res) => {
       }).finally(() => {
         this.getList(1)
       })
@@ -558,13 +568,20 @@ export default {
     // 确认到货
     async confirmFeedbackOrder(row) {
       var hasZero = false
-      await getProduceMaterialUseBomList(row.id).then((res) => {
-        console.log(res.data)
-        hasZero = res.data.some(item => item['produceState'] <= 0 || item['supplyState'] <= 0)
-      }).finally(() => {
-        // console.log(hasZero);
+      await getProduceTree(row.id).then(res => {
+        var nodeList = res.data?.nodeList ?? []
+        console.log(nodeList)
+        // console.log();
+        hasZero = nodeList.some(item => item.state != 7)
       })
+      // await getProduceMaterialUseBomList(row.id).then((res) => {
+      //   console.log(res.data)
+      //   hasZero = res.data.some(item => item.state != 7)
+      // }).finally(() => {
+      //   // console.log(hasZero);
+      // })
       console.log(hasZero)
+      // return;
       try {
         if (hasZero) {
           await this.$confirm('请查看物料确认所有物流均已完成生产和补货', {
