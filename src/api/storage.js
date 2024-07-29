@@ -61,3 +61,12 @@ export function getRecordTypeList() {
     method: 'get'
   })
 }
+
+export function refreshStorage() {
+  return request({
+    url: '/toolkit/refreshStorage',
+    method: 'get'
+  })
+}
+
+

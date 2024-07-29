@@ -58,6 +58,12 @@
         >
           下载
         </el-button>
+        <el-button
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          style="margin: 5px 0px 5px 0; background-color: #244496" @click="refreshStorage()">更新库存</el-button>
+      
       </span>
     </div>
 
@@ -244,6 +250,7 @@ import {
   modifyStorage,
   operateStorage,
   queryStorage,
+  refreshStorage,
   removeStorage
 } from '@/api/storage'
 import { getTrsNoEnumList } from '@/api/bom'
@@ -294,6 +301,7 @@ export default {
   methods: {
     flexColumnWidth,
     exportStorage,
+    refreshStorage,
     reset() {
       this.listQuery = {
         page: 1,
