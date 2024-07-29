@@ -1,20 +1,52 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <span>
+      <span>
         TRS编号：
-        <el-input
+        <el-select
           v-model="listQuery.trsNo"
           style="width: 150px; margin: 5px 8px 5px 0"
           class="filter-item"
-        />
-      </span> -->
-
-      <span>
-        TRS编号：
-        <el-select v-model="listQuery.trsNo" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
-          allow-create filterable>
+          clearable
+          allow-create
+          filterable
+        >
           <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span>
+      <span>
+        颜色代码：
+        <el-input
+          v-model="listQuery.colorCode"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        尺寸：
+        <el-input
+          v-model="listQuery.sizeCode"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
+      </span>
+      <span>
+        订单类型：
+        <el-select
+          v-model="listQuery.orderType"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option label="备料单" value="备料单" />
+          <el-option label="反馈订单" value="反馈订单" />
+          <el-option label="生产订单" value="生产订单" />
+          <el-option label="补货订单" value="补货订单" />
+          <el-option label="采购订单" value="采购订单" />
+          <el-option label="生产节点" value="生产节点" />
+          <el-option label="人工操作" value="人工操作" />
         </el-select>
       </span>
 
@@ -65,15 +97,15 @@
         style="width: 100%"
       >
         <el-table-column align="center" type="index" width="50" :index="Nindex" />
-        <el-table-column align="left" label="TRS编号" prop="trsNo" show-overflow-tooltip />
-        <el-table-column align="left" label="颜色" prop="colorCode" show-overflow-tooltip />
-        <el-table-column align="left" label="颜色描述" prop="colorDescription" show-overflow-tooltip />
-        <el-table-column align="left" label="尺寸" prop="size" show-tooltip-when-overflow />
-        <el-table-column align="left" label="订单类型" prop="orderType" show-overflow-tooltip />
-        <el-table-column align="left" label="订单ID" prop="outerId" show-overflow-tooltip />
-        <el-table-column align="left" label="记录类型" prop="recordType" show-overflow-tooltip />
-        <el-table-column align="left" label="记录时间" prop="recordDateTime" show-overflow-tooltip />
-        <el-table-column align="left" label="数量" prop="quantity" show-overflow-tooltip />
+        <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色" prop="colorCode" :min-width="flexColumnWidth(list, '颜色代码', 'colorCode')" show-overflow-tooltip />
+        <el-table-column align="left" label="颜色描述" prop="colorDescription" :min-width="flexColumnWidth(list, '颜色描述', 'colorDescription')" show-overflow-tooltip />
+        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth(list, '尺寸', 'size')" show-tooltip-when-overflow />
+        <el-table-column align="left" label="记录来源" prop="orderType" :min-width="flexColumnWidth(list, '记录来源', 'orderType')" show-overflow-tooltip />
+        <el-table-column align="left" label="关联ID" prop="outerId" :min-width="flexColumnWidth(list, '关联ID', 'outerId')" show-overflow-tooltip />
+        <el-table-column align="left" label="操作类型" prop="recordType" :min-width="flexColumnWidth(list, '操作类型', 'recordType')" show-overflow-tooltip />
+        <el-table-column align="left" label="记录时间" prop="recordDateTime" :min-width="flexColumnWidth(list, '记录时间', 'recordDateTime')" show-overflow-tooltip />
+        <el-table-column align="left" label="用量" prop="quantity" :min-width="flexColumnWidth(list, '用量', 'quantity')" show-overflow-tooltip />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -93,18 +125,14 @@
 <script>
 import { getBrandEnum } from '@/api/enum'
 import {
-  DistinguishSizeEnum,
-  getBomCreateTypeEnumList,
-  getSkuIdEnumList,
-  getTrsNoEnumList,
-  LayerEnumList
+  getTrsNoEnumList
 } from '@/api/enum'
-import { exportMaterialOrder, queryMaterialOrder } from '@/api/materialOrder'
+import { exportMaterialOrder } from '@/api/materialOrder'
 import { flexColumnWidth } from '@/common/util'
 import { exportStorageDetail, queryStorageDetail } from '@/api/storage'
 
 export default {
-  name: '库存明细',
+  name: '',
   data() {
     return {
       dialogStatus: 'create',
@@ -116,7 +144,7 @@ export default {
       size: 10,
       list: null,
       total: null,
-      trsEnumList:[],
+      trsEnumList: [],
       listLoading: true,
       listQuery: {
         trsNo: this.$route.query.trsNo || '',
@@ -142,7 +170,6 @@ export default {
         size: 10
       }
     },
-
 
     async initTrsList() {
       await getTrsNoEnumList().then(res => {
