@@ -356,7 +356,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="skuId" prop="skuId" :width="flexColumnWidth(list,'skuId', 'skuId')" />
-        <el-table-column align="left" label="TRS 编号" prop="trsNo" :min-width="flexColumnWidth(list,'TRS 编号', 'trs')" />
+        <el-table-column align="left" label="TRS 编号" prop="trsNo" :min-width="flexColumnWidth(list,'TRS 编号', 'trsNo')" />
         <el-table-column align="left" label="创建类型" prop="createType" :min-width="flexColumnWidth(list,'创建类型', 'createType')" />
         <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list,'颜色代码', 'colorCode')" />
         <el-table-column align="left" label="颜色" prop="color" :min-width="flexColumnWidth(list, '颜色', 'color')" />
@@ -428,7 +428,7 @@ import {
 import { flexColumnWidth } from '@/common/util'
 
 export default {
-  name: 'BOM数据',
+  name: 'BOM',
   components: { BomTree },
   data() {
     return {
@@ -443,7 +443,7 @@ export default {
       createTypeEnumList: [],
       trsEnumList: [],
       skuIdEnumList: [],
-      bomTreeDialogVisble:false,
+      bomTreeDialogVisble: false,
       page: 1,
       size: 10,
       list: null,
