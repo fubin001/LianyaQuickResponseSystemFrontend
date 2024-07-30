@@ -132,7 +132,7 @@ import { flexColumnWidth } from '@/common/util'
 import { exportStorageDetail, queryStorageDetail } from '@/api/storage'
 
 export default {
-  name: '',
+  name: '库存明细',
   data() {
     return {
       dialogStatus: 'create',
@@ -152,6 +152,15 @@ export default {
         size: 10
       },
       brands: []
+    }
+  },
+  
+  watch: {
+    '$route.query.trsNo': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.trsNo= newId ? newId : ''
+      }
     }
   },
   async created() {
