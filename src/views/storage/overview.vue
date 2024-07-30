@@ -257,7 +257,7 @@ import { getTrsNoEnumList } from '@/api/bom'
 import { flexColumnWidth } from '@/common/util'
 
 export default {
-  name: '',
+  name: '库存数据',
   data() {
     return {
       addForm: {},
@@ -297,6 +297,14 @@ export default {
     await this.initTrsList()
     await this.initEnums()
     this.getList(1)
+  },
+  watch: {
+    '$route.query.trsNo': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.trsNo= newId ? newId : ''
+      }
+    }
   },
   methods: {
     flexColumnWidth,

@@ -187,6 +187,18 @@ export const asyncRoutes = [
         component: () => import('@/views/color/index'),
         name: '颜色数据',
         meta: { title: '颜色数据', icon: 'edit', roles:['admin','data','data_colour'] }
+      },
+      {
+        path: '/store/index',
+        component: () => import('@/views/store/index'),
+        name: '商铺',
+        meta: { title: '商铺', icon: 'shopping', roles:['admin']}
+      },
+      {
+        path: '/weather/index',
+        component: () => import('@/views/weather/index'),
+        name: '城市天气',
+        meta: { title: '城市天气', icon: 'international', roles:['admin']}
       }
     ]
   },
@@ -225,40 +237,59 @@ export const asyncRoutes = [
       }
     ]
   },
+
   {
-    path: '/store',
+    path: '/system',
     component: Layout,
-    redirect: '/store/index',
+    redirect: '/system/index',
     meta: {
-      title: '商铺',
-      icon: 'shopping',
+      title: '系统管理',
+      icon: 'password',
     },
     children: [
       {
-        path: '/store/index',
-        component: () => import('@/views/store/index'),
-        name: '商铺',
-        meta: { title: '商铺', icon: 'shopping', roles:['admin']}
-      }
+        path: '/system/index',
+        component: () => import('@/views/system/index'),
+        name: '系统管理',
+        meta: { title: '系统管理', icon: 'password', roles:['admin']}
+      },
     ]
   },
-  {
-    path: '/weather',
-    component: Layout,
-    redirect: '/weather/index',
-    meta: {
-      title: '城市天气',
-      icon: 'international',
-    },
-    children: [
-      {
-        path: '/weather/index',
-        component: () => import('@/views/weather/index'),
-        name: '城市天气',
-        meta: { title: '城市天气', icon: 'international', roles:['admin']}
-      }
-    ]
-  },
+
+  // {
+  //   path: '/store',
+  //   component: Layout,
+  //   redirect: '/store/index',
+  //   meta: {
+  //     title: '商铺',
+  //     icon: 'shopping',
+  //   },
+  //   children: [
+  //     {
+  //       path: '/store/index',
+  //       component: () => import('@/views/store/index'),
+  //       name: '商铺',
+  //       meta: { title: '商铺', icon: 'shopping', roles:['admin']}
+  //     },
+  //   ]
+  // },
+  // {
+  //   path: '/weather',
+  //   component: Layout,
+  //   redirect: '/weather/index',
+  //   meta: {
+  //     title: '城市天气',
+  //     icon: 'international',
+  //   },
+  //   children: [
+  //     {
+  //       path: '/weather/index',
+  //       component: () => import('@/views/weather/index'),
+  //       name: '城市天气',
+  //       meta: { title: '城市天气', icon: 'international', roles:['admin']}
+  //     }
+  //   ]
+  // },
   {
     path: '/sy',
     component: Layout,

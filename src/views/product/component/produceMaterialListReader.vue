@@ -1,6 +1,7 @@
 <template>
+  <div>
   <el-dialog title="物料单" :visible.sync="visible" :before-close="handleClose" width="1200px">
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName"  @tab-click="handleClick">
       <el-tab-pane label="物料需求计划" name="first">
         <div class="size-info" style="width: 100%">
           <div style="height: 2rem; line-height: 2rem; padding: 0 0.1rem;">
@@ -112,7 +113,10 @@
           <el-table-column prop="trsNo" label="TRS编号" :min-width="flexColumnWidth(useBomList, 'TRS编号', 'trsNo')">
             <template slot-scope="{row}">
               <span v-if="row.trsNo">
-                {{ row.trsNo }}
+                <el-link type="primary" @click="onDialog(row.trsNo)">
+                  {{ row.trsNo }}
+              </el-link>
+                
               </span>
               <span v-else>
                 生产汇总
@@ -173,7 +177,8 @@
       <el-tab-pane label="生产可视化" name="third">
         <div class="container">
           <vue-tree
-            style="width: 100%; height: 500px; border: 1px solid gray;overflow: scroll"
+          v-if="dialogTree"
+            style="width: 100%; height: 500px; border: 1px solid gray;overflow: scroll;"
             :dataset="produceNode"
             :config="treeConfig"
             @click="forward"
@@ -217,13 +222,18 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog :visible.sync="centerDialogVisible" append-to-body title="路由跳转" width="500" align-center>
+      <el-button @click="goToDetails(1)">库存</el-button>
+      <el-button @click="goToDetails(2)">库存明细</el-button>
+    </el-dialog>
   </el-dialog>
 
+  </div>
 </template>
 
 <script>
 import Vue from 'vue'
-
+// import BomTree from '@/views/product/component'
 import { flexColumnWidth } from '@/common/util'
 import { forwardProduceState, getFeedbackOrder, getProduceTree } from '@/api/feedback'
 import {
@@ -261,14 +271,17 @@ export default {
       sizeForm: {},
       totalQuantity: 0,
       feedbackOrder: {},
+      routerTrsNo:'',
+      centerDialogVisible:false,
       dialogVisible: false,
+      dialogTree:false,
       prepare: true,
       useBomList: [],
       activeName: 'first',
       produceNode: {},
       produceTree: {},
       produceNodeList: [],
-      treeConfig: { nodeWidth: 150, nodeHeight: 80, levelHeight: 200 },
+      treeConfig: { nodeWidth: 150, nodeHeight: 80, levelHeight: 200, },
       nodeClasses: {
         '0': 'node-not-confirm',
         '1': 'node-not-confirm',
@@ -306,6 +319,19 @@ export default {
     exportProduceMaterialUseBomList,
     flexColumnWidth,
 
+    handleClick(tab, event) {
+        console.log(tab, event);
+        if (tab.index==2) {
+          this.dialogTree=true
+        }else{
+          this.dialogTree=false
+        }
+      },
+    onDialog(trsNo) {
+      this.centerDialogVisible = true;
+      console.log(this.centerDialogVisible)
+      this.routerTrsNo = trsNo
+    },
     forward() {
       console.log('test')
     },
@@ -322,6 +348,24 @@ export default {
         }
       })
       // console.log(row);
+    },
+    
+    goToDetails(type) {
+      this.visible=false
+      this.centerDialogVisible = false
+      var paths = '/data/storage'
+      if (type == 1) {
+        paths = '/data/storage'
+      }  else {
+        paths = '/data/storageDetail'
+      }
+
+      this.$router.push({
+        path: paths,
+        query: {
+          trsNo: this.routerTrsNo
+        }
+      })
     },
     onUpdIDProduceState(row) {
       updIDProduceState({ id: row.id, produceState: 1 }).finally(() => {
