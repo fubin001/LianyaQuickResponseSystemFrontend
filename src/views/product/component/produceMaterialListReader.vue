@@ -113,7 +113,7 @@
           <el-table-column prop="trsNo" label="TRS编号" :min-width="flexColumnWidth(useBomList, 'TRS编号', 'trsNo')">
             <template slot-scope="{row}">
               <span v-if="row.trsNo">
-                <el-link type="primary" @click="onDialog(row.trsNo)">
+                <el-link type="primary" @click="onDialog(row)">
                   {{ row.trsNo }}
               </el-link>
                 
@@ -271,7 +271,12 @@ export default {
       sizeForm: {},
       totalQuantity: 0,
       feedbackOrder: {},
+      routerValue:{
       routerTrsNo:'',
+      routerColor:'',
+      routerSize:'',
+      },
+      
       centerDialogVisible:false,
       dialogVisible: false,
       dialogTree:false,
@@ -327,10 +332,12 @@ export default {
           this.dialogTree=false
         }
       },
-    onDialog(trsNo) {
+    onDialog(row) {
       this.centerDialogVisible = true;
-      console.log(this.centerDialogVisible)
-      this.routerTrsNo = trsNo
+      console.log(row)
+      this.routerValue.routerTrsNo = row.trsNo
+      this.routerValue.routerColor = row.colorCode
+      this.routerValue.routerSize = row.size
     },
     forward() {
       console.log('test')
@@ -363,7 +370,7 @@ export default {
       this.$router.push({
         path: paths,
         query: {
-          trsNo: this.routerTrsNo
+          querys: this.routerValue
         }
       })
     },

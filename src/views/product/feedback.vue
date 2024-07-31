@@ -2,8 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
 
+
       <span>
-        TRS编号：
+        skuId：
         <el-select
           v-model="listQuery.skuId"
           style="width: 150px; margin: 5px 8px 5px 0"
@@ -12,9 +13,22 @@
           allow-create
           filterable
         >
-          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>
       </span>
+      <!-- <span>
+        TRS编号：
+        <el-select
+          v-model="listQuery.trsNo"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span> -->
       <span>
         反馈类型：<el-select
           v-model="listQuery.feedbackType"
@@ -378,7 +392,7 @@
 </template>
 
 <script>
-import { getBrandEnum, getTrsNoEnumList } from '@/api/enum'
+import { getBrandEnum, getTrsNoEnumList,getSkuIdEnumList } from '@/api/enum'
 import {
   addProduceOrder,
   confirmFeedback,
@@ -419,10 +433,12 @@ export default {
       componentTypeList: ['成品', '鞋面半成品', '鞋底半成品'],
       listQuery: {
         skuId: '',
+        trsNo:'',
         page: 1,
         size: 10
       },
       trsEnumList: [], // SUKID 搜索框 数据查询
+      skuIdEnumList:[],
       finishedTrsNosList: [],
       semiFinishTrsNoList1: [],
       semiFinishTrsNoList2: [],
@@ -439,7 +455,7 @@ export default {
   },
 
   async created() {
-    this.listQuery.skuId = this.$route.query.skuId ? this.$route.query.skuId : ''
+    // this.listQuery.skuId = this.$route.query.skuId ? this.$route.query.skuId : ''
     await this.initTrsNoList()
     await this.getBrands()
     await this.initTrsList()
@@ -457,6 +473,17 @@ export default {
   methods: {
     flexColumnWidth,
     exportFeedbackOrder,
+    async initTrsList() {
+      await getTrsNoEnumList().then(res => {
+        this.trsEnumList = res?.data ?? []
+      })
+    },
+    
+    async initSkuIdList() {
+      await getSkuIdEnumList().then(res => {
+        this.skuIdEnumList = res?.data ?? []
+      })
+    },
     reset() {
       this.listQuery = {
         page: 1,
@@ -481,11 +508,6 @@ export default {
       await updFeedbackOrderIDState({ produceOrderId: row.id, state: 7, }).then((res) => {
       }).finally(() => {
         this.getList(1)
-      })
-    },
-    async initTrsList() {
-      await getTrsNoEnumList().then(res => {
-        this.trsEnumList = res?.data ?? []
       })
     },
     popProduceMaterialList(skuId, feedbackOrderId) {
