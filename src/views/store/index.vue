@@ -30,10 +30,15 @@
           style="margin: 3px 5px; background-color: #244496" @click="addDialogVisible = true">
           新增
         </el-button>
+
+        <el-button class="filter-item" type="primary" icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496" @click="apiStore">
+          同步更新商铺
+        </el-button>
       </span>
     </div>
     <div class="table-list">
-      <el-table :data="tableData" style="width: 100%" row-key="id" v-loading="listLoading"
+      <el-table :data="list" style="width: 100%" row-key="id" v-loading="listLoading"
         :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row>
         <el-table-column label="商户" width="180">
           <template slot-scope="scope">
@@ -41,7 +46,7 @@
             <span style="margin-left: 10px">{{ scope.row.storeName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="商户地址" width="180">
+        <el-table-column label="商户地址" :width="flexColumnWidth(list, 'detailedAddress', 'detailedAddress')">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>地区: {{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</p>
@@ -49,7 +54,7 @@
               <div slot="reference" class="name-wrapper">
                 <el-link type="primary" @click="onDialog(scope.row.cityID)">
                   <el-tag>{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</el-tag>
-                
+
                 </el-link>
                 <el-tag size="medium" style="margin-top: 5px;">{{ scope.row.detailedAddress }}</el-tag>
 
@@ -120,7 +125,7 @@
 </template>
 
 <script>
-import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllCityDataVoList, updStoreCity } from '@/api/sy'
+import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllCityDataVoList, apiStore, updStoreCity } from '@/api/sy'
 export default {
   name: '商铺',
   data() {
@@ -157,7 +162,7 @@ export default {
       },
       optionsCityt: [],
       chart: null,
-      tableData: [],
+      list: [],
     };
   },
 
@@ -170,6 +175,59 @@ export default {
     // this.initChart();
   },
   methods: {
+    apiStore,
+    /**
+     * el-table-column 自适应列宽
+     * @param prop_label: 表名
+     * @param table_data: 表格数据
+     */
+    flexColumnWidth(label, prop) {
+      let arr = []
+      if (this.list && this.list.length > 0) {
+        arr = this.list.map((x) => x[prop])
+      }
+      arr.push(label) // 把每列的表头也加进去算
+      // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
+      return this.getMaxLength(arr) + 20 + 'px'
+    },
+
+    getMaxLength(arr) {
+      return arr.reduce((acc, item) => {
+        if (item) {
+          const calcLen = this.getTextWidth(item)
+          if (acc < calcLen) {
+            acc = calcLen
+          }
+        }
+        return acc
+      }, 0)
+    },
+    
+    getTextWidth(str) {
+      let width = 0
+      const html = document.createElement('span')
+      html.innerText = str
+      html.className = 'getTextWidth'
+      document.querySelector('body').appendChild(html)
+      width = document.querySelector('.getTextWidth').offsetWidth
+      document.querySelector('.getTextWidth').remove()
+      return width
+    },
+    /**
+     * el-table-column 自适应列宽
+     * @param prop_label: 表名
+     * @param table_data: 表格数据
+     */
+    flexColumnWidth(label, prop) {
+      let arr = []
+      if (this.list && this.list.length > 0) {
+        arr = this.list.map((x) => x[prop])
+      }
+      arr.push(label) // 把每列的表头也加进去算
+      // 2.计算每列内容最大的宽度 + 表格的内间距（依据实际情况而定）
+      return this.getMaxLength(arr) + 20 + 'px'
+    },
+
     onaddStoreCityRelations() {
       addStoreCityRelations(this.fromData).then((res) => {
         if (res.code == 0) {
@@ -187,7 +245,7 @@ export default {
       this.listLoading = true
       getStoreCityRelationsList(this.search).then((res) => {
         console.log(res);
-        this.tableData = res.data.records
+        this.list = res.data.records
         this.search.total = res.data.total
       }).finally(() => {
         this.listLoading = false
@@ -262,7 +320,11 @@ export default {
       this.$router.push({ path: '/weather/index', query: { id: val } })
     }
   },
-
+  watch:{
+    "search.name"(newValue, preValue){
+      this.search.current=1
+    }
+  },
   // watch: {
   //   search(newValue, preValue) {
   //     this.getList()

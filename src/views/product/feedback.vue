@@ -2,8 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
 
+
       <span>
-        TRS编号：
+        skuId：
         <el-select
           v-model="listQuery.skuId"
           style="width: 150px; margin: 5px 8px 5px 0"
@@ -12,9 +13,22 @@
           allow-create
           filterable
         >
-          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>
       </span>
+      <!-- <span>
+        TRS编号：
+        <el-select
+          v-model="listQuery.trsNo"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
+          <el-option v-for="item in trsEnumList" :key="item.name" :label="item.name" :value="item.value" />
+        </el-select>
+      </span> -->
       <span>
         反馈类型：<el-select
           v-model="listQuery.feedbackType"
@@ -143,7 +157,7 @@
         style="width: 100%"
       >
         <el-table-column align="center" label="ID" prop="id" width="50" />
-        <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="left" width="250" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
             <el-button
               size="mini"
@@ -154,14 +168,44 @@
               生产控制
             </el-button>
             <el-button
+            v-if="row.produceStateDescription  && row.cancelState!=1"
               size="mini"
               style="color:gray; border: none"
-              icon="el-icon-circle-check"
+              icon="el-icon-document"
               disabled
               @click="confirmFeedbackOrder(row)"
             >
               {{ row.produceStateDescription }}
             </el-button>
+            <el-button
+            v-if="row.cancelState==1"
+              size="mini"
+              style="color:gray; border: none"
+              icon="el-icon-document"
+              disabled
+            >
+              该订单已取消
+            </el-button>
+            <br>
+            <el-button
+            v-if="row.produceStateDescription!='生产完成' && row.cancelState!=1"
+              size="mini"
+              style="color: #67C23A; border: none;"
+              icon="el-icon-success"
+              @click="onaccomplishFeedbackOrder(row.id)"
+            >
+             一键完成
+            </el-button>
+            <el-button
+            v-if="row.produceStateDescription!='生产完成' && row.cancelState!=1"
+              size="mini"
+              style="color: #E6A23C; border: none;"
+              icon="el-icon-warning-outline"
+              @click="oncancelFeedbackOrder(row.id)"
+            >
+             取消订单
+            </el-button>
+            
           </template>
         </el-table-column>
         <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth(list, 'skuId', 'skuId')" />
@@ -378,7 +422,7 @@
 </template>
 
 <script>
-import { getBrandEnum, getTrsNoEnumList } from '@/api/enum'
+import { getBrandEnum, getTrsNoEnumList,getSkuIdEnumList } from '@/api/enum'
 import {
   addProduceOrder,
   confirmFeedback,
@@ -386,6 +430,8 @@ import {
   exportFeedbackOrder,
   queryFeedbackOrder,
   getProduceTree,
+  accomplishFeedbackOrder,
+  cancelFeedbackOrder,
 } from '@/api/feedback'
 import ProduceMaterialList from '@/views/product/component/produceMaterialList.vue'
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
@@ -419,10 +465,12 @@ export default {
       componentTypeList: ['成品', '鞋面半成品', '鞋底半成品'],
       listQuery: {
         skuId: '',
+        trsNo:'',
         page: 1,
         size: 10
       },
       trsEnumList: [], // SUKID 搜索框 数据查询
+      skuIdEnumList:[],
       finishedTrsNosList: [],
       semiFinishTrsNoList1: [],
       semiFinishTrsNoList2: [],
@@ -439,7 +487,7 @@ export default {
   },
 
   async created() {
-    this.listQuery.skuId = this.$route.query.skuId ? this.$route.query.skuId : ''
+    // this.listQuery.skuId = this.$route.query.skuId ? this.$route.query.skuId : ''
     await this.initTrsNoList()
     await this.getBrands()
     await this.initTrsList()
@@ -457,6 +505,30 @@ export default {
   methods: {
     flexColumnWidth,
     exportFeedbackOrder,
+    async initTrsList() {
+      await getTrsNoEnumList().then(res => {
+        this.trsEnumList = res?.data ?? []
+      })
+    },
+    async oncancelFeedbackOrder(id){
+      cancelFeedbackOrder(id).then(res=>{
+
+      }).finally(()=>{
+        this.getList(1)
+      })
+    },
+    async onaccomplishFeedbackOrder(id){
+      accomplishFeedbackOrder(id).then(res=>{
+
+      }).finally(()=>{
+        this.getList(1)
+      })
+    },
+    async initSkuIdList() {
+      await getSkuIdEnumList().then(res => {
+        this.skuIdEnumList = res?.data ?? []
+      })
+    },
     reset() {
       this.listQuery = {
         page: 1,
@@ -481,11 +553,6 @@ export default {
       await updFeedbackOrderIDState({ produceOrderId: row.id, state: 7, }).then((res) => {
       }).finally(() => {
         this.getList(1)
-      })
-    },
-    async initTrsList() {
-      await getTrsNoEnumList().then(res => {
-        this.trsEnumList = res?.data ?? []
       })
     },
     popProduceMaterialList(skuId, feedbackOrderId) {

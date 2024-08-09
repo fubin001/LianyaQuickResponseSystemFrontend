@@ -147,7 +147,9 @@ export default {
       trsEnumList: [],
       listLoading: true,
       listQuery: {
-        trsNo: this.$route.query.trsNo || '',
+        trsNo: '',
+        colorCode:'',
+        sizeCode:'',
         page: 1,
         size: 10
       },
@@ -156,12 +158,17 @@ export default {
   },
   
   watch: {
-    '$route.query.trsNo': {
+    '$route.query.querys': {
       immediate: true,
-      handler(newId) {
-        this.listQuery.trsNo= newId ? newId : ''
-      }
-    }
+      handler(newVal) {
+        console.log(newVal);
+        this.listQuery.trsNo= newVal?.routerTrsNo ? newVal?.routerTrsNo  : ''
+        this.listQuery.sizeCode= newVal?.routerSize ? newVal?.routerSize  : ''
+        this.listQuery.colorCode= newVal?.routerColor ? newVal?.routerColor  : ''
+        this.getList(1)
+      },
+      deep: true // 深度监听
+    },
   },
   async created() {
     const { data } = await getBrandEnum()

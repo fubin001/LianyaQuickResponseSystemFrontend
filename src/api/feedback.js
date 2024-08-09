@@ -77,3 +77,20 @@ export function addProduceOrder(order) {
     data: order
   })
 }
+
+
+
+export function cancelFeedbackOrder(order) {
+  return request({
+    url: '/feedback/cancel/' + order,
+    method: 'post',
+  })
+}
+
+
+export function accomplishFeedbackOrder(order) {
+  return request({
+    url: '/feedback/accomplish/' + order,
+    method: 'post',
+  })
+}

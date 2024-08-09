@@ -43,7 +43,7 @@
         <el-table-column label="数据权限" width="550">
           <template slot-scope="scope">
             <el-tag v-for="item in scope.row.brandList" :key="item.name" closable :type="item.name"
-              @close="on_delRoleBrandRelations(item.id)" style="margin:5px 0px 0px 10px;">
+              @close="on_delRoleBrandRelations(scope.row.id,item.name)" style="margin:5px 0px 0px 10px;">
               {{ item.name }}
             </el-tag>
             <el-tag @click="on_getBrandRoleNotIDList(scope.row)" type="success" style="margin:5px 0px 0 10px;">修改
@@ -251,8 +251,8 @@ export default {
       })
     },
     //指定角色删除绑定的品牌
-    on_delRoleBrandRelations(id) {
-      delRoleBrandRelations({ delIDs: [id] }).then((res) => {
+    on_delRoleBrandRelations(uid,id) {
+      delRoleBrandRelations({ id:uid,delBrands: [id] }).then((res) => {
 
       }).finally(() => {
         this.on_getNewRole()

@@ -104,3 +104,20 @@ export function addCityData(data){
     data: data
   })
 }
+
+
+export function apiStore(data){
+  return request({
+    url: '/storeCityRelations/apiStore',
+    method: 'post',
+    data: data
+  })
+}
+
+export function apiSaleOrder(data){
+  return request({
+    url: '/saleOrder/apiSaleOrder',
+    method: 'post',
+    data: data
+  })
+}

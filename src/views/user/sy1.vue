@@ -1,101 +1,13 @@
 <template>
 
   <div class="app-container">
-
-    <div class="filter-container">
-      <span>
-        地区：
-        <el-cascader placeholder="试试搜索：安徽" v-model="search.id" :options="optionsCitytData" filterable clearable
-          :props="{ emitPath: false }"></el-cascader>
-      </span>
-
-      <span>
-        时间范围：
-        <el-date-picker v-model="search.pickerDate" type="daterange" range-separator="至" start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-        <!-- {{ value1 }} -->
-      </span>
-      <span style="float: right">
-
-        <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496" @click="getList">
-          搜索
-        </el-button>
-        <el-button @click="onupdWeatherCityData()" class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496">更新天气</el-button>
-        <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496" @click="addDialogVisible = true">
-          新增
-        </el-button>
-      </span>
-    </div>
-    <div class="table-list">
-      <el-table :data="tableData" border v-loading="listLoading" style="width: 100%" row-key="id"
-        :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row>
-        <!-- 静态表头 -->
-        <el-table-column prop="cityId" label="City ID"></el-table-column>
-        <el-table-column prop="country" label="地区" width="200">
-          <template slot-scope="scope">
-
-            <svg-icon icon-class="international" />
-            <el-tag>{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</el-tag>
-            <!-- <span style="margin-left: 10px">{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</span> -->
-          </template>
-        </el-table-column>
-
-        <!-- 动态表头 -->
-        <el-table-column v-for="(item, index) in dataLists" :key="index" :label="item.title" :prop="item.key"
-          width="200">
-          <template slot-scope="scope">
-
-            <!-- {{ scope.row[item.title] }} -->
-            <div slot="reference" class="name-wrapper" v-if="scope.row[item.title]">
-              天气：<el-tag>{{ scope.row[item.title].conditionDay }}</el-tag>
-              <i class="el-icon-d-arrow-right"></i>
-              <el-tag>{{ scope.row[item.title].conditionNight }}</el-tag>
-              <br>
-              温度：<el-tag>{{ scope.row[item.title].tempNight }}℃</el-tag>
-              <i class="el-icon-d-arrow-right"></i> <el-tag>
-                {{ scope.row[item.title].tempDay }}℃</el-tag>
-              <br>
-              湿度：<el-tag>{{ scope.row[item.title].humidity }}</el-tag>
-            </div>
-            <!-- <span style="margin-left: 10px">{{ scope.row.provincial + ' ' + scope.row.municipal + ' ' + scope.row.city }}</span> -->
-          </template>
-        </el-table-column>
-        
-        <el-table-column label="操作" fixed="right" width="150">
-          <template slot="header" slot-scope="scope">
-            操作
-          </template>
-          <template slot-scope="scope">
-            <el-button size="mini" type="primary" >查看视图</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        :current-page="search.current" :page-sizes="[10, 20, 30, 100]" :page-size="search.size"
-        layout="total, sizes, prev, pager, next, jumper" :total="search.total">
-      </el-pagination>
-    </div>
-    <el-dialog title="新增" :visible.sync="addDialogVisible" width="30%">
-      <el-form :model="fromData" :rules="rules" ref="fromData" :inline="true" label-width="80px">
-        <el-form-item label="地区" prop="cityId">
-          <el-cascader placeholder="试试搜索：安徽" v-model="fromData.cityId" :options="optionsCityt" filterable clearable
-            :props="{ emitPath: false }"></el-cascader>
-        </el-form-item>
-        <br>
-        <el-button type="primary" @click="submitForm('fromData')">立即创建</el-button>
-        <el-button @click="resetForm('fromData')">重置</el-button>
-      </el-form>
-    </el-dialog>
+    <el-button @click="apiSaleOrder">apiSaleOrder</el-button>
   </div>
 </template>
 
 <script>
-import { getAllCityDataVoList, getCityDataWeather, addCityData, updWeatherCityData, getAllByCityVoList } from '@/api/sy'
+import { getAllCityDataVoList, getCityDataWeather, addCityData, updWeatherCityData, getAllByCityVoList,apiSaleOrder } from '@/api/sy'
+
 export default {
   data() {
     return {
@@ -143,6 +55,7 @@ export default {
     await this.ongetAllByCityVoList();
   },
   methods: {
+    apiSaleOrder,
     async getList() {
       this.listLoading = true
       getCityDataWeather(this.search).then((res) => {

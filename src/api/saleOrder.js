@@ -7,3 +7,11 @@ export function querySaleOrder(param) {
     params: param
   })
 }
+
+export function apiSaleOrderDate(data) {
+  return request({
+    url: '/saleOrder/apiSaleOrderDate',
+    method: 'post',
+    data: data
+  })
+}
