@@ -121,3 +121,11 @@ export function apiSaleOrder(data){
     data: data
   })
 }
+
+export function refreshVRetail(data){
+  return request({
+    url: '/toolkit/refreshVRetail',
+    method: 'post',
+    data: data
+  })
+}
