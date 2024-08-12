@@ -302,7 +302,7 @@ import {
 import request from '@/utils/request'
 
 export default {
-  name: '销售商品',
+  name: 'saleProduct',
   data() {
     return {
       list: [],
