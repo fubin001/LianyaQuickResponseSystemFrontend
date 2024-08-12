@@ -468,7 +468,7 @@ import {
 import request from '@/utils/request'
 
 export default {
-  name: 'saleProduct',
+  name: '',
   data() {
     return {
       list: [],
