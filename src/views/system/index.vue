@@ -12,6 +12,9 @@
         <el-col :span="11">
           <el-button @click="apiMProduct"  type="primary">更新联亚商品到本地</el-button>
         </el-col>
+        <el-col :span="11">
+          <el-button @click="refreshVRetail"  type="primary">更新联亚销售商品</el-button>
+        </el-col>
         <!-- <el-col :span="12">22
           2222
         </el-col>
@@ -27,6 +30,7 @@
 </template>
 <script>
 import { apiSaleOrderDate } from "@/api/saleOrder";
+import { refreshVRetail } from "@/api/sy";
 import { apiMProduct } from "@/api/APILianya"
 export default {
   name: '系统管理',
@@ -43,6 +47,8 @@ export default {
   methods: {
     /**获取联亚商品数据 */
     apiMProduct,
+    /**获取联亚销售数据，到本地数据库 */
+    refreshVRetail,
     /**指定时间范文刷新销售数据 */
     onapiSaleOrderDate() {
       apiSaleOrderDate(this.apiSaleOrderDateValue).then(res => {
