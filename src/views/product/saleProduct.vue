@@ -3,18 +3,34 @@
     <div class="filter-container">
       <span>
         品牌：
-        <el-select v-model="listQuery.brand" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
-          allow-create filterable>
+        <el-select
+          v-model="listQuery.brand"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
           <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.name" />
         </el-select>
       </span>
       <span>
-        款式：<el-input v-model="listQuery.styleId" placeholder="请输入款式" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
+        款式：<el-input
+          v-model="listQuery.styleId"
+          placeholder="请输入款式"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
       <span>
-        预测模型：<el-select v-model="listQuery.predictModel" placeholder="请输入款式" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" clearable filterable>
+        预测模型：<el-select
+          v-model="listQuery.predictModel"
+          placeholder="请输入款式"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          filterable
+        >
           <el-option value="平均销售" />
           <el-option value="增长对比" />
           <el-option value="四周平均" />
@@ -22,44 +38,74 @@
         </el-select>
       </span>
       <span>
-        名称：<el-input v-model="listQuery.fullName" placeholder="请输入名称" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
+        名称：<el-input
+          v-model="listQuery.fullName"
+          placeholder="请输入名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
-      <!-- <span>
-        skuId：<el-input v-model="listQuery.skuId" placeholder="请输入skuId" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
-      </span> -->
 
       <span>
         skuId：
-        <el-select v-model="listQuery.skuId" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
-          allow-create filterable>
+        <el-select
+          v-model="listQuery.skuId"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          clearable
+          allow-create
+          filterable
+        >
           <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>
       </span>
 
       <span>
-        上市日期：<el-date-picker v-model="listQuery.listingMonth" type="month" placeholder="上市日期" class="filter-item"
-          style="width: 150px; margin: 5px 8px 5px 0" value-format="yyyy-MM-01" />
+        上市日期：<el-date-picker
+          v-model="listQuery.listingMonth"
+          type="month"
+          placeholder="上市日期"
+          class="filter-item"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          value-format="yyyy-MM-01"
+        />
       </span>
       <span>
-        季节：<el-input v-model="listQuery.season" placeholder="季节" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
+        季节：<el-input
+          v-model="listQuery.season"
+          placeholder="季节"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
       <span>
-        面料编码：<el-input v-model="listQuery.fabricCode" placeholder="面料编码" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
+        面料编码：<el-input
+          v-model="listQuery.fabricCode"
+          placeholder="面料编码"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
       <span>
-        面料组成：<el-input v-model="listQuery.fabricComposition" placeholder="面料组成"
-          style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+        面料组成：<el-input
+          v-model="listQuery.fabricComposition"
+          placeholder="面料组成"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
       </span>
       <span class="end">
         <span><el-button class="filter-item" plain style="margin: 5px 8px 5px 0" @click="reset">
-            重置
-          </el-button>
-          <el-button v-loading="listLoading" class="filter-item" type="primary" icon="el-icon-search"
-            style="margin: 5px 0px 5px 0; background-color: #244496" @click="getList(1)">
+                重置
+              </el-button>
+          <el-button
+            v-loading="listLoading"
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            style="margin: 5px 0px 5px 0; background-color: #244496"
+            @click="getList(1)"
+          >
             搜索
           </el-button></span>
       </span>
@@ -69,34 +115,60 @@
       <div class="search-item">
         <span>
           YTD售罄率：
-          <el-input-number v-model="listQuery.saleYtdSaleOutRateLowerBound" placeholder="下限(%)"
-            style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" size="small" />
+          <el-input-number
+            v-model="listQuery.saleYtdSaleOutRateLowerBound"
+            placeholder="下限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+            size="small"
+          />
         </span>
         <span>~
-          <el-input-number v-model="listQuery.saleYtdSaleOutRateUpperBound" placeholder="上限(%)"
-            style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" size="small" />
+          <el-input-number
+            v-model="listQuery.saleYtdSaleOutRateUpperBound"
+            placeholder="上限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+            size="small"
+          />
         </span>
       </div>
       <div class="search-item">
         <span>
           首单售罄率：
-          <el-input-number v-model="listQuery.firstOrderSaleOutRateLowerBound" placeholder="下限(%)"
-            style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          <el-input-number
+            v-model="listQuery.firstOrderSaleOutRateLowerBound"
+            placeholder="下限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
         </span>
         <span>~
-          <el-input-number v-model="listQuery.firstOrderSaleOutRateUpperBound" placeholder="上限(%)"
-            style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          <el-input-number
+            v-model="listQuery.firstOrderSaleOutRateUpperBound"
+            placeholder="上限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
         </span>
       </div>
       <div class="search-item">
         <span>
           预估售罄率：
-          <el-input-number v-model="listQuery.predictSaleOutRateLowerBound" placeholder="下限(%)"
-            style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          <el-input-number
+            v-model="listQuery.predictSaleOutRateLowerBound"
+            placeholder="下限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
         </span>
         <span>~
-          <el-input v-model="listQuery.predictSaleOutRateUpperBound" placeholder="上限(%)"
-            style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          <el-input
+            v-model="listQuery.predictSaleOutRateUpperBound"
+            placeholder="上限(%)"
+            style="width: 150px; margin: 5px 8px 5px 0"
+            class="filter-item"
+          />
         </span>
       </div>
       <div style="clear: both" />
@@ -106,26 +178,53 @@
         <span style="float: left">商品列表</span>
         <span style="float: right">
           <span>
-            <el-button type="primary" class="ml-5" size="mini" style="background-color: #244496; margin-right: 2px"
-              :loading="allLoad" @click="refreshAllSkuData">全部刷新</el-button>
+            <el-button
+              type="primary"
+              class="ml-5"
+              size="mini"
+              style="background-color: #244496; margin-right: 2px"
+              :loading="allLoad"
+              @click="refreshAllSkuData"
+            >全部刷新</el-button>
           </span>
           <span>
-            <el-button type="primary" class="ml-5" size="mini" style="background-color: #244496; margin-right: 2px"
-              @click="exportSkuProductExcel">导出</el-button>
+            <el-button
+              type="primary"
+              class="ml-5"
+              size="mini"
+              style="background-color: #244496; margin-right: 2px"
+              @click="exportSkuProductExcel"
+            >导出</el-button>
           </span>
           <span>
-            <el-upload action="/api/skuProduct/importExcel" :show-file-list="false"
-              :on-success="handleFileUploadSuccess" :on-error="handleFileUploadError" style="display: inline-block">
-              <el-button type="primary" class="ml-5" size="mini" style="background-color: #244496" :loading="upLoading"
-                @click="upLoading = true">上传<i class="el-icon-top" /></el-button>
+            <el-upload
+              action="/api/skuProduct/importExcel"
+              :show-file-list="false"
+              :on-success="handleFileUploadSuccess"
+              :on-error="handleFileUploadError"
+              style="display: inline-block"
+            >
+              <el-button
+                type="primary"
+                class="ml-5"
+                size="mini"
+                style="background-color: #244496"
+                :loading="upLoading"
+                @click="upLoading = true"
+              >上传<i class="el-icon-top" /></el-button>
             </el-upload>
           </span>
         </span>
       </div>
 
       <el-dialog :visible.sync="editDialogVisible" title="编辑库存" width="500px">
-        <el-form ref="dataForm" :model="modForm" label-position="left" label-width="70px"
-          style="width: 300px; margin-left: 50px">
+        <el-form
+          ref="dataForm"
+          :model="modForm"
+          label-position="left"
+          label-width="70px"
+          style="width: 300px; margin-left: 50px"
+        >
           <el-form-item label="skuId">
             <el-input v-model="modForm.skuId" style="width: 300px" disabled />
           </el-form-item>
@@ -149,16 +248,28 @@
               @click="goSalePanel(row)">
               预览
             </el-button>
-            <el-button size="mini" icon="iconfont icon-shuaxin" style="color: #244496; border: none"
-              @click="refreshSkuRelatedData(row.skuId)">
+            <el-button
+              size="mini"
+              icon="iconfont icon-shuaxin"
+              style="color: #244496; border: none"
+              @click="refreshSkuRelatedData(row.skuId)"
+            >
               刷新
             </el-button>
-            <el-button size="mini" icon="iconfont icon-a-zu1221" style="color: #244496; border: none"
-              @click="openRelevance(row.metricValueList)">
+            <el-button
+              size="mini"
+              icon="iconfont icon-a-zu1221"
+              style="color: #244496; border: none"
+              @click="openRelevance(row.metricValueList)"
+            >
               指标
             </el-button>
-            <el-button size="mini" icon="iconfont icon-shuaxin" style="color: #244496; border: none"
-              @click="popModForm(row)">
+            <el-button
+              size="mini"
+              icon="iconfont icon-shuaxin"
+              style="color: #244496; border: none"
+              @click="popModForm(row)"
+            >
               编辑
             </el-button>
             <!-- <div v-for="metric in row.metricValueList" :key="metric.metricName">
@@ -197,42 +308,65 @@
         <el-table-column prop="fullName" align="left" label="名称" :width="flexColumnWidth('名称', 'fullName')" fixed />
 
         <el-table-column label="基础属性" align="center">
+        
           <el-table-column prop="listingDate" align="left" label="上市日期"
             :width="flexColumnWidth('上市日期', 'listingDate')" />
+
+
           <el-table-column prop="season" align="left" label="季节" :width="flexColumnWidth('季节', 'season')" />
-          <el-table-column prop="subCategory" align="left" label="商品子类"
-            :width="flexColumnWidth('商品子类', 'subCategory')" />
+          <el-table-column
+            prop="subCategory"
+            align="left"
+            label="商品子类"
+            :width="flexColumnWidth('商品子类', 'subCategory')"
+          />
           <el-table-column prop="fabricCode" align="left" label="面料编码" :width="flexColumnWidth('面料编码', 'fabricCode')" />
-          <el-table-column prop="fabricComposition" align="left" label="面料成分"
-            :width="flexColumnWidth('面料成分', 'fabricComposition')" />
+          <el-table-column
+            prop="fabricComposition"
+            align="left"
+            label="面料成分"
+            :width="flexColumnWidth('面料成分', 'fabricComposition')"
+          />
         </el-table-column>
         <el-table-column label="预测" align="center" show-overflow-tooltip>
-          <el-table-column prop="predictModel" align="left" label="预测模型"
-            :width="flexColumnWidth('预测模型', 'predictModel')" />
+          <el-table-column
+            prop="predictModel"
+            align="left"
+            label="预测模型"
+            :width="flexColumnWidth('预测模型', 'predictModel')"
+          />
           <el-table-column prop="endDate" align="left" label="下线日期" :width="flexColumnWidth('下线日期', 'endDate')" />
           <el-table-column prop="predictCoe" align="left" label="预测系数" :width="flexColumnWidth('预测系数', 'predictCoe')" />
           <el-table-column prop="feedbackDay" align="left" label="反馈天数" />
           <el-table-column prop="feedbackDayBom" align="left" width="115px" label="BOM反馈天数" />
         </el-table-column>
         <el-table-column label="关联指标" width="90" align="center">
+
           <el-table-column prop="ytdSaleOutRate" align="left" label="ytd售罄率" sortable="custom"
             :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')">
+
             <template slot-scope="{ row }">
               {{ new Number(row.ytdSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
+          
           <el-table-column prop="firstOrderSaleOutRate" align="left" label="首单售罄率" sortable="custom"
             :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')">
+            
             <template slot-scope="{ row }">
               {{ new Number(row.firstOrderSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
+          
           <el-table-column prop="predictSaleOutRate" align="left" label="预估售罄率" sortable="custom"
             :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')">
+
+
             <template slot-scope="{ row }">
               {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
+          
           <el-table-column prop="saleYtd" align="left" label="销售ytd" :width="flexColumnWidth('销售ytd', 'saleYtd')"  sortable="custom"/>
           <el-table-column prop="storage" align="left" label="库存" :width="flexColumnWidth('库存', 'storage')"  sortable="custom"/>
           <el-table-column prop="predictRestSale" align="left" label="预估剩余销售"
@@ -241,6 +375,7 @@
             :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"  sortable="custom"/>
           <el-table-column prop="firstBuyOrder" align="left" label="首单采购量"
             :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"  sortable="custom"/>
+            
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -273,9 +408,16 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" :page-sizes="[10, 20, 50, 100]"
-        :current-page="page" :page-size="size" align="center" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
+      <el-pagination
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        :page-sizes="[10, 20, 50, 100]"
+        :current-page="page"
+        :page-size="size"
+        align="center"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
 
     <el-dialog :visible.sync="centerDialogVisible" title="路由跳转" width="500" align-center>
@@ -294,10 +436,7 @@ import {
   refreshRelatedData
 } from '@/api/skuProduct'
 import {
-  DistinguishSizeEnum,
-  getBomCreateTypeEnumList,
   getSkuIdEnumList,
-  getTrsNoEnumList,
   getBrandEnum
 } from '@/api/enum'
 import request from '@/utils/request'
@@ -323,10 +462,20 @@ export default {
       metricValueList: [],
       editDialogVisible: false,
       modForm: {},
-      skuIdEnumList: [], //搜索框数据
-      brands: [],// brand 搜索框数据
+      skuIdEnumList: [], // 搜索框数据
+      brands: [], // brand 搜索框数据
       centerDialogVisible: false, // 弹窗，路由跳转选择器
-      routerSkuId: 0 //跳转参数
+      routerSkuId: 0 // 跳转参数
+    }
+  },
+
+  watch: {
+    '$route.query.brand': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.brand = newId || ''
+        this.id = newId
+      }
     }
   },
   async created() {
@@ -335,16 +484,6 @@ export default {
     await this.initSkuIdList()
     this.listQuery.brand = this.$route.query.brand ? this.$route.query.brand : ''
     this.getList(1)
-  },
-
-  watch: {
-    '$route.query.brand': {
-      immediate: true,
-      handler(newId) {
-        this.listQuery.brand = newId ? newId : ''
-        this.id = newId;
-      }
-    }
   },
   // beforeRouteUpdate (to, from, next) {
   //   console.log(1);
@@ -541,16 +680,16 @@ export default {
       })
     },
     onDialog(skuId) {
-      this.centerDialogVisible = true;
+      this.centerDialogVisible = true
       console.log(this.centerDialogVisible)
       this.routerSkuId = skuId
     },
     goToDetails(type) {
       this.centerDialogVisible = false
       var paths = '/data/saleOrder'
-      if (type == 1) {
+      if (type === 1) {
         paths = '/data/saleOrder'
-      } else if (type == 2) {
+      } else if (type === 2) {
         paths = '/data/buyOrder'
       } else {
         paths = '/skuProduct/feedback'
@@ -568,7 +707,7 @@ export default {
       await getSkuIdEnumList().then(res => {
         this.skuIdEnumList = res?.data ?? []
       })
-    },
+    }
   }
 }
 </script>
