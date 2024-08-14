@@ -61,10 +61,10 @@ export const constantRoutes = [
       {
         path: '/home',
         component: () => import('@/views/home/index'),
-        name: 'home',
-        hidden: true , //不展示
+        name: '首页',
+        // hidden: true , //不展示
         noCache: true,
-        meta: { title: 'home', icon: 'edit', roles:['admin','sale'],}
+        meta: { title: '首页', roles:['admin','sale'],}
       },
       // {
       //   path: '/home',

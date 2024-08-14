@@ -45,7 +45,7 @@ export default {
         onoption() {
             let bgColor = '#fff';
             let title = this.totalText;
-            let color = ['#409EFF', '#909399', '#67C23A', '#F8456B', '#00FFFF', '#4AEAB0'];
+            let color =['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0'];
             var echartData = this.echartData
             let formatNumber = function (num) {
                 let reg = /(?=(\B)(\d{3})+$)/g;
@@ -148,7 +148,22 @@ export default {
             this.onoption();
             this.chart = echarts.init(this.$refs.chart);
             this.chart.setOption(this.option);
-        }
+            
+        // 监听点击事件
+        this.chart.on('click', this.handleChartClick);
+        },
+        handleChartClick(params) {
+            this.$router.push({ path: 'skuProduct/feedback' })
+        // 这里处理点击事件
+        // 比如跳转到另一个页面或者执行其他逻辑
+        // if (params.name === '完成的订单') {
+        //     this.$router.push({ path: 'skuProduct/feedback' })
+        // } else if (params.name === '取消的订单') {
+        //     this.$router.push({ path: 'skuProduct/feedback' })
+        // } else if (params.name === '生产订单') {
+        //     this.$router.push({ path: 'skuProduct/feedback' })
+        // }
+    },
     },
     beforeDestroy() {
         if (this.chart) {
