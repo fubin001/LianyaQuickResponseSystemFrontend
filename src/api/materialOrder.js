@@ -10,5 +10,5 @@ export function queryMaterialOrder(query) {
 }
 
 export function exportMaterialOrder(param) {
-  return downloadFile('/materialOrder/export', param, '颜色数据.xlsx')
+  return downloadFile('/materialOrder/export', param, '备料数据.xlsx')
 }

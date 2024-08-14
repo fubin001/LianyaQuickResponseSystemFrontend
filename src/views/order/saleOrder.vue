@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <span>
-        品牌名称：<el-input
-          v-model="listQuery.brand"
-          placeholder="请输入品牌名称"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-      /></span>
-       -->
       <span>
         品牌：
         <el-select v-model="listQuery.brand" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
@@ -18,15 +10,6 @@
       </span>
       <span>商品名称：<el-input v-model="listQuery.productName" placeholder="请输入商品名称"
           style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" /></span>
-      <!-- <span
-        >货号：<el-input
-          v-model="listQuery.skuId"
-          placeholder="请输入货号"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
-       -->
 
       <span>
         货号：
@@ -34,6 +17,11 @@
           class="filter-item" clearable allow-create filterable>
           <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
         </el-select>
+      </span>
+      <span>
+          <el-date-picker v-model="pickerDate"  style="width: 300px; margin: 5px 8px 5px 0" type="daterange" range-separator="至" start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
       </span>
 
       <span class="end">
@@ -155,6 +143,7 @@ export default {
         page: 1,
         size: 10,
       },
+      pickerDate:null,//时间范围
       brands: [],// brand 搜索框数据
       skuIdEnumList: [],
       sortable: null,
@@ -176,6 +165,24 @@ export default {
         this.listQuery.skuId = newId ? newId: ''
         this.getList(1)
       }
+    },
+    'pickerDate'(newVal, oldVal) {
+      if (newVal) {
+        console.log(newVal);
+
+        const dateArray = newVal.map(dateTime => {
+          const date = new Date(dateTime);
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const formattedDate = `${year}-${month}-${day}`;
+          return formattedDate;
+        });
+
+        this.listQuery.startDate = dateArray[0];
+        this.listQuery.endDate = dateArray[1];
+      }
+
     }
   },
   methods: {
