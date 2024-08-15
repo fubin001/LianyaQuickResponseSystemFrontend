@@ -1,11 +1,11 @@
 <template>
     <div ref="chart" :style="{ width: '100%', height: '400px', 'min-width': '400px' }"></div>
 </template>
-``
+
 <script>
 import * as echarts from 'echarts';
 // import axios from 'axios';
-import { getSaleOrder } from '@/api/home'
+import { getBuyOrder } from '@/api/home'
 
 export default {
     name: 'LineChart',
@@ -16,14 +16,14 @@ export default {
             echartDataValues2:[],
             echartDataValues3:[],
             totalText: "",
-            mainText:'销售数据七天展示图',
+            mainText:'采购数据七天展示图',
             totalnumber: 999,
         };
     },
 
 
     async created() {
-        getSaleOrder().then((res) => {
+        getBuyOrder().then((res) => {
             console.log(res);
             var data= res.data
             this.echartDataNames =data.map(item=>item.name) 
@@ -37,7 +37,7 @@ export default {
         this.initChart();
     },
     methods: {
-        getSaleOrder,
+        getBuyOrder,
         onoption() {
             const echartDataNames = this.echartDataNames;
             const echartDataValues1 = this.echartDataValues1;
