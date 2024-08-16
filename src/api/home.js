@@ -9,7 +9,7 @@ export function feedbackOrder() {
 }
 /**
  * 
- * @returns 生产订单周数据
+ * @returns 周数据
  */
 export function getFeedbackOrderWeek() {
   return request({
@@ -18,7 +18,6 @@ export function getFeedbackOrderWeek() {
   })
 }
 
-
 export function getSaleOrder() {
   return request({
     url: '/home/getSaleOrder',
@@ -26,8 +25,6 @@ export function getSaleOrder() {
   })
 }
 
-
-//
 
 export function getBuyOrder() {
   return request({

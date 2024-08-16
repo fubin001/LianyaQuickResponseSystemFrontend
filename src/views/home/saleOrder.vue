@@ -5,7 +5,7 @@
 <script>
 import * as echarts from 'echarts';
 // import axios from 'axios';
-import { getSaleOrder } from '@/api/home'
+import { getFeedbackOrderWeek } from '@/api/home'
 
 export default {
     name: 'LineChart',
@@ -23,7 +23,7 @@ export default {
 
 
     async created() {
-        getSaleOrder().then((res) => {
+        getFeedbackOrderWeek().then((res) => {
             console.log(res);
             var data= res.data
             this.echartDataNames =data.map(item=>item.name) 
@@ -37,7 +37,7 @@ export default {
         this.initChart();
     },
     methods: {
-        getSaleOrder,
+        getFeedbackOrderWeek,
         onoption() {
             const echartDataNames = this.echartDataNames;
             const echartDataValues1 = this.echartDataValues1;
