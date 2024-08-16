@@ -37,7 +37,7 @@ export default {
         this.initChart();
     },
     methods: {
-        getFeedbackOrderWeek,
+        getSaleOrder,
         onoption() {
             const echartDataNames = this.echartDataNames;
             const echartDataValues1 = this.echartDataValues1;
