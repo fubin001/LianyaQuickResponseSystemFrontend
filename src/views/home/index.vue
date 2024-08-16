@@ -5,14 +5,16 @@
       </el-button> -->
     <el-row>
       <el-col :span="12">
-        <!-- <h1 class="text-jumbo text-ginormous">
-          首页
-        </h1> -->
         <FeedbackOrderWeek></FeedbackOrderWeek>
       </el-col>
       <el-col :span="12">
-        <!-- <Temperature></Temperature> -->
          <FeedbackOrder></FeedbackOrder>
+      </el-col>
+      <el-col :span="12">
+         <SaleOrder></SaleOrder>
+      </el-col>
+      <el-col :span="12">
+         <BuyOrder></BuyOrder>
       </el-col>
     </el-row>
   </div>
@@ -24,13 +26,17 @@ import axios from 'axios'
 import Temperature from './temperature.vue';
 import FeedbackOrder from './feedbackOrder.vue';
 import FeedbackOrderWeek from './feedbackOrderWeek.vue';
+import SaleOrder from './saleOrder.vue';
+import BuyOrder from './buyOrder.vue';
 
 export default {
   name: 'home',
   components: {
     Temperature,
     FeedbackOrder,
-    FeedbackOrderWeek
+    FeedbackOrderWeek,
+    SaleOrder,
+    BuyOrder,
   },
   data() {
     return {
