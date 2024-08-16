@@ -18,6 +18,21 @@ export function getFeedbackOrderWeek() {
   })
 }
 
+export function getSaleOrder() {
+  return request({
+    url: '/home/getSaleOrder',
+    method: 'get',
+  })
+}
+
+
+export function getBuyOrder() {
+  return request({
+    url: '/home/getBuyOrder',
+    method: 'get',
+  })
+}
+
 // export function queryFeedbackOrder(query) {
 //   return request({
 //     url: '/feedback/query',
