@@ -8,9 +8,17 @@ export function querySaleOrder(param) {
   })
 }
 
-export function apiSaleOrderDate(data) {
+export function apiVRetailBILLDATE(data) {
   return request({
-    url: '/saleOrder/apiSaleOrderDate',
+    url: '/saleOrder/apiVRetailBILLDATE',
+    method: 'post',
+    data: data
+  })
+}
+
+export function apiVRetailTest(data) {
+  return request({
+    url: '/saleOrder/apiVRetailTest',
     method: 'post',
     data: data
   })

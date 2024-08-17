@@ -129,3 +129,13 @@ export function refreshVRetail(data){
     data: data
   })
 }
+
+
+
+export function apiSaleOrder(data){
+  return request({
+    url: '/saleOrder/apiVRetailBILLDATE',
+    method: 'post',
+    data: data
+  })
+}
