@@ -7,7 +7,7 @@
           <el-date-picker v-model="pickerDate" type="daterange" range-separator="至" start-placeholder="开始日期"
             end-placeholder="结束日期">
           </el-date-picker>
-          <el-button @click="onapiSaleOrderDate"  type="primary">更新销售</el-button>
+          <el-button @click="onapiVRetailBILLDATE"  type="primary">更新销售</el-button>
         </el-col>
         <el-col :span="11">
           <el-button @click="apiMProduct"  type="primary">更新联亚商品到本地</el-button>
@@ -29,7 +29,7 @@
   </el-tabs>
 </template>
 <script>
-import { apiSaleOrderDate } from "@/api/saleOrder";
+import { apiVRetailBILLDATE } from "@/api/saleOrder";
 import { refreshVRetail } from "@/api/sy";
 import { apiMProduct } from "@/api/APILianya"
 export default {
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       activeName: 'first',
-      apiSaleOrderDateValue: {
+      apiVRetailBILLDATEValue: {
         startDate: '',
         endDate: '',
       },
@@ -50,8 +50,8 @@ export default {
     /**获取联亚销售数据，到本地数据库 */
     refreshVRetail,
     /**指定时间范文刷新销售数据 */
-    onapiSaleOrderDate() {
-      apiSaleOrderDate(this.apiSaleOrderDateValue).then(res => {
+    onapiVRetailBILLDATE() {
+      apiVRetailBILLDATE(this.apiVRetailBILLDATEValue).then(res => {
 
       })
     },
@@ -74,8 +74,8 @@ export default {
           return formattedDate;
         });
 
-        this.apiSaleOrderDateValue.startDate = dateArray[0];
-        this.apiSaleOrderDateValue.endDate = dateArray[1];
+        this.apiVRetailBILLDATEValue.startDate = dateArray[0];
+        this.apiVRetailBILLDATEValue.endDate = dateArray[1];
       }
 
     }

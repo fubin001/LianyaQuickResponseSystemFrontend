@@ -1,13 +1,13 @@
 <template>
 
   <div class="app-container">
-    <el-button @click="apiSaleOrder">apiSaleOrder</el-button>
+    <el-button @click="apiSaleOrder">apiVRetailTest</el-button>
   </div>
 </template>
 
 <script>
 import { getAllCityDataVoList, getCityDataWeather, addCityData, updWeatherCityData, getAllByCityVoList,apiSaleOrder } from '@/api/sy'
-
+import{apiVRetailTest} from '@/api/saleOrder'
 export default {
   data() {
     return {
@@ -56,6 +56,7 @@ export default {
   },
   methods: {
     apiSaleOrder,
+    apiVRetailTest,
     async getList() {
       this.listLoading = true
       getCityDataWeather(this.search).then((res) => {
