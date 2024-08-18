@@ -127,7 +127,7 @@
 <script>
 import { addStoreCityRelations, deleteStoreCityRelations, getStoreCityRelationsList, updStoreCityRelations, getAllCityDataVoList, apiStore, updStoreCity } from '@/api/sy'
 export default {
-  name: '商铺',
+  name: '商铺数据',
   data() {
     return {
       listLoading: false,
