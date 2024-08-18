@@ -191,8 +191,8 @@ export const asyncRoutes = [
       {
         path: '/store/index',
         component: () => import('@/views/store/index'),
-        name: '商铺',
-        meta: { title: '商铺', icon: 'shopping', roles:['admin']}
+        name: '商铺数据',
+        meta: { title: '商铺数据', icon: 'shopping', roles:['admin']}
       },
       {
         path: '/weather/index',
@@ -216,6 +216,7 @@ export const asyncRoutes = [
         path: '/user/info',
         component: () => import('@/views/user/user'),
         name: '用户信息',
+        hidden: true , //不展示
         meta: { title: '用户信息', icon: 'user', roles:['admin']}
       }, {
         path: '/user/role',

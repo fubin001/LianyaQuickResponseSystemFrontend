@@ -10,7 +10,7 @@
         /></span> -->
       <span>
         品牌：
-        <el-select v-model="listQuery.brand" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
+        <el-select v-model="listQuery.brandName" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable
           allow-create filterable>
           <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.name" />
         </el-select>
