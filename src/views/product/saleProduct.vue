@@ -241,7 +241,8 @@
         </div>
       </el-dialog>
       <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row
-        @sort-change="handleSortChange" style="width: 100%">
+        @sort-change="handleSortChange" style="width: 100%" 
+        :row-class-name="tableRowClassName">
         <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
           <template slot-scope="{ row }" fixed>
             <el-button size="mini" style="color: #244496; border: none" icon="iconfont icon-a-zu1221"
@@ -535,6 +536,16 @@ export default {
         size: 10
       }
     },
+    // 表格当行颜色
+    tableRowClassName({row},index){
+      
+        if (row.existsFeedbackOrder) {
+          return 'warning-row';
+        } else{
+          return '';
+        }
+        return '';
+    },
 
     getMaxLength(arr) {
       return arr.reduce((acc, item) => {
@@ -718,6 +729,13 @@ export default {
   color: #fff !important;
   background: #42b983 !important;
 }
+  .el-table .warning-row {
+    background: rgb(251, 143, 185);
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>
 
 <style lang="scss" scoped>
