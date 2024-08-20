@@ -128,11 +128,11 @@ import {
   getTrsNoEnumList
 } from '@/api/enum'
 import { exportMaterialOrder } from '@/api/materialOrder'
-import { flexColumnWidth } from '@/common/util'
+import { flexColumnWidth } from '@/common/flexColumn'
 import { exportStorageDetail, queryStorageDetail } from '@/api/storage'
 
 export default {
-  name: '库存明细',
+  name: '',
   data() {
     return {
       dialogStatus: 'create',
@@ -148,27 +148,27 @@ export default {
       listLoading: true,
       listQuery: {
         trsNo: '',
-        colorCode:'',
-        sizeCode:'',
+        colorCode: '',
+        sizeCode: '',
         page: 1,
         size: 10
       },
       brands: []
     }
   },
-  
+
   watch: {
     '$route.query.querys': {
       immediate: true,
       handler(newVal) {
-        console.log(newVal);
-        this.listQuery.trsNo= newVal?.routerTrsNo ? newVal?.routerTrsNo  : ''
-        this.listQuery.sizeCode= newVal?.routerSize ? newVal?.routerSize  : ''
-        this.listQuery.colorCode= newVal?.routerColor ? newVal?.routerColor  : ''
+        console.log(newVal)
+        this.listQuery.trsNo = newVal?.routerTrsNo ? newVal?.routerTrsNo : ''
+        this.listQuery.sizeCode = newVal?.routerSize ? newVal?.routerSize : ''
+        this.listQuery.colorCode = newVal?.routerColor ? newVal?.routerColor : ''
         this.getList(1)
       },
       deep: true // 深度监听
-    },
+    }
   },
   async created() {
     const { data } = await getBrandEnum()

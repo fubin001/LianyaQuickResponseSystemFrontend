@@ -240,13 +240,27 @@
           <el-button type="primary" @click="editPredictCoe"> 确定 </el-button>
         </div>
       </el-dialog>
-      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row
-        @sort-change="handleSortChange" style="width: 100%" 
-        :row-class-name="tableRowClassName">
+      <el-table
+        ref="dragTable"
+        v-loading="listLoading"
+        :data="list"
+        row-key="id"
+        fit
+        highlight-current-row
+        style="width: 100%"
+        :row-class-name="tableRowClassName"
+        stripe
+        @sort-change="handleSortChange"
+      >
+        <el-table-column align="center" label="序号" width="70px" type="index" :index="Nindex" fixed />
         <el-table-column label="操作" fixed align="center" width="200" class-name="small-padding fixed-width">
-          <template slot-scope="{ row }" >
-            <el-button size="mini" style="color: #244496; border: none" icon="iconfont icon-a-zu1221"
-              @click="goSalePanel(row)">
+          <template slot-scope="{ row }">
+            <el-button
+              size="mini"
+              style="color: #244496; border: none"
+              icon="iconfont icon-a-zu1221"
+              @click="goSalePanel(row)"
+            >
               预览
             </el-button>
             <el-button
@@ -257,7 +271,7 @@
             >
               刷新
             </el-button>
-            <br/>
+            <br>
             <el-button
               size="mini"
               icon="iconfont icon-a-zu1221"
@@ -296,7 +310,6 @@
             </el-dialog>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="序号" width="50" type="index" :index="Nindex" />
         <el-table-column prop="brand" label="品牌" :width="flexColumnWidth('品牌', 'brand')" fixed />
         <el-table-column prop="styleId" align="left" label="款式" :width="flexColumnWidth('款式', 'styleId')" fixed />
         <el-table-column prop="skuId" align="left" label="货号" :width="flexColumnWidth('货号', 'skuId')" fixed>
@@ -310,10 +323,13 @@
         <el-table-column prop="fullName" align="left" label="名称" :width="flexColumnWidth('名称', 'fullName')" fixed />
 
         <el-table-column label="基础属性" align="center">
-        
-          <el-table-column prop="listingDate" align="left" label="上市日期"
-            :width="flexColumnWidth('上市日期', 'listingDate')" />
 
+          <el-table-column
+            prop="listingDate"
+            align="left"
+            label="上市日期"
+            :width="flexColumnWidth('上市日期', 'listingDate')"
+          />
 
           <el-table-column prop="season" align="left" label="季节" :width="flexColumnWidth('季节', 'season')" />
           <el-table-column
@@ -344,40 +360,69 @@
         </el-table-column>
         <el-table-column label="关联指标" width="90" align="center">
 
-          <el-table-column prop="ytdSaleOutRate" align="left" label="ytd售罄率" sortable="custom"
-            :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')">
+          <el-table-column
+            prop="ytdSaleOutRate"
+            align="left"
+            label="ytd售罄率"
+            sortable="custom"
+            :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')"
+          >
 
             <template slot-scope="{ row }">
               {{ new Number(row.ytdSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
-          
-          <el-table-column prop="firstOrderSaleOutRate" align="left" label="首单售罄率" sortable="custom"
-            :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')">
-            
+
+          <el-table-column
+            prop="firstOrderSaleOutRate"
+            align="left"
+            label="首单售罄率"
+            sortable="custom"
+            :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')"
+          >
+
             <template slot-scope="{ row }">
               {{ new Number(row.firstOrderSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
-          
-          <el-table-column prop="predictSaleOutRate" align="left" label="预估售罄率" sortable="custom"
-            :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')">
 
+          <el-table-column
+            prop="predictSaleOutRate"
+            align="left"
+            label="预估售罄率"
+            sortable="custom"
+            :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')"
+          >
 
             <template slot-scope="{ row }">
               {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
-          
-          <el-table-column prop="saleYtd" align="left" label="销售ytd" :width="flexColumnWidth('销售ytd', 'saleYtd')"  sortable="custom"/>
-          <el-table-column prop="storage" align="left" label="库存" :width="flexColumnWidth('库存', 'storage')"  sortable="custom"/>
-          <el-table-column prop="predictRestSale" align="left" label="预估剩余销售"
-            :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"  sortable="custom"/>
-          <el-table-column prop="predictFinalSale" align="left" label="预估最终销售"
-            :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"  sortable="custom"/>
-          <el-table-column prop="firstBuyOrder" align="left" label="首单采购量"
-            :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"  sortable="custom"/>
-            
+
+          <el-table-column prop="saleYtd" align="left" label="销售ytd" :width="flexColumnWidth('销售ytd', 'saleYtd')" sortable="custom" />
+          <el-table-column prop="storage" align="left" label="库存" :width="flexColumnWidth('库存', 'storage')" sortable="custom" />
+          <el-table-column
+            prop="predictRestSale"
+            align="left"
+            label="预估剩余销售"
+            :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="predictFinalSale"
+            align="left"
+            label="预估最终销售"
+            :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="firstBuyOrder"
+            align="left"
+            label="首单采购量"
+            :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
+            sortable="custom"
+          />
+
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -444,7 +489,7 @@ import {
 import request from '@/utils/request'
 
 export default {
-  name: '销售商品',
+  name: '',
   data() {
     return {
       list: [],
@@ -538,14 +583,12 @@ export default {
       }
     },
     // 表格当行颜色
-    tableRowClassName({row},index){
-      
-        if (row.existsFeedbackOrder) {
-          return 'warning-row';
-        } else{
-          return '';
-        }
-        return '';
+    tableRowClassName({ row }, index) {
+      if (row.existsFeedbackOrder) {
+        return 'warning-row'
+      } else {
+        return ''
+      }
     },
 
     getMaxLength(arr) {
@@ -643,27 +686,17 @@ export default {
     // 自定义排序
     handleSortChange({ column, prop, order }) {
       // console.log(column);
-      console.log(prop);
-      console.log(order);
+      console.log(prop)
+      console.log(order)
       this.listQuery.sortField = prop
-      if(order!=null && order=="ascending"){
-        this.listQuery.sortAseDesc=1
-      }else if(order!=null && order=="descending"){
-        this.listQuery.sortAseDesc=2
-      }else{
-        this.listQuery.sortAseDesc=null
+      if (order != null && order === 'ascending') {
+        this.listQuery.sortAseDesc = 1
+      } else if (order != null && order === 'descending') {
+        this.listQuery.sortAseDesc = 2
+      } else {
+        this.listQuery.sortAseDesc = null
       }
       this.getList(1)
-      // this.listQuery.sortAseDesc = 
-      // console.log(order);
-      
-      // // 根据项目中 API 的实际参数要求，构建对应的排序参数
-      // this.orderItem = {
-      //   asc: order === "ascending" ? true : false,
-      //   column: prop
-      // };
-      // // 使用构建好的排序参数，请求后端排序好的列表数据 tableData
-      // this.getTableData(this.orderItem);
     },
     handleFileUploadError() {
       this.$message.error('上传失败')

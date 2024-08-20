@@ -2,7 +2,6 @@
   <div class="app-container">
     <div class="filter-container">
 
-
       <span>
         skuId：
         <el-select
@@ -168,7 +167,7 @@
               生产控制
             </el-button>
             <el-button
-            v-if="row.produceStateDescription  && row.cancelState!=1"
+              v-if="row.produceStateDescription && row.cancelState!=1"
               size="mini"
               style="color:gray; border: none"
               icon="el-icon-document"
@@ -178,7 +177,7 @@
               {{ row.produceStateDescription }}
             </el-button>
             <el-button
-            v-if="row.cancelState==1"
+              v-if="row.cancelState==1"
               size="mini"
               style="color:gray; border: none"
               icon="el-icon-document"
@@ -188,24 +187,24 @@
             </el-button>
             <br>
             <el-button
-            v-if="row.produceStateDescription!='生产完成' && row.cancelState!=1"
+              v-if="row.produceStateDescription!='生产完成' && row.cancelState!=1"
               size="mini"
               style="color: #67C23A; border: none;"
               icon="el-icon-success"
               @click="onaccomplishFeedbackOrder(row.id)"
             >
-             一键完成
+              一键完成
             </el-button>
             <el-button
-            v-if="row.produceStateDescription!='生产完成' && row.cancelState!=1"
+              v-if="row.produceStateDescription!='生产完成' && row.cancelState!=1"
               size="mini"
               style="color: #E6A23C; border: none;"
               icon="el-icon-warning-outline"
               @click="oncancelFeedbackOrder(row.id)"
             >
-             取消订单
+              取消订单
             </el-button>
-            
+
           </template>
         </el-table-column>
         <el-table-column align="left" label="skuId" prop="skuId" :min-width="flexColumnWidth(list, 'skuId', 'skuId')" />
@@ -422,7 +421,7 @@
 </template>
 
 <script>
-import { getBrandEnum, getTrsNoEnumList,getSkuIdEnumList } from '@/api/enum'
+import { getBrandEnum, getTrsNoEnumList, getSkuIdEnumList } from '@/api/enum'
 import {
   addProduceOrder,
   confirmFeedback,
@@ -431,17 +430,17 @@ import {
   queryFeedbackOrder,
   getProduceTree,
   accomplishFeedbackOrder,
-  cancelFeedbackOrder,
+  cancelFeedbackOrder
 } from '@/api/feedback'
 import ProduceMaterialList from '@/views/product/component/produceMaterialList.vue'
 import ProduceMaterialListReader from '@/views/product/component/produceMaterialListReader.vue'
-import { flexColumnWidth } from '@/common/util'
+import { flexColumnWidth } from '@/common/flexColumn'
 import { getTrsNoEnumListByComponentType } from '@/api/bom'
 import {
-  updFeedbackOrderIDState, getProduceMaterialUseBomList, initializeSupplyState
+  updFeedbackOrderIDState, initializeSupplyState
 } from '@/api/produceMaterial'
 export default {
-  name: '生产订单',
+  name: '',
   components: { ProduceMaterialListReader, ProduceMaterialList },
   data() {
     return {
@@ -465,12 +464,12 @@ export default {
       componentTypeList: ['成品', '鞋面半成品', '鞋底半成品'],
       listQuery: {
         skuId: '',
-        trsNo:'',
+        trsNo: '',
         page: 1,
         size: 10
       },
       trsEnumList: [], // SUKID 搜索框 数据查询
-      skuIdEnumList:[],
+      skuIdEnumList: [],
       finishedTrsNosList: [],
       semiFinishTrsNoList1: [],
       semiFinishTrsNoList2: [],
@@ -485,6 +484,15 @@ export default {
       brands: []
     }
   },
+  watch: {
+    '$route.query.skuId': {
+      immediate: true,
+      handler(newId) {
+        this.listQuery.skuId = newId || ''
+        this.getList(1)
+      }
+    }
+  },
 
   async created() {
     // this.listQuery.skuId = this.$route.query.skuId ? this.$route.query.skuId : ''
@@ -492,15 +500,6 @@ export default {
     await this.getBrands()
     await this.initTrsList()
     this.getList(1)
-  },
-  watch: {
-    '$route.query.skuId': {
-      immediate: true,
-      handler(newId) {
-        this.listQuery.skuId = newId ? newId: ''
-        this.getList(1)
-      }
-    }
   },
   methods: {
     flexColumnWidth,
@@ -510,17 +509,17 @@ export default {
         this.trsEnumList = res?.data ?? []
       })
     },
-    async oncancelFeedbackOrder(id){
-      cancelFeedbackOrder(id).then(res=>{
+    async oncancelFeedbackOrder(id) {
+      cancelFeedbackOrder(id).then(res => {
 
-      }).finally(()=>{
+      }).finally(() => {
         this.getList(1)
       })
     },
-    async onaccomplishFeedbackOrder(id){
-      accomplishFeedbackOrder(id).then(res=>{
+    async onaccomplishFeedbackOrder(id) {
+      accomplishFeedbackOrder(id).then(res => {
 
-      }).finally(()=>{
+      }).finally(() => {
         this.getList(1)
       })
     },
@@ -550,7 +549,7 @@ export default {
     // 全部完成
     async onupdFeedbackOrderIDState(row) {
       console.log(row)
-      await updFeedbackOrderIDState({ produceOrderId: row.id, state: 7, }).then((res) => {
+      await updFeedbackOrderIDState({ produceOrderId: row.id, state: 7 }).then((res) => {
       }).finally(() => {
         this.getList(1)
       })
@@ -639,7 +638,7 @@ export default {
         var nodeList = res.data?.nodeList ?? []
         console.log(nodeList)
         // console.log();
-        hasZero = nodeList.some(item => item.state != 7)
+        hasZero = nodeList.some(item => item.state !== 7)
       })
       // await getProduceMaterialUseBomList(row.id).then((res) => {
       //   console.log(res.data)

@@ -201,7 +201,7 @@
 
 <script>
 import { generateProduceMaterial, getBomTreeNodeListByRootTrs } from '@/api/bom'
-import { flexColumnWidth } from '@/common/util'
+import { flexColumnWidth } from '@/common/flexColumn'
 import { getFeedbackOrder } from '@/api/feedback'
 
 export default {

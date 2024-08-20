@@ -6,12 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
-import store from '@/store'; //
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -44,7 +38,7 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-  
+
   {
     path: '/',
     component: Layout,
@@ -56,7 +50,7 @@ export const constantRoutes = [
         name: '404',
         noCache: true,
         hidden: true,
-        meta: { title: '404', icon: 'edit', roles:['admin','sale']}
+        meta: { title: '404', icon: 'edit', roles: ['admin', 'sale'] }
       },
       {
         path: '/home',
@@ -64,7 +58,7 @@ export const constantRoutes = [
         name: '首页',
         // hidden: true , //不展示
         noCache: true,
-        meta: { title: '首页', roles:['admin','sale'],}
+        meta: { title: '首页', roles: ['admin', 'sale'] }
       },
       // {
       //   path: '/home',
@@ -79,11 +73,11 @@ export const constantRoutes = [
         name: '401',
         noCache: true,
         hidden: true,
-        meta: { title: '401', icon: 'edit', roles:['admin','sale']}
-      },
-    ],
-  },
-  
+        meta: { title: '401', icon: 'edit', roles: ['admin', 'sale'] }
+      }
+    ]
+  }
+
 ]
 
 /**
@@ -101,7 +95,7 @@ export const asyncRoutes = [
     meta: {
       title: '销售管理',
       icon: 'edit',
-      roles:['admin','sale','sale_commodity','sale_production','sale','sale_panel']
+      roles: ['admin', 'sale', 'sale_commodity', 'sale_production', 'sale', 'sale_panel']
     },
     children: [
       {
@@ -109,21 +103,21 @@ export const asyncRoutes = [
         component: () => import('@/views/product/brand'),
         name: '品牌信息',
         noCache: true,
-        meta: { title: '品牌信息', icon: 'edit', roles:['admin','sale']}
+        meta: { title: '品牌信息', icon: 'edit', roles: ['admin', 'sale'] }
       },
       {
         path: '/skuProduct/info',
         component: () => import('@/views/product/saleProduct'),
         name: '销售商品',
         noCache: true,
-        meta: { title: '销售商品', icon: 'edit', roles:['admin','sale','sale_commodity'] }
+        meta: { title: '销售商品', icon: 'edit', roles: ['admin', 'sale', 'sale_commodity'] }
       },
       {
         path: '/skuProduct/feedback',
         component: () => import('@/views/product/feedback'),
         name: '生产订单',
         noCache: true,
-        meta: { title: '生产订单', icon: 'edit', roles:['admin','sale','sale_production'] }
+        meta: { title: '生产订单', icon: 'edit', roles: ['admin', 'sale', 'sale_production'] }
       },
       {
         path: '/product/saleProductPanel',
@@ -131,11 +125,11 @@ export const asyncRoutes = [
         name: '销售面板',
         noCache: true,
         hidden: true,
-        meta: { title: '销售面板', icon: 'edit' , roles:['admin','sale','sale_panel']}
+        meta: { title: '销售面板', icon: 'edit', roles: ['admin', 'sale', 'sale_panel'] }
       }
     ]
   },
-  
+
   {
     path: '/data',
     component: Layout,
@@ -143,62 +137,62 @@ export const asyncRoutes = [
     redirect: '/data/buyOrder',
     meta: {
       title: '数据管理',
-      icon: 'edit', roles:['admin','data','data_purchasing','data_sale','data_bom','data_bom','data_stock','data_detail','data_colour']
+      icon: 'edit', roles: ['admin', 'data', 'data_purchasing', 'data_sale', 'data_bom', 'data_bom', 'data_stock', 'data_detail', 'data_colour']
     },
     children: [
       {
         path: '/data/buyOrder',
         component: () => import('@/views/order/buyOrder'),
         name: 'data_cg',
-        meta: { title: '采购数据', icon: 'edit', roles:['admin','data','data_purchasing'] }
+        meta: { title: '采购数据', icon: 'edit', roles: ['admin', 'data', 'data_purchasing'] }
       },
       {
         path: '/data/saleOrder',
         component: () => import('@/views/order/saleOrder'),
         name: '销售数据',
-        meta: { title: '销售数据', icon: 'edit', roles:['admin','data_sale'] }
+        meta: { title: '销售数据', icon: 'edit', roles: ['admin', 'data_sale'] }
       },
       {
         path: '/data/materialOrder',
         component: () => import('@/views/order/materialOrder'),
         name: '备料数据',
-        meta: { title: '备料数据', icon: 'edit', roles:['admin','data_mp'] }
+        meta: { title: '备料数据', icon: 'edit', roles: ['admin', 'data_mp'] }
       },
       {
         path: '/data/bom',
         component: () => import('@/views/bom/data'),
         name: 'BOM数据',
-        meta: { title: 'BOM数据', icon: 'edit', roles:['admin','data','data_bom'] }
+        meta: { title: 'BOM数据', icon: 'edit', roles: ['admin', 'data', 'data_bom'] }
       },
       {
         path: '/data/storage',
         component: () => import('@/views/storage/overview'),
         name: '库存数据',
-        meta: { title: '库存数据', icon: 'edit', roles:['admin','data','data_stock'] }
+        meta: { title: '库存数据', icon: 'edit', roles: ['admin', 'data', 'data_stock'] }
       },
       {
         path: '/data/storageDetail',
         component: () => import('@/views/storage/detail'),
         name: '库存明细',
-        meta: { title: '库存明细', icon: 'edit', roles:['admin','data','data_detail'] }
+        meta: { title: '库存明细', icon: 'edit', roles: ['admin', 'data', 'data_detail'] }
       },
       {
         path: '/data/color',
         component: () => import('@/views/color/index'),
         name: '颜色数据',
-        meta: { title: '颜色数据', icon: 'edit', roles:['admin','data','data_colour'] }
+        meta: { title: '颜色数据', icon: 'edit', roles: ['admin', 'data', 'data_colour'] }
       },
       {
         path: '/store/index',
         component: () => import('@/views/store/index'),
         name: '商铺数据',
-        meta: { title: '商铺数据', icon: 'shopping', roles:['admin']}
+        meta: { title: '商铺数据', icon: 'shopping', roles: ['admin'] }
       },
       {
         path: '/weather/index',
         component: () => import('@/views/weather/index'),
         name: '城市天气',
-        meta: { title: '城市天气', icon: 'international', roles:['admin']}
+        meta: { title: '城市天气', icon: 'international', roles: ['admin'] }
       }
     ]
   },
@@ -209,32 +203,32 @@ export const asyncRoutes = [
     meta: {
       title: '用户管理',
       icon: 'user',
-      roles:['admin']
+      roles: ['admin']
     },
     children: [
       {
         path: '/user/info',
         component: () => import('@/views/user/user'),
         name: '用户信息',
-        hidden: true , //不展示
-        meta: { title: '用户信息', icon: 'user', roles:['admin']}
+        hidden: true, // 不展示
+        meta: { title: '用户信息', icon: 'user', roles: ['admin'] }
       }, {
         path: '/user/role',
         component: () => import('@/views/user/role'),
-        name: '角色信息',
-        meta: { title: '角色信息', icon: 'tree' , roles:['admin']}
+        name: '角色权限',
+        meta: { title: '角色权限', icon: 'tree', roles: ['admin'] }
       },
       {
         path: '/user/userRole',
         component: () => import('@/views/user/userRole'),
-        name: '用户与角色权限',
-        meta: { title: '用户与角色权限', icon: 'peoples', roles:['admin'] }
+        name: '用户角色',
+        meta: { title: '用户角色', icon: 'peoples', roles: ['admin'] }
       },
       {
         path: '/user/userApplyFor',
         component: () => import('@/views/user/userApplyFor'),
         name: '用户申请',
-        meta: { title: '用户申请', icon: 'form', roles:['admin'] }
+        meta: { title: '用户申请', icon: 'form', roles: ['admin'] }
       }
     ]
   },
@@ -245,15 +239,15 @@ export const asyncRoutes = [
     redirect: '/system/index',
     meta: {
       title: '系统管理',
-      icon: 'password',
+      icon: 'password'
     },
     children: [
       {
         path: '/system/index',
         component: () => import('@/views/system/index'),
         name: '系统管理',
-        meta: { title: '系统管理', icon: 'password', roles:['admin']}
-      },
+        meta: { title: '系统管理', icon: 'password', roles: ['admin'] }
+      }
     ]
   },
 
@@ -294,8 +288,8 @@ export const asyncRoutes = [
   {
     path: '/sy',
     component: Layout,
-    redirect:'sy/info', 
-    hidden: true , //不展示
+    redirect: 'sy/info',
+    hidden: true, // 不展示
     meta: {
       title: '实验',
       icon: 'sy'
@@ -305,25 +299,25 @@ export const asyncRoutes = [
         path: '/sy/info',
         component: () => import('@/views/user/sy'),
         name: '实验',
-        meta: { title: '实验', icon: 'sy'}
+        meta: { title: '实验', icon: 'sy' }
       },
-      
+
       {
         path: '/sy/info1',
         component: () => import('@/views/user/sy1'),
         name: '实验1',
-        meta: { title: '实验', icon: 'sy'}
+        meta: { title: '实验', icon: 'sy' }
       },
       {
         path: '/sy/info2',
         component: () => import('@/views/user/sy2'),
         name: '实验2',
-        meta: { title: '实验', icon: 'sy'}
-      },
+        meta: { title: '实验', icon: 'sy' }
+      }
     ]
   },
 
-  { path: '*' ,redirect: '/404', hidden: true },
+  { path: '*', redirect: '/404', hidden: true }
   // /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
   // chartsRouter,

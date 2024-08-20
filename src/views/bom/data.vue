@@ -425,7 +425,7 @@ import {
   getTrsNoEnumList,
   LayerEnumList
 } from '@/api/enum'
-import { flexColumnWidth } from '@/common/util'
+import { flexColumnWidth } from '@/common/flexColumn'
 
 export default {
   name: 'BOM',

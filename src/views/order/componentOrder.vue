@@ -176,7 +176,7 @@
 </template>
 
 <script>
-import { flexColumnWidth } from '@/common/util'
+import { flexColumnWidth } from '@/common/flexColumn'
 import {
   addComponentOrder,
   confirmOrder,

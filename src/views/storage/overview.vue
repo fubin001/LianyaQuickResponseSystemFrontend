@@ -62,8 +62,10 @@
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          style="margin: 5px 0px 5px 0; background-color: #244496" @click="refreshStorage()">更新库存</el-button>
-      
+          style="margin: 5px 0px 5px 0; background-color: #244496"
+          @click="refreshStorage()"
+        >更新库存</el-button>
+
       </span>
     </div>
 
@@ -254,10 +256,10 @@ import {
   removeStorage
 } from '@/api/storage'
 import { getTrsNoEnumList } from '@/api/bom'
-import { flexColumnWidth } from '@/common/util'
+import { flexColumnWidth } from '@/common/flexColumn'
 
 export default {
-  name: '库存数据',
+  name: '',
   data() {
     return {
       addForm: {},
@@ -278,8 +280,8 @@ export default {
       listLoading: true,
       listQuery: {
         trsNo: '',
-        colorCode:'',
-        sizeCode:'',
+        colorCode: '',
+        sizeCode: '',
         page: 1,
         size: 10
       },
@@ -296,23 +298,23 @@ export default {
   },
   computed: {
   },
-  async created() {
-    await this.initTrsList()
-    await this.initEnums()
-    this.getList(1)
-  },
   watch: {
     '$route.query.querys': {
       immediate: true,
       handler(newVal) {
-        console.log(newVal);
-        this.listQuery.trsNo= newVal?.routerTrsNo ? newVal?.routerTrsNo  : ''
-        this.listQuery.sizeCode= newVal?.routerSize ? newVal?.routerSize  : ''
-        this.listQuery.colorCode= newVal?.routerColor ? newVal?.routerColor  : ''
+        console.log(newVal)
+        this.listQuery.trsNo = newVal?.routerTrsNo ? newVal?.routerTrsNo : ''
+        this.listQuery.sizeCode = newVal?.routerSize ? newVal?.routerSize : ''
+        this.listQuery.colorCode = newVal?.routerColor ? newVal?.routerColor : ''
         this.getList(1)
       },
       deep: true // 深度监听
-    },
+    }
+  },
+  async created() {
+    await this.initTrsList()
+    await this.initEnums()
+    this.getList(1)
   },
   methods: {
     flexColumnWidth,

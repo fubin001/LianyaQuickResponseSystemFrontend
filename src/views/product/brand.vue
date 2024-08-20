@@ -1,22 +1,35 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      品牌名：<el-input v-model="listQuery.name" placeholder="请输入品牌名" style="width: 150px; margin: 5px 8px 5px 0"
-        class="filter-item" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search"
-        style="margin: 5px 8px 5px 0; background-color: #244496; float: right" @click="getList(1)">
+      品牌名：<el-input
+        v-model="listQuery.name"
+        placeholder="请输入品牌名"
+        style="width: 150px; margin: 5px 8px 5px 0"
+        class="filter-item"
+      />
+      <el-button
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        style="margin: 5px 8px 5px 0; background-color: #244496; float: right"
+        @click="getList(1)"
+      >
         搜索
       </el-button>
     </div>
 
     <div class="table-list">
-      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row
-        :header-cell-style="{ background: '#e4e7f0' }" style="width: 90%">
-        <el-table-column align="center" label="id" width="65">
-          <template slot-scope="{ row }">
-            <span>{{ row.id }}</span>
-          </template>
-        </el-table-column>
+      <el-table
+        ref="dragTable"
+        v-loading="listLoading"
+        :data="list"
+        row-key="id"
+        fit
+        highlight-current-row
+        :header-cell-style="{ background: '#e4e7f0' }"
+        style="width: 90%"
+      >
+        <el-table-column align="center" label="id" width="65" type="index" :index="getIndex" />
         <el-table-column prop="name" width="180px" align="center" label="品牌名称">
           <template slot-scope="scope">
             <el-link type="primary" @click="onDialog(scope.row.name)">
@@ -25,9 +38,16 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" :page-sizes="[10, 20, 50, 100]"
-        :current-page="page" :page-size="size" align="center" @size-change="getList(page)"
-        @current-change="getList(page)" />
+      <el-pagination
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        :page-sizes="[10, 20, 50, 100]"
+        :current-page="page"
+        :page-size="size"
+        align="center"
+        @size-change="getList(page)"
+        @current-change="getList(page)"
+      />
     </div>
   </div>
 </template>
@@ -36,7 +56,7 @@
 import { query } from '@/api/brand'
 
 export default {
-  name: '品牌信息',
+  name: '',
   data() {
     return {
       list: [],
@@ -63,8 +83,15 @@ export default {
       this.total = total
       this.listLoading = false
     },
+
+    getIndex(index) {
+      const page = this.page
+      const size = this.size
+      return index + 1 + (page - 1) * size
+    },
+
     onDialog(brand) {
-      this.$router.push({ path: '/skuProduct/info', query: { brand: brand } })
+      this.$router.push({ path: '/skuProduct/info', query: { brand: brand }})
     }
   }
 }
