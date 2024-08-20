@@ -243,8 +243,8 @@
       <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row
         @sort-change="handleSortChange" style="width: 100%" 
         :row-class-name="tableRowClassName">
-        <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
-          <template slot-scope="{ row }" fixed>
+        <el-table-column label="操作" fixed align="center" width="200" class-name="small-padding fixed-width">
+          <template slot-scope="{ row }" >
             <el-button size="mini" style="color: #244496; border: none" icon="iconfont icon-a-zu1221"
               @click="goSalePanel(row)">
               预览
@@ -257,6 +257,7 @@
             >
               刷新
             </el-button>
+            <br/>
             <el-button
               size="mini"
               icon="iconfont icon-a-zu1221"
