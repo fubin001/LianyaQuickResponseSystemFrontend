@@ -55,18 +55,11 @@ export const constantRoutes = [
       {
         path: '/home',
         component: () => import('@/views/home/index'),
-        name: '首页',
+        name: '系统首页',
         // hidden: true , //不展示
         noCache: true,
-        meta: { title: '首页', roles: ['admin', 'sale'] }
+        meta: { title: '系统首页', icon: 'tree', roles: ['admin', 'sale'] }
       },
-      // {
-      //   path: '/home',
-      //   component: () => import('@/views/home/index'),
-      //   name: 'home',
-      //   noCache: true,
-      //   meta: { title: 'home', icon: 'edit', roles:['admin','sale'], affix: true ,}
-      // },
       {
         path: '/401',
         component: () => import('@/views/error-page/401'),
@@ -137,62 +130,62 @@ export const asyncRoutes = [
     redirect: '/data/buyOrder',
     meta: {
       title: '数据管理',
-      icon: 'edit', roles: ['admin', 'data', 'data_purchasing', 'data_sale', 'data_bom', 'data_bom', 'data_stock', 'data_detail', 'data_colour']
+      icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_purchasing', 'data_sale', 'data_bom', 'data_bom', 'data_stock', 'data_detail', 'data_colour']
     },
     children: [
       {
         path: '/data/buyOrder',
         component: () => import('@/views/order/buyOrder'),
         name: 'data_cg',
-        meta: { title: '采购数据', icon: 'edit', roles: ['admin', 'data', 'data_purchasing'] }
+        meta: { title: '采购数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_purchasing'] }
       },
       {
         path: '/data/saleOrder',
         component: () => import('@/views/order/saleOrder'),
         name: '销售数据',
-        meta: { title: '销售数据', icon: 'edit', roles: ['admin', 'data_sale'] }
+        meta: { title: '销售数据', icon: 'el-icon-s-grid', roles: ['admin', 'data_sale'] }
       },
       {
         path: '/data/materialOrder',
         component: () => import('@/views/order/materialOrder'),
         name: '备料数据',
-        meta: { title: '备料数据', icon: 'edit', roles: ['admin', 'data_mp'] }
+        meta: { title: '备料数据', icon: 'el-icon-s-grid', roles: ['admin', 'data_mp'] }
       },
       {
         path: '/data/bom',
         component: () => import('@/views/bom/data'),
         name: 'BOM数据',
-        meta: { title: 'BOM数据', icon: 'edit', roles: ['admin', 'data', 'data_bom'] }
+        meta: { title: 'BOM数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_bom'] }
       },
       {
         path: '/data/storage',
         component: () => import('@/views/storage/overview'),
         name: '库存数据',
-        meta: { title: '库存数据', icon: 'edit', roles: ['admin', 'data', 'data_stock'] }
+        meta: { title: '库存数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_stock'] }
       },
       {
         path: '/data/storageDetail',
         component: () => import('@/views/storage/detail'),
         name: '库存明细',
-        meta: { title: '库存明细', icon: 'edit', roles: ['admin', 'data', 'data_detail'] }
+        meta: { title: '库存明细', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_detail'] }
       },
       {
         path: '/data/color',
         component: () => import('@/views/color/index'),
         name: '颜色数据',
-        meta: { title: '颜色数据', icon: 'edit', roles: ['admin', 'data', 'data_colour'] }
+        meta: { title: '颜色数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_colour'] }
       },
       {
         path: '/store/index',
         component: () => import('@/views/store/index'),
         name: '商铺数据',
-        meta: { title: '商铺数据', icon: 'shopping', roles: ['admin'] }
+        meta: { title: '商铺数据', icon: 'el-icon-s-grid', roles: ['admin'] }
       },
       {
         path: '/weather/index',
         component: () => import('@/views/weather/index'),
         name: '城市天气',
-        meta: { title: '城市天气', icon: 'international', roles: ['admin'] }
+        meta: { title: '城市天气', icon: 'el-icon-s-grid', roles: ['admin'] }
       }
     ]
   },
@@ -216,19 +209,19 @@ export const asyncRoutes = [
         path: '/user/role',
         component: () => import('@/views/user/role'),
         name: '角色权限',
-        meta: { title: '角色权限', icon: 'tree', roles: ['admin'] }
+        meta: { title: '角色权限', icon: 'user', roles: ['admin'] }
       },
       {
         path: '/user/userRole',
         component: () => import('@/views/user/userRole'),
         name: '用户角色',
-        meta: { title: '用户角色', icon: 'peoples', roles: ['admin'] }
+        meta: { title: '用户角色', icon: 'user', roles: ['admin'] }
       },
       {
         path: '/user/userApplyFor',
         component: () => import('@/views/user/userApplyFor'),
         name: '用户申请',
-        meta: { title: '用户申请', icon: 'form', roles: ['admin'] }
+        meta: { title: '用户申请', icon: 'user', roles: ['admin'] }
       }
     ]
   },
@@ -250,41 +243,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
-  // {
-  //   path: '/store',
-  //   component: Layout,
-  //   redirect: '/store/index',
-  //   meta: {
-  //     title: '商铺',
-  //     icon: 'shopping',
-  //   },
-  //   children: [
-  //     {
-  //       path: '/store/index',
-  //       component: () => import('@/views/store/index'),
-  //       name: '商铺',
-  //       meta: { title: '商铺', icon: 'shopping', roles:['admin']}
-  //     },
-  //   ]
-  // },
-  // {
-  //   path: '/weather',
-  //   component: Layout,
-  //   redirect: '/weather/index',
-  //   meta: {
-  //     title: '城市天气',
-  //     icon: 'international',
-  //   },
-  //   children: [
-  //     {
-  //       path: '/weather/index',
-  //       component: () => import('@/views/weather/index'),
-  //       name: '城市天气',
-  //       meta: { title: '城市天气', icon: 'international', roles:['admin']}
-  //     }
-  //   ]
-  // },
   {
     path: '/sy',
     component: Layout,
@@ -318,11 +276,6 @@ export const asyncRoutes = [
   },
 
   { path: '*', redirect: '/404', hidden: true }
-  // /** when your routing map is too long, you can split it into small modules **/
-  // componentsRouter,
-  // chartsRouter,
-  // nestedRouter,
-  // tableRouter,
 ]
 
 const createRouter = () => new Router({
@@ -338,13 +291,5 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
-
-// // 导航守卫
-// router.beforeEach((to, from, next) => {
-//   console.log(819,to.fullPath);
-//   // 保存当前路径到 Vuex 中
-//   store.commit('SET_CURRENT_PATH', to.fullPath);
-//   next();
-// });
 
 export default router
