@@ -1,5 +1,7 @@
 module.exports = {
-  env: {
-    jest: true
-  }
+  root: true,
+  parserOptions: {
+    sourceType: 'module',
+    parser: "babel-eslint"
+  },
 }

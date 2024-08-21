@@ -249,10 +249,8 @@
         highlight-current-row
         style="width: 100%"
         :row-class-name="tableRowClassName"
-        stripe
         @sort-change="handleSortChange"
       >
-        <el-table-column align="center" label="序号" width="70px" type="index" :index="Nindex" fixed />
         <el-table-column label="操作" fixed align="center" width="200" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
             <el-button
@@ -295,21 +293,9 @@
                 {{ metric.metricValue }}
               </div>
             </div> -->
-
-            <el-dialog title="关联指标" :visible.sync="relevanceShow" width="40%">
-              <div style="height: 200px">
-                <div v-for="metric in metricValueList" :key="metric.metricName" class="border-set">
-                  <div style="width: 24%; float: left">
-                    {{ metric.metricName }}
-                  </div>
-                  <div style="width: 26%; float: left">
-                    {{ metric.metricValue }}
-                  </div>
-                </div>
-              </div>
-            </el-dialog>
           </template>
         </el-table-column>
+        <el-table-column align="center" label="序号" width="50" type="index" :index="Nindex" />
         <el-table-column prop="brand" label="品牌" :width="flexColumnWidth('品牌', 'brand')" fixed />
         <el-table-column prop="styleId" align="left" label="款式" :width="flexColumnWidth('款式', 'styleId')" fixed />
         <el-table-column prop="skuId" align="left" label="货号" :width="flexColumnWidth('货号', 'skuId')" fixed>
@@ -324,12 +310,7 @@
 
         <el-table-column label="基础属性" align="center">
 
-          <el-table-column
-            prop="listingDate"
-            align="left"
-            label="上市日期"
-            :width="flexColumnWidth('上市日期', 'listingDate')"
-          />
+          <el-table-column prop="listingDate" align="left" label="上市日期" :width="flexColumnWidth('上市日期', 'listingDate')" />
 
           <el-table-column prop="season" align="left" label="季节" :width="flexColumnWidth('季节', 'season')" />
           <el-table-column
@@ -399,8 +380,20 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="saleYtd" align="left" label="销售ytd" :width="flexColumnWidth('销售ytd', 'saleYtd')" sortable="custom" />
-          <el-table-column prop="storage" align="left" label="库存" :width="flexColumnWidth('库存', 'storage')" sortable="custom" />
+          <el-table-column
+            prop="saleYtd"
+            align="left"
+            label="销售ytd"
+            :width="flexColumnWidth('销售ytd', 'saleYtd')"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="storage"
+            align="left"
+            label="库存"
+            :width="flexColumnWidth('库存', 'storage')"
+            sortable="custom"
+          />
           <el-table-column
             prop="predictRestSale"
             align="left"
@@ -466,6 +459,19 @@
         @current-change="handleCurrentChange"
       />
     </div>
+
+    <el-dialog title="关联指标" :visible.sync="relevanceShow" width="40%">
+      <div style="height: 200px">
+        <div v-for="metric in metricValueList" :key="metric.metricName" class="border-set">
+          <div style="width: 24%; float: left">
+            {{ metric.metricName }}
+          </div>
+          <div style="width: 26%; float: left">
+            {{ metric.metricValue }}
+          </div>
+        </div>
+      </div>
+    </el-dialog>
 
     <el-dialog :visible.sync="centerDialogVisible" title="路由跳转" width="500" align-center>
       <el-button @click="goToDetails(1)">销售数据</el-button>
@@ -697,6 +703,16 @@ export default {
         this.listQuery.sortAseDesc = null
       }
       this.getList(1)
+      // this.listQuery.sortAseDesc =
+      // console.log(order);
+
+      // // 根据项目中 API 的实际参数要求，构建对应的排序参数
+      // this.orderItem = {
+      //   asc: order === "ascending" ? true : false,
+      //   column: prop
+      // };
+      // // 使用构建好的排序参数，请求后端排序好的列表数据 tableData
+      // this.getTableData(this.orderItem);
     },
     handleFileUploadError() {
       this.$message.error('上传失败')
@@ -763,13 +779,14 @@ export default {
   color: #fff !important;
   background: #42b983 !important;
 }
-  .el-table .warning-row {
-    background: rgb(251, 143, 185);
-  }
 
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
+.el-table .warning-row {
+  background: rgb(251, 143, 185);
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}
 </style>
 
 <style lang="scss" scoped>
