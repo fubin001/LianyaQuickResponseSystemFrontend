@@ -101,7 +101,7 @@ export const asyncRoutes = [
       {
         path: '/skuProduct/info',
         component: () => import('@/views/product/saleProduct'),
-        name: '销售商品',
+        name: 'SaleProduct',
         noCache: true,
         meta: { title: '销售商品', icon: 'edit', roles: ['admin', 'sale', 'sale_commodity'] }
       },

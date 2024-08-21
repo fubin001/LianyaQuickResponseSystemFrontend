@@ -416,6 +416,17 @@
             sortable="custom"
           />
 
+          <el-table-column
+            prop="imageUrl"
+            align="left"
+            label="图"
+            sortable="custom"
+            width="120"
+          >
+            <template slot-scope="{ row }">
+              <img :src="`https://omni.tristate.cn:90${row.imageUrl}`" alt="Image" style="width: 100px; height: auto;" />
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
@@ -495,7 +506,7 @@ import {
 import request from '@/utils/request'
 
 export default {
-  name: '',
+  name: 'SaleProduct',
   data() {
     return {
       list: [],
@@ -674,6 +685,16 @@ export default {
         }
       )
       this.list = data
+        
+      // 使用 map 方法遍历数组并替换 URL 字符串中的 Attach 为 Attach2
+      this.list = data.map(item => {
+          return {
+              ...item,
+              imageUrl: item.imageUrl.replace('/Attach', '/Attach2'),
+          };
+      });
+
+
       this.total = total
       this.listLoading = false
     },
@@ -733,6 +754,14 @@ export default {
       return index + 1 + (page - 1) * size
     },
     goSalePanel(row) {
+      console.log(row)
+      if (row.feedback !== 'Y') {
+        this.$message({
+          message: '并非快反款式，无法查看',
+          type: 'warning'
+        })
+        return
+      }
       this.$router.push({
         path: '/product/saleProductPanel',
         query: {
