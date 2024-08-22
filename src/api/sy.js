@@ -130,3 +130,11 @@ export function apiVRetailBILLDATE(data) {
     data: data
   })
 }
+
+export function apiRel(query) {
+  return request({
+    url: '/test/apiRel',
+    method: 'get',
+    params: query
+  })
+}

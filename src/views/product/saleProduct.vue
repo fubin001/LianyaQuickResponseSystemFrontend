@@ -274,7 +274,7 @@
               size="mini"
               icon="iconfont icon-a-zu1221"
               style="color: #244496; border: none"
-              @click="openRelevance(row.metricValueList)"
+              @click="openRelevance(row)"
             >
               指标
             </el-button>
@@ -307,6 +307,11 @@
         </el-table-column>
         <el-table-column prop="color" align="left" label="颜色" :width="flexColumnWidth('颜色', 'color')" fixed />
         <el-table-column prop="fullName" align="left" label="名称" :width="flexColumnWidth('名称', 'fullName')" fixed />
+        <el-table-column prop="feedback" align="left" label="是否快反" :width="flexColumnWidth('是否快反', 'feedback')" fixed>
+          <template slot-scope="{ row }">
+            {{ row.feedback?"是":"否" }}
+          </template>
+        </el-table-column>
 
         <el-table-column label="基础属性" align="center">
 
@@ -424,7 +429,7 @@
             width="120"
           >
             <template slot-scope="{ row }">
-              <img :src="`https://omni.tristate.cn:90${row.imageUrl}`" alt="Image" style="width: 100px; height: auto;" />
+              <img :src="`https://omni.tristate.cn:90${row.imageUrl}`" alt="Image" style="width: 100px; height: auto;">
             </template>
           </el-table-column>
         </el-table-column>
@@ -560,9 +565,16 @@ export default {
       console.log(this.listQuery)
       exportSkuProduct(this.listQuery)
     },
-    openRelevance(data) {
+    openRelevance(row) {
+      if (row.feedback !== 'Y') {
+        this.$message({
+          message: '并非快反款式，无法查看',
+          type: 'warning'
+        })
+        return
+      }
       this.relevanceShow = true
-      this.metricValueList = data
+      this.metricValueList = row.metricValueList
     },
 
     popModForm(row) {
@@ -685,15 +697,15 @@ export default {
         }
       )
       this.list = data
-        
+
       // 使用 map 方法遍历数组并替换 URL 字符串中的 Attach 为 Attach2
       this.list = data.map(item => {
-          return {
-              ...item,
-              imageUrl: item.imageUrl.replace('/Attach', '/Attach2'),
-          };
-      });
+        return {
+          ...item,
 
+          imageUrl: item.imageUrl.replace('/Attach', '/Attach2')
+        }
+      })
 
       this.total = total
       this.listLoading = false
