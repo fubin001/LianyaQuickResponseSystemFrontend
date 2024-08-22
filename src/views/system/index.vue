@@ -1,19 +1,23 @@
 <template>
-  <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
+  <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
     <el-tab-pane label="数据管理" name="first">
 
       <el-row :gutter="20">
         <el-col :span="11">
-          <el-date-picker v-model="pickerDate" type="daterange" range-separator="至" start-placeholder="开始日期"
-            end-placeholder="结束日期">
-          </el-date-picker>
-          <el-button @click="onapiVRetailBILLDATE"  type="primary">更新销售</el-button>
+          <el-date-picker
+            v-model="pickerDate"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+          <el-button type="primary" @click="onapiVRetailBILLDATE">更新销售</el-button>
         </el-col>
         <el-col :span="11">
-          <el-button @click="apiMProduct"  type="primary">更新联亚商品到本地</el-button>
+          <el-button type="primary" @click="apiMProduct">更新联亚商品到本地</el-button>
         </el-col>
         <el-col :span="11">
-          <el-button @click="refreshVRetail"  type="primary">更新联亚销售商品</el-button>
+          <el-button type="primary" @click="refreshVRetail">更新联亚销售商品</el-button>
         </el-col>
         <!-- <el-col :span="12">22
           2222
@@ -23,64 +27,61 @@
         </el-col> -->
       </el-row>
     </el-tab-pane>
-    <el-tab-pane label="api数据同步" name="fourth">
-
-    </el-tab-pane>
+    <el-tab-pane label="api数据同步" name="fourth" />
   </el-tabs>
 </template>
 <script>
-import { apiVRetailBILLDATE } from "@/api/saleOrder";
-import { refreshVRetail } from "@/api/sy";
-import { apiMProduct } from "@/api/APILianya"
+import { apiVRetailBILLDATE } from '@/api/saleOrder'
+import { refreshVRetail } from '@/api/sy'
+import { apiMProduct } from '@/api/APILianya'
 export default {
-  name: '系统管理',
+  name: '',
   data() {
     return {
       activeName: 'first',
       apiVRetailBILLDATEValue: {
         startDate: '',
-        endDate: '',
+        endDate: ''
       },
-      pickerDate: null,
-    };
-  },
-  methods: {
-    /**获取联亚商品数据 */
-    apiMProduct,
-    /**获取联亚销售数据，到本地数据库 */
-    refreshVRetail,
-    /**指定时间范文刷新销售数据 */
-    onapiVRetailBILLDATE() {
-      apiVRetailBILLDATE(this.apiVRetailBILLDATEValue).then(res => {
-
-      })
-    },
-    handleClick(tab, event) {
-      console.log(tab, event);
+      pickerDate: null
     }
   },
   watch: {
 
     'pickerDate'(newVal, oldVal) {
       if (newVal) {
-        console.log(newVal);
+        console.log(newVal)
 
         const dateArray = newVal.map(dateTime => {
-          const date = new Date(dateTime);
-          const year = date.getFullYear();
-          const month = String(date.getMonth() + 1).padStart(2, '0');
-          const day = String(date.getDate()).padStart(2, '0');
-          const formattedDate = `${year}-${month}-${day}`;
-          return formattedDate;
-        });
+          const date = new Date(dateTime)
+          const year = date.getFullYear()
+          const month = String(date.getMonth() + 1).padStart(2, '0')
+          const day = String(date.getDate()).padStart(2, '0')
+          const formattedDate = `${year}-${month}-${day}`
+          return formattedDate
+        })
 
-        this.apiVRetailBILLDATEValue.startDate = dateArray[0];
-        this.apiVRetailBILLDATEValue.endDate = dateArray[1];
+        this.apiVRetailBILLDATEValue.startDate = dateArray[0]
+        this.apiVRetailBILLDATEValue.endDate = dateArray[1]
       }
+    }
+  },
+  methods: {
+    /** 获取联亚商品数据 */
+    apiMProduct,
+    /** 获取联亚销售数据，到本地数据库 */
+    refreshVRetail,
+    /** 指定时间范文刷新销售数据 */
+    onapiVRetailBILLDATE() {
+      apiVRetailBILLDATE(this.apiVRetailBILLDATEValue).then(res => {
 
+      })
+    },
+    handleClick(tab, event) {
+      console.log(tab, event)
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import { downloadFile } from '@/api/util'
 
 export function addStoreCityRelations(data) {
   return request({
@@ -24,8 +23,6 @@ export function updStoreCityRelations(data) {
   })
 }
 
-
-
 /**
  * 墨迹天气城市
  */
@@ -37,7 +34,7 @@ export function getAllByCityVoList(query) {
   })
 }
 /**
- * 使用的城市 
+ * 使用的城市
  */
 export function getAllCityDataVoList(query) {
   return request({
@@ -47,7 +44,7 @@ export function getAllCityDataVoList(query) {
   })
 }
 
-/**查询使用的城市天气 */
+/** 查询使用的城市天气 */
 
 export function getCityDataWeather(data) {
   return request({
@@ -67,14 +64,13 @@ export function updWeatherCityData(data) {
   })
 }
 
-
 export function deleteStoreCityRelations(id) {
   return request({
     url: '/storeCityRelations/remove/' + id,
     method: 'delete'
   })
 }
-/**更新所有商铺信息 */
+/** 更新所有商铺信息 */
 export function updStoreCity(query) {
   return request({
     url: '/storeCityRelations/updStoreCity',
@@ -83,7 +79,7 @@ export function updStoreCity(query) {
   })
 }
 
-export function getWeatherStoreCityList(data){
+export function getWeatherStoreCityList(data) {
   return request({
     url: '/storeCityRelations/getWeatherStoreCityList',
     method: 'post',
@@ -91,13 +87,11 @@ export function getWeatherStoreCityList(data){
   })
 }
 
-
-
 /**
  * 新增使用城市
  */
 
-export function addCityData(data){
+export function addCityData(data) {
   return request({
     url: '/city/addCityData',
     method: 'post',
@@ -105,8 +99,7 @@ export function addCityData(data){
   })
 }
 
-
-export function apiStore(data){
+export function apiStore(data) {
   return request({
     url: '/storeCityRelations/apiStore',
     method: 'post',
@@ -114,7 +107,7 @@ export function apiStore(data){
   })
 }
 
-export function apiSaleOrder(data){
+export function apiSaleOrder(data) {
   return request({
     url: '/saleOrder/apiSaleOrder',
     method: 'post',
@@ -122,7 +115,7 @@ export function apiSaleOrder(data){
   })
 }
 
-export function refreshVRetail(data){
+export function refreshVRetail(data) {
   return request({
     url: '/toolkit/refreshVRetail',
     method: 'post',
@@ -130,12 +123,18 @@ export function refreshVRetail(data){
   })
 }
 
-
-
-export function apiVRetailBILLDATE(data){
+export function apiVRetailBILLDATE(data) {
   return request({
     url: '/saleOrder/apiVRetailBILLDATE',
     method: 'post',
     data: data
+  })
+}
+
+export function apiRel(query) {
+  return request({
+    url: '/test/apiRel',
+    method: 'get',
+    params: query
   })
 }
