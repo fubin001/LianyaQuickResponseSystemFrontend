@@ -7,11 +7,11 @@ import { asyncRoutes, constantRoutes } from '@/router'
  * @param route 当前菜单
  */
 function hasPermission(roles, route) {
-  //确定 当前菜单是否定义了meta   且 meta是否定义了roles
+  // 确定 当前菜单是否定义了meta   且 meta是否定义了roles
   if (route.meta && route.meta.roles) {
     // 遍历用户权限数组，，其中是否有一个值在route.meta.roles数组中存在
     return roles.some(role => route.meta.roles.includes(role))
-  } else {//没有定义meta.roles,可以直接访问
+  } else { // 没有定义meta.roles,可以直接访问
     return true
   }
 }
@@ -34,17 +34,17 @@ function menusHasPermission(menus, route) {
  */
 export function filterAsyncRoutes(routes, roles) {
   const res = []
-  //遍历所有菜单
+  // 遍历所有菜单
   routes.forEach(route => {
     // ...纯赋值给tmp，防止route被改值
     const tmp = { ...route }
-    //查询用户是否有当前菜单的权限
+    // 查询用户是否有当前菜单的权限
     if (hasPermission(roles, tmp)) {
       // 判断是否存在子菜单。如果存在则递归，查用户是否拥有该子菜单的权限
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, roles)
       }
-      //拥有权限 可以访问，合并
+      // 拥有权限 可以访问，合并
       res.push(tmp)
     }
   })
@@ -59,25 +59,23 @@ export function filterAsyncRoutes(routes, roles) {
  */
 export function menusFilterAsyncRoutes(routes, menus) {
   const res = []
-  //遍历所有菜单
+  // 遍历所有菜单
   routes.forEach(route => {
     // ...纯赋值给tmp，防止route被改值
     const tmp = { ...route }
-    //查询用户是否有当前菜单的权限
+    // 查询用户是否有当前菜单的权限
     if (menusHasPermission(menus, tmp)) {
       // 判断是否存在子菜单。如果存在则递归，查用户是否拥有该子菜单的权限
       if (tmp.children) {
         tmp.children = menusFilterAsyncRoutes(tmp.children, menus)
       }
-      //拥有权限 可以访问，合并
+      // 拥有权限 可以访问，合并
       res.push(tmp)
     }
   })
 
   return res
 }
-
-
 
 const state = {
   routes: [],
@@ -92,17 +90,17 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, {roles,menus}) {
-    console.log("96perm",roles,menus);
+  generateRoutes({ commit }, { roles, menus }) {
+    // console.log("96perm",roles,menus);
     return new Promise(resolve => {
       let accessedRoutes
       // debugger
       // 判断是否拥有admin权限。拥有则开放所有菜单
       if (roles.includes('admin')) {
         accessedRoutes = asyncRoutes || []
-      } else {// 没有admin则进入判断。看该用户拥有哪些菜单访问权限
+      } else { // 没有admin则进入判断。看该用户拥有哪些菜单访问权限
         // accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-        accessedRoutes = menusFilterAsyncRoutes(asyncRoutes,menus)
+        accessedRoutes = menusFilterAsyncRoutes(asyncRoutes, menus)
       }
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)

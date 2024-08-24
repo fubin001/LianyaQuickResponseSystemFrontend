@@ -51,6 +51,7 @@ export default {
       for (let i = 0; i < series.length; i++) {
         legendData.push(series[i]['name'])
       }
+      console.log('?')
 
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption({

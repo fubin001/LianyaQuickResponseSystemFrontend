@@ -138,7 +138,7 @@ export default {
   created() {
     this.editRowDate = null
     this.getBrands()
-    console.log(this.$route)
+    // console.log(this.$route)
     this.salePlanId = this.$route.query.salePlanId
     if (this.$route.query.salePlanId) {
       this.listQuery.salePlanId = this.$route.query.salePlanId

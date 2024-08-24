@@ -9,7 +9,7 @@ const state = {
   introduction: '',
   roles: [],
   menus: [],
-  currentPath: '/',
+  currentPath: '/'
 }
 
 const mutations = {
@@ -26,15 +26,15 @@ const mutations = {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
-    console.log("setRoles:", roles);
+    // console.log("setRoles:", roles);
     state.roles = roles
   },
   SET_MENUS: (state, menus) => {
     state.menus = menus
   },
   SET_CURRENT_PATH(state, path) {
-    state.currentPath = path;
-  },
+    state.currentPath = path
+  }
 }
 
 const actions = {
@@ -143,11 +143,9 @@ const actions = {
     dispatch('tagsView/delAllViews', null, { root: true })
   },
 
-
-
   setCurrentPath({ commit }, path) {
-    commit('SET_CURRENT_PATH', path);
-  },
+    commit('SET_CURRENT_PATH', path)
+  }
 }
 
 export default {
