@@ -1,10 +1,10 @@
 <template>
-  <div ref="chart" :style="{ width: '100%', height: '300px', 'min-width': '700px' }"></div>
+  <div ref="chart" :style="{ width: '100%', height: '300px', 'min-width': '700px' }" />
 </template>
 
 <script>
-import * as echarts from 'echarts';
-import axios from 'axios';
+import * as echarts from 'echarts'
+import axios from 'axios'
 
 export default {
   name: 'LineChart',
@@ -16,10 +16,9 @@ export default {
       // 温度
       temperature: [],
       option: {},
-      openweathermap: {},
-    };
+      openweathermap: {}
+    }
   },
-
 
   async created() {
     await axios('https://api.openweathermap.org/data/2.5/forecast?q=hefei&appid=29ce1c9da84c9e2bade5556ff6e63acb&lang=zh_cn').then((res) => {
@@ -30,22 +29,25 @@ export default {
         this.weatherTime.push(item.dt_txt.substring(11, 13))
         this.temperature.push((item.main.temp - 273.15).toFixed(2))
         if (index > 7) {
-          break; // 中断循环
+          break // 中断循环
         }
       }
-      console.log(this.weatherTime);
-
-
+      console.log(this.weatherTime)
     }).finally(() => {
       this.initChart()
     })
   },
   mounted() {
-    this.initChart();
+    this.initChart()
+  },
+  beforeDestroy() {
+    if (this.chart) {
+      this.chart.dispose()
+    }
   },
   methods: {
     onoption() {
-      var weatherName = ["小雨", "小雨", "阴", "小雨", "多云", "小雨", "小雨"];
+      var weatherName = ['小雨', '小雨', '阴', '小雨', '多云', '小雨', '小雨']
       this.option = {
         grid: {
           show: true,
@@ -100,7 +102,7 @@ export default {
             nameTextStyle: {
 
             },
-            data: ["25日", "26日", "27日", "28日", "29日", "30日", "31日"]
+            data: ['25日', '26日', '27日', '28日', '29日', '30日', '31日']
           },
           // 星期
           {
@@ -131,7 +133,7 @@ export default {
               fontWeight: 'bold',
               fontSize: 19
             },
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
           },
           // 天气图标
           {
@@ -148,8 +150,8 @@ export default {
             },
             axisLabel: {
               interval: 0,
-              formatter: function (value, index) {
-                //return '{' + index + '| }\n{b|' + value + '}'
+              formatter: function(value, index) {
+                // return '{' + index + '| }\n{b|' + value + '}'
                 return '{' + value + '| }\n{b|' + weatherName[value] + '}'
               },
               rich: {
@@ -222,7 +224,7 @@ export default {
               fontSize: 19
             },
             // data: this.weatherdata.weather
-            //data: ["小雨","小雨","阴","小雨","多云","小雨","小雨"]
+            // data: ["小雨","小雨","阴","小雨","多云","小雨","小雨"]
             data: [0, 1, 2, 3, 4, 5, 6]
           }
         ],
@@ -238,7 +240,7 @@ export default {
           {
             name: '最高气温',
             type: 'line',
-            data: ["16.3", "16.2", "17.6", "14.2", "17.6", "15.7", "14.3"],
+            data: ['16.3', '16.2', '17.6', '14.2', '17.6', '15.7', '14.3'],
             symbol: 'emptyCircle',
             symbolSize: 10,
             showSymbol: true,
@@ -255,7 +257,7 @@ export default {
               formatter: '{c} °C'
             },
             lineStyle: {
-              width: 1,
+              width: 1
               // color: 'white'
             },
             areaStyle: {
@@ -266,7 +268,7 @@ export default {
           {
             name: '最低气温',
             type: 'line',
-            data: ["13.4", "12.8", "13.5", "12.5", "12.4", "13.2", "13"],
+            data: ['13.4', '12.8', '13.5', '12.5', '12.4', '13.2', '13'],
             symbol: 'emptyCircle',
             symbolSize: 10,
             showSymbol: true,
@@ -283,7 +285,7 @@ export default {
               formatter: '{c} °C'
             },
             lineStyle: {
-              width: 1,
+              width: 1
               // color: 'white'
             },
             areaStyle: {
@@ -392,17 +394,12 @@ export default {
     },
     // 初始化图，用于展示
     initChart() {
-      this.onoption();
-      this.chart = echarts.init(this.$refs.chart);
-      this.chart.setOption(this.option);
-    }
-  },
-  beforeDestroy() {
-    if (this.chart) {
-      this.chart.dispose();
+      this.onoption()
+      this.chart = echarts.init(this.$refs.chart)
+      this.chart.setOption(this.option)
     }
   }
-};
+}
 </script>
 
 <style scoped>

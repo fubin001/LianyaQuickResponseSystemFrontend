@@ -52,11 +52,6 @@
         </el-col>
       </el-row>
       <el-row :gutter="12" size="mini">
-        <el-col size="mini" :span="24">
-          <el-card shadow="always" class="adaptive-text-card">
-            <el-tag type="success">计算信息</el-tag>
-          </el-card>
-        </el-col>
         <el-col v-for="item in metrics" :key="item.metricName" size="mini" :span="12">
           <el-card shadow="always" class="adaptive-text-card">
             <span class="small-text-card-name">{{ item.metricName+": " }}</span>
@@ -110,12 +105,11 @@ import {
   querySkuProductSaleDate,
   syncCalculateBySalePlanById
 } from '@/api/saleData'
-import Chart from '@/views/product/component/chart.vue'
 import { refreshRelatedData } from '@/api/skuProduct'
 import SaleLineChart from '@/views/product/component/SaleLineChart.vue'
 export default {
   name: '',
-  components: { SaleLineChart, Chart },
+  components: { SaleLineChart },
   data() {
     return { currentShow: 4,
       timeUint: 0,
@@ -211,7 +205,7 @@ export default {
       this.metrics = data.metricValueList
       this.listLoading = false
       const xs = this.list.map((x) => x.date)
-      // console.log(xs)
+      console.log(xs)
 
       const actualData = this.list.map((x) => x.quantity)
       const ytdData = this.list.map((x) => x.ytd)
@@ -543,7 +537,7 @@ export default {
 
 .layout {
   // display: flex;
-  // flex-direction: column; /* 垂直排列子元素 */
+  gap: 10px; /* 选填：控制两个 el-row 之间的间距 */
   justify-content: center;
   align-items: center;
   border: 1px solid #ddd;
