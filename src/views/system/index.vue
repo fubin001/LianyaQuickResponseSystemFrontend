@@ -11,13 +11,13 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           />
-          <el-button type="primary" @click="onapiVRetailBILLDATE">更新销售</el-button>
+          <el-button type="primary" @click="onapiVRetailBILLDATE()">拉取,指定销售时间的销售数据到本地</el-button>
         </el-col>
         <el-col :span="11">
-          <el-button type="primary" @click="apiMProduct">更新联亚商品到本地</el-button>
+          <el-button type="primary" @click="apiMProduct()">更新联亚商品到本地</el-button>
         </el-col>
         <el-col :span="11">
-          <el-button type="primary" @click="refreshVRetail">更新联亚销售商品</el-button>
+          <el-button type="primary" @click="lianYaSale()">更新联亚销售所有相关数据</el-button>
         </el-col>
         <!-- <el-col :span="12">22
           2222
@@ -32,8 +32,8 @@
 </template>
 <script>
 import { apiVRetailBILLDATE } from '@/api/saleOrder'
-import { refreshVRetail } from '@/api/sy'
-import { apiMProduct } from '@/api/APILianya'
+// import { refreshVRetail } from '@/api/sy'
+import { apiMProduct, lianYaSale } from '@/api/apiLianYa'
 export default {
   name: '',
   data() {
@@ -69,8 +69,7 @@ export default {
   methods: {
     /** 获取联亚商品数据 */
     apiMProduct,
-    /** 获取联亚销售数据，到本地数据库 */
-    refreshVRetail,
+    lianYaSale,
     /** 指定时间范文刷新销售数据 */
     onapiVRetailBILLDATE() {
       apiVRetailBILLDATE(this.apiVRetailBILLDATEValue).then(res => {

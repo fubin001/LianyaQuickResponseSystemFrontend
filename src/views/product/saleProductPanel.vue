@@ -96,8 +96,8 @@
         </el-table>
       </el-col>
       <el-col :span="12">
-        <Chart ref="functionProps" style="height: 43vh;" />
-        <Chart ref="functionProps2" style="height: 43vh;" />
+        <Chart ref="functionProps" style="height: 50vh;min-height: 300px;" />
+        <Chart ref="functionProps2" style="height: 50vh;min-height: 300px;" />
       </el-col>
     </el-row>
   </div>
@@ -235,11 +235,11 @@ export default {
       //   storageDataSeriesConfig,
       //   storageDataSeriesConfig2)
 
-      var initNames = ['YTD', '销售数据', '预估销售', '三次拟合', '库存数据', '参考sku-YTD', '参考sku-销售数据', '参考sku-预估销售', '参考sku-三次拟合', '参考sku-库存数据']
-      var initValues = [ytdData, actualData, predictData, fittingData, storageData, ytdData2, actualData2, predictData2, fittingData2, storageData2]
+      var initNames = ['YTD', '销售数据', '预估销售', '三次拟合', '参考sku-YTD', '参考sku-销售数据', '参考sku-预估销售', '参考sku-三次拟合', '参考sku-库存数据', '预计补货?']
+      var initValues = [ytdData, actualData, predictData, fittingData, ytdData2, actualData2, predictData2, fittingData2, storageData2, 0.0]
 
-      var initNames2 = ['库存数据', '参考sku-库存数据']
-      var initValues2 = [storageData, storageData2]
+      var initNames2 = ['库存数据', '参考sku-库存数据', '存货周转?']
+      var initValues2 = [storageData, storageData2, 0]
       this.$nextTick(() => {
         this.$refs.functionProps.initChart(initNames, xs, initValues, '')
         this.$refs.functionProps2.initChart(initNames2, storageXs, initValues2, '')

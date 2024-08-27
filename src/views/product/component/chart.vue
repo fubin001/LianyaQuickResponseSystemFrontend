@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" :style="{ width: '100%', height: '400px', 'min-width': '1000px' }" />
+  <div ref="chart" :style="{ width: '100%', 'min-width': '1000px' }" />
 </template>
 
 <script>
@@ -36,8 +36,29 @@ export default {
       const echartDataNames = initValueNames || this.echartDataNames
       const echartDataValues = initValues || this.echartDataValues
       const mainText = initMainText || this.mainText
+      const colorList = [
+        '#9E87FF', // Existing
+        '#73DDFF', // Existing
+        '#fe9a8b', // Existing
+        '#F56948', // Existing
+        '#FF6347', // Tomato
+        '#4682B4', // Steel Blue
+        '#32CD32', // Lime Green
+        '#8B008B', // Dark Magenta
+        '#FFD700', // Gold
+        '#00CED1', // Dark Turquoise
+        '#DC143C', // Crimson
+        '#00008B', // Dark Blue
+        '#B8860B', // Dark Goldenrod
+        '#7CFC00', // Lawn Green
+        '#9932CC', // Dark Orchid
+        '#FF1493', // Deep Pink
+        '#008B8B', // Dark Cyan
+        '#556B2F', // Dark Olive Green
+        '#FF00FF', // Magenta
+        '#2E8B57' // Sea Green
+      ]
 
-      const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF']
       // 动态设置，展示图
       const series = this.onseries(echartNames, echartDataValues, colorList)
 
