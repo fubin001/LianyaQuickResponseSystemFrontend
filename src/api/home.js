@@ -1,38 +1,32 @@
 import request from '@/utils/request'
-import { downloadFile } from '@/api/util'
-
 export function feedbackOrder() {
   return request({
     url: '/home/feedbackOrder',
-    method: 'get',
+    method: 'get'
   })
 }
 /**
- * 
+ *
  * @returns 生产订单周数据
  */
 export function getFeedbackOrderWeek() {
   return request({
     url: '/home/getFeedbackOrderWeek',
-    method: 'get',
+    method: 'get'
   })
 }
-
 
 export function getSaleOrder() {
   return request({
     url: '/home/getSaleOrder',
-    method: 'get',
+    method: 'get'
   })
 }
-
-
-
 
 export function getBuyOrder() {
   return request({
     url: '/home/getBuyOrder',
-    method: 'get',
+    method: 'get'
   })
 }
 

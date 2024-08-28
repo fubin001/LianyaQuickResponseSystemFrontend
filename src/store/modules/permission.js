@@ -79,14 +79,43 @@ export function menusFilterAsyncRoutes(routes, menus) {
 
 const state = {
   routes: [],
-  addRoutes: []
+  menus: []
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+    console.log('90', state.routes)
+    // state.routes = constantRoutes
+
+    state.menus = storesOverall(state.routes)
+    console.log('90', state.menus)
+
+    // console.log('89', routes)
+    // console.log('99', storesOverall(constantRoutes))
   }
+}
+
+/**
+ * 把子类网页权限和父级网页权限理出
+ * 统合成一个数组字符串
+ * */
+export function storesOverall(routes) {
+  const res = []
+  // 遍历所有菜单
+  routes.forEach(route => {
+    // ...纯赋值给tmp，防止route被改值
+    const tmp = { ...route }
+
+    // 判断是否存在子菜单。如果存在则递归，查用户是否拥有该子菜单的权限
+    if (tmp.children) {
+      res.push(...storesOverall(tmp.children))
+    }
+
+    res.push(tmp.path)
+  })
+
+  return res
 }
 
 const actions = {

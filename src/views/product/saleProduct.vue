@@ -1,113 +1,75 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <span>
-        品牌：
-        <el-select
-          v-model="listQuery.brand"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-          clearable
-          allow-create
-          filterable
-        >
-          <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.name" />
-        </el-select>
-      </span>
-      <span>
-        款式：<el-input
-          v-model="listQuery.styleId"
-          placeholder="请输入款式"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
-      <span>
-        预测模型：<el-select
-          v-model="listQuery.predictModel"
-          placeholder="请输入款式"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-          clearable
-          filterable
-        >
-          <el-option value="平均销售" />
-          <el-option value="增长对比" />
-          <el-option value="四周平均" />
-          <el-option value="货仓周转" />
-        </el-select>
-      </span>
-      <span>
-        名称：<el-input
-          v-model="listQuery.fullName"
-          placeholder="请输入名称"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
+      <el-row :span="24">
+        <el-col :span="4">
+          <span>
+            品牌：
+            <el-select v-model="listQuery.brand" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable allow-create filterable>
+              <el-option v-for="item in brands" :key="item.name" :label="item.name" :value="item.name" />
+            </el-select>
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            款式：<el-input v-model="listQuery.styleId" placeholder="请输入款式" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            预测模型：<el-select v-model="listQuery.predictModel" placeholder="请输入款式" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable filterable>
+              <el-option value="平均销售" />
+              <el-option value="增长对比" />
+              <el-option value="四周平均" />
+              <el-option value="货仓周转" />
+            </el-select>
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            名称：<el-input v-model="listQuery.fullName" placeholder="请输入名称" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          </span>
+        </el-col>
+        <el-col :span="4">
+          skuId：
+          <el-select v-model="listQuery.skuId" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" clearable allow-create filterable>
+            <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
+          </el-select>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            上市日期：<el-date-picker v-model="listQuery.listingMonth" type="month" placeholder="上市日期" class="filter-item" style="width: 150px; margin: 5px 8px 5px 0" value-format="yyyy-MM-01" />
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            季节：<el-input v-model="listQuery.season" placeholder="季节" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            面料编码：<el-input v-model="listQuery.fabricCode" placeholder="面料编码" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <span>
+            面料组成：<el-input v-model="listQuery.fabricComposition" placeholder="面料组成" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+          </span>
+        </el-col>
+        <el-col :span="4">
+          <el-checkbox v-model="listQuery.isfeedback" style="margin-left: 30px;margin-top: 5px;" border @change="updateFeedback">快反</el-checkbox>
+        </el-col>
+      </el-row>
 
-      <span>
-        skuId：
-        <el-select
-          v-model="listQuery.skuId"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-          clearable
-          allow-create
-          filterable
-        >
-          <el-option v-for="item in skuIdEnumList" :key="item.name" :label="item.name" :value="item.value" />
-        </el-select>
-      </span>
-
-      <span>
-        上市日期：<el-date-picker
-          v-model="listQuery.listingMonth"
-          type="month"
-          placeholder="上市日期"
-          class="filter-item"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          value-format="yyyy-MM-01"
-        />
-      </span>
-      <span>
-        季节：<el-input
-          v-model="listQuery.season"
-          placeholder="季节"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
-      <span>
-        面料编码：<el-input
-          v-model="listQuery.fabricCode"
-          placeholder="面料编码"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
-      <span>
-        面料组成：<el-input
-          v-model="listQuery.fabricComposition"
-          placeholder="面料组成"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
-      </span>
       <span class="end">
-        <span><el-button class="filter-item" plain style="margin: 5px 8px 5px 0" @click="reset">
-                重置
-              </el-button>
-          <el-button
-            v-loading="listLoading"
-            class="filter-item"
-            type="primary"
-            icon="el-icon-search"
-            style="margin: 5px 0px 5px 0; background-color: #244496"
-            @click="getList(1)"
-          >
+        <span>
+          <el-button class="filter-item" plain style="margin: 5px 8px 5px 0" @click="reset">
+            重置
+          </el-button>
+          <el-button v-loading="listLoading" class="filter-item" type="primary" icon="el-icon-search" style="margin: 5px 0px 5px 0; background-color: #244496" @click="getList(1)">
             搜索
-          </el-button></span>
+          </el-button>
+        </span>
       </span>
       <div style="clear: both" />
     </div>
@@ -309,13 +271,18 @@
         <el-table-column prop="fullName" align="left" label="名称" :width="flexColumnWidth('名称', 'fullName')" fixed />
         <el-table-column prop="feedback" align="left" label="是否快反" :width="flexColumnWidth('是否快反', 'feedback')" fixed>
           <template slot-scope="{ row }">
-            {{ row.feedback?"是":"否" }}
+            {{ row.feedback ? "是" : "否" }}
           </template>
         </el-table-column>
 
         <el-table-column label="基础属性" align="center">
 
-          <el-table-column prop="listingDate" align="left" label="上市日期" :width="flexColumnWidth('上市日期', 'listingDate')" />
+          <el-table-column
+            prop="listingDate"
+            align="left"
+            label="上市日期"
+            :width="flexColumnWidth('上市日期', 'listingDate')"
+          />
 
           <el-table-column prop="season" align="left" label="季节" :width="flexColumnWidth('季节', 'season')" />
           <el-table-column
@@ -421,13 +388,7 @@
             sortable="custom"
           />
 
-          <el-table-column
-            prop="imageUrl"
-            align="left"
-            label="图"
-            sortable="custom"
-            width="120"
-          >
+          <el-table-column prop="imageUrl" align="left" label="图" sortable="custom" width="120">
             <template slot-scope="{ row }">
               <img :src="`https://omni.tristate.cn:90${row.imageUrl}`" alt="Image" style="width: 100px; height: auto;">
             </template>
@@ -522,6 +483,8 @@ export default {
       allLoad: false,
       listQuery: {
         brand: '',
+        isfeedback: true,
+        feedback: 'Y',
         page: 1,
         size: 10
       },
@@ -562,7 +525,7 @@ export default {
   methods: {
     refreshRelatedData,
     exportSkuProductExcel() {
-      console.log(this.listQuery)
+      // console.log(this.listQuery)
       exportSkuProduct(this.listQuery)
     },
     openRelevance(row) {
@@ -578,12 +541,13 @@ export default {
     },
 
     popModForm(row) {
-      console.log(row)
       this.modForm.id = row.id
       this.modForm.skuId = row.skuId
       this.editDialogVisible = true
     },
-
+    updateFeedback() {
+      this.listQuery.feedback = this.listQuery.isfeedback ? 'Y' : ''
+    },
     editPredictCoe() {
       request({
         url: '/skuProduct/modify',
@@ -687,8 +651,6 @@ export default {
       return this.getMaxLength(arr) + 20 + 'px'
     },
     async getList(page) {
-      console.log(this.page)
-      console.log(this.size)
       this.listQuery.page = page
       this.listQuery.size = this.size
       const { data, total } = await querySkuProduct(this.listQuery).catch(

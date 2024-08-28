@@ -82,7 +82,7 @@ export const asyncRoutes = [
   {
     path: '/skuProduct',
     component: Layout,
-    name: '销售管理',
+    name: 'SkuProduct',
     noCache: true,
     redirect: '/skuProduct/info',
     meta: {
@@ -94,7 +94,7 @@ export const asyncRoutes = [
       {
         path: '/product/brand',
         component: () => import('@/views/product/brand'),
-        name: '品牌信息',
+        name: 'Brand',
         noCache: true,
         meta: { title: '品牌信息', icon: 'edit', roles: ['admin', 'sale'] }
       },
@@ -108,14 +108,14 @@ export const asyncRoutes = [
       {
         path: '/skuProduct/feedback',
         component: () => import('@/views/product/feedback'),
-        name: '生产订单',
+        name: 'Feedback',
         noCache: true,
         meta: { title: '生产订单', icon: 'edit', roles: ['admin', 'sale', 'sale_production'] }
       },
       {
         path: '/product/saleProductPanel',
         component: () => import('@/views/product/saleProductPanel'),
-        name: '销售面板',
+        name: 'SaleProductPanel',
         noCache: true,
         hidden: true,
         meta: { title: '销售面板', icon: 'edit', roles: ['admin', 'sale', 'sale_panel'] }
@@ -126,7 +126,7 @@ export const asyncRoutes = [
   {
     path: '/data',
     component: Layout,
-    name: '数据管理',
+    name: 'Data',
     redirect: '/data/buyOrder',
     meta: {
       title: '数据管理',
@@ -136,55 +136,55 @@ export const asyncRoutes = [
       {
         path: '/data/buyOrder',
         component: () => import('@/views/order/buyOrder'),
-        name: 'data_cg',
+        name: 'BuyOrder',
         meta: { title: '采购数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_purchasing'] }
       },
       {
         path: '/data/saleOrder',
         component: () => import('@/views/order/saleOrder'),
-        name: '销售数据',
+        name: 'SaleOrder',
         meta: { title: '销售数据', icon: 'el-icon-s-grid', roles: ['admin', 'data_sale'] }
       },
       {
         path: '/data/materialOrder',
         component: () => import('@/views/order/materialOrder'),
-        name: '备料数据',
+        name: 'MaterialOrder',
         meta: { title: '备料数据', icon: 'el-icon-s-grid', roles: ['admin', 'data_mp'] }
       },
       {
         path: '/data/bom',
         component: () => import('@/views/bom/data'),
-        name: 'BOM数据',
+        name: 'Bom',
         meta: { title: 'BOM数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_bom'] }
       },
       {
         path: '/data/storage',
         component: () => import('@/views/storage/overview'),
-        name: '库存数据',
+        name: 'Storage',
         meta: { title: '库存数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_stock'] }
       },
       {
         path: '/data/storageDetail',
         component: () => import('@/views/storage/detail'),
-        name: '库存明细',
+        name: 'StorageDetail',
         meta: { title: '库存明细', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_detail'] }
       },
       {
         path: '/data/color',
         component: () => import('@/views/color/index'),
-        name: '颜色数据',
+        name: 'Color',
         meta: { title: '颜色数据', icon: 'el-icon-s-grid', roles: ['admin', 'data', 'data_colour'] }
       },
       {
         path: '/store/index',
         component: () => import('@/views/store/index'),
-        name: '商铺数据',
+        name: 'StoreIndex',
         meta: { title: '商铺数据', icon: 'el-icon-s-grid', roles: ['admin'] }
       },
       {
         path: '/weather/index',
         component: () => import('@/views/weather/index'),
-        name: '城市天气',
+        name: 'WeatherIndex',
         meta: { title: '城市天气', icon: 'el-icon-s-grid', roles: ['admin'] }
       }
     ]
@@ -199,28 +199,29 @@ export const asyncRoutes = [
       roles: ['admin']
     },
     children: [
+      // {
+      //   path: '/user/info',
+      //   component: () => import('@/views/user/user'),
+      //   name: 'userInfo',
+      //   hidden: true, // 不展示
+      //   meta: { title: '用户信息', icon: 'user', roles: ['admin'] }
+      // },
       {
-        path: '/user/info',
-        component: () => import('@/views/user/user'),
-        name: '用户信息',
-        hidden: true, // 不展示
-        meta: { title: '用户信息', icon: 'user', roles: ['admin'] }
-      }, {
         path: '/user/role',
         component: () => import('@/views/user/role'),
-        name: '角色权限',
+        name: 'Role',
         meta: { title: '角色权限', icon: 'user', roles: ['admin'] }
       },
       {
         path: '/user/userRole',
         component: () => import('@/views/user/userRole'),
-        name: '用户角色',
+        name: 'UserRole',
         meta: { title: '用户角色', icon: 'user', roles: ['admin'] }
       },
       {
         path: '/user/userApplyFor',
         component: () => import('@/views/user/userApplyFor'),
-        name: '用户申请',
+        name: 'UserApplyFor',
         meta: { title: '用户申请', icon: 'user', roles: ['admin'] }
       }
     ]
