@@ -30,8 +30,17 @@ router.beforeEach(async(to, from, next) => {
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       // debugger
       if (hasRoles) {
-        // router.getters.router
-        next()
+        console.log(to.path)
+        // 从 store 中获取动态添加的路由并打印
+        const dynamicRoutes = store.getters.menus
+
+        if (dynamicRoutes.includes(to.path)) {
+          next()
+        } else {
+          next('/home')
+        }
+        return
+        // next()
       } else {
         try {
           // get user info
@@ -45,7 +54,6 @@ router.beforeEach(async(to, from, next) => {
 
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
-
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })

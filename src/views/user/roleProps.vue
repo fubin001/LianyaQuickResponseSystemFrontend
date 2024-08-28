@@ -2,18 +2,19 @@
   <div>
     <!-- <span>{{ propRoleID }}</span> -->
     <el-tree
-      :data="data"
-      show-checkbox
-      
-      node-key="path"
       ref="tree"
+      :data="data"
+
+      show-checkbox
+      node-key="path"
       highlight-current
       :check-strictly="true"
       :props="defaultProps"
-      @check="handleCheck">
+      @check="handleCheck"
+    >
       <template v-slot="{ node, data, store }">
         <span>
-          <span>{{ data.name || data.path }}</span>
+          <span>{{ data.meta.title || data.path }}</span>
         </span>
       </template>
     </el-tree>
@@ -30,12 +31,12 @@
 </template>
 
 <script>
-import { asyncRoutes, constantRoutes } from '@/router'
-import {addPermissionManu ,getRoleIDPermission} from "@/api/permission";
+import { asyncRoutes } from '@/router'
+import { addPermissionManu, getRoleIDPermission } from '@/api/permission'
 
 export default {
-  props:{
-    propRoleID:0
+  props: {
+    propRoleID: 0
   },
   data() {
     return {
@@ -44,10 +45,10 @@ export default {
         children: 'children',
         name: 'name'
       }
-    };
+    }
   },
   created() {
-    this.data=asyncRoutes
+    this.data = asyncRoutes
     this.on_getRoleIDPermission()
   },
   methods: {
@@ -58,58 +59,58 @@ export default {
     //     </span>
     //   );
     // },
-    adds(){
-      console.log(this.$refs.tree.getCheckedNodes());
-      const a= this.$refs.tree.getCheckedNodes()
-      const b = a.map(obj=>({
+    adds() {
+      console.log(this.$refs.tree.getCheckedNodes())
+      const a = this.$refs.tree.getCheckedNodes()
+      const b = a.map(obj => ({
         ...obj,
-        "type":1
+        'type': 1
       }))
       // console.log(this.propRoleID);
-      addPermissionManu({roleID:this.propRoleID, permissionList:b}).then((res)=>{}).finally(()=>{
+      addPermissionManu({ roleID: this.propRoleID, permissionList: b }).then((res) => {}).finally(() => {
         this.emitCustomEvent()
       })
     },
     emitCustomEvent() {
       // 触发自定义事件，传递数据给父组件
-      this.$emit('custom-event', { message: 'Hello from child component' });
+      this.$emit('custom-event', { message: 'Hello from child component' })
     },
-    on_getRoleIDPermission(){
-      getRoleIDPermission({id:this.propRoleID}).then((res)=>{
+    on_getRoleIDPermission() {
+      getRoleIDPermission({ id: this.propRoleID }).then((res) => {
         this.$refs.tree.setCheckedNodes(res.data)
       })
     },
     getCheckedNodes() {
-      console.log(this.$refs.tree.getCheckedNodes());
+      console.log(this.$refs.tree.getCheckedNodes())
     },
     getCheckedKeys() {
-      console.log(this.$refs.tree.getCheckedKeys());
+      console.log(this.$refs.tree.getCheckedKeys())
     },
     setCheckedNodes() {
       this.$refs.tree.setCheckedNodes([
         {
-          path: "/sy",
+          path: '/sy',
           name: '二级 2-1'
         },
         {
           path: 9,
           name: '三级 1-1-1'
         }
-      ]);
+      ])
     },
     setCheckedKeys() {
-      this.$refs.tree.setCheckedKeys([3]);
+      this.$refs.tree.setCheckedKeys([3])
     },
     resetChecked() {
-      this.$refs.tree.setCheckedKeys([]);
+      this.$refs.tree.setCheckedKeys([])
     },
     handleCheck(checkedNodes, checkedKeys) {
-      console.log('Checked nodes:', checkedNodes);
-      console.log('Checked keys:', checkedKeys);
+      console.log('Checked nodes:', checkedNodes)
+      console.log('Checked keys:', checkedKeys)
     }
-  },
-  
-};
+  }
+
+}
 </script>
 
 <style scoped>

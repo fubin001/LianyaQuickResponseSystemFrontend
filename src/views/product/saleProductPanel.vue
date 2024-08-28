@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; background-color: #f7f8fc">
-    <el-row :gutter="12" style="width: 100%;min-width: 1000px;">
-      <el-col :span="9">
+    <el-row :gutter="12" style="width: 100%;min-width: 1100px;">
+      <el-col :span="10">
         <el-row :gutter="12" size="mini">
           <el-col size="mini" :span="12">
             <el-card shadow="always" class="adaptive-text-card">
