@@ -15,3 +15,10 @@ export function lianYaSale(data) {
     data: data
   })
 }
+export function lianYaBuy(data) {
+  return request({
+    url: '/apiLianYaAll/lianYaBuy',
+    method: 'post',
+    data: data
+  })
+}
