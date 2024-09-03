@@ -22,3 +22,11 @@ export function lianYaBuy(data) {
     data: data
   })
 }
+
+export function M_PRODUCT_ALIAS(data) {
+  return request({
+    url: '/apiLianYaAll/M_PRODUCT_ALIAS',
+    method: 'post',
+    data: data
+  })
+}
