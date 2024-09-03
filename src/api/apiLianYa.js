@@ -15,3 +15,18 @@ export function lianYaSale(data) {
     data: data
   })
 }
+export function lianYaBuy(data) {
+  return request({
+    url: '/apiLianYaAll/lianYaBuy',
+    method: 'post',
+    data: data
+  })
+}
+
+export function M_PRODUCT_ALIAS(data) {
+  return request({
+    url: '/apiLianYaAll/M_PRODUCT_ALIAS',
+    method: 'post',
+    data: data
+  })
+}

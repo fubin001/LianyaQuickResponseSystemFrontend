@@ -16,28 +16,20 @@
       </span>
       <span>
         颜色代码：
-        <el-input
-          v-model="listQuery.colorCode"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
+        <el-input v-model="listQuery.colorCode" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
       </span>
       <span>
         尺寸：
-        <el-input
-          v-model="listQuery.sizeCode"
-          style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item"
-        />
+        <el-input v-model="listQuery.sizeCode" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
       </span>
-
+      <span>
+        类型：
+        <el-select v-model="listQuery.bomComponentType" placeholder="请选择">
+          <el-option v-for="item in bomTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </span>
       <span style="float: right">
-        <el-button
-          class="filter-item"
-          plain
-          style="margin: 5px 8px 5px 0"
-          @click="reset"
-        >
+        <el-button class="filter-item" plain style="margin: 5px 8px 5px 0" @click="reset">
           重置
         </el-button>
         <el-button
@@ -88,9 +80,7 @@
                 size="mini"
                 :loading="upLoading"
                 @click="upLoading = true"
-              >上传<i
-                class="el-icon-top"
-              /></el-button>
+              >上传<i class="el-icon-top" /></el-button>
             </el-upload>
             <el-button
               type="primary"
@@ -105,10 +95,21 @@
       </div>
 
       <el-dialog :visible.sync="addDialogVisible" title="新增库存" width="500px">
-        <el-form ref="dataForm" :model="addForm" label-position="left" label-width="100px" style="width: 300px; margin-left:50px;">
+        <el-form
+          ref="dataForm"
+          :model="addForm"
+          label-position="left"
+          label-width="100px"
+          style="width: 300px; margin-left:50px;"
+        >
           <el-form-item label="TRS编号">
             <el-select v-model="addForm.trsNo" style="width: 300px">
-              <el-option v-for="trsNoEnum in trsNoEnumList" :key="trsNoEnum.key" :label="trsNoEnum.key" :value="trsNoEnum.value" />
+              <el-option
+                v-for="trsNoEnum in trsNoEnumList"
+                :key="trsNoEnum.key"
+                :label="trsNoEnum.key"
+                :value="trsNoEnum.value"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="尺寸（选填）">
@@ -126,7 +127,13 @@
       </el-dialog>
 
       <el-dialog :visible.sync="editDialogVisible" title="编辑库存" width="500px">
-        <el-form ref="dataForm" :model="editForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+        <el-form
+          ref="dataForm"
+          :model="editForm"
+          label-position="left"
+          label-width="70px"
+          style="width: 300px; margin-left:50px;"
+        >
           <el-form-item label="TRS编号">
             <el-input v-model="editForm.trsNo" style="width: 300px" disabled />
           </el-form-item>
@@ -144,7 +151,13 @@
         </div>
       </el-dialog>
       <el-dialog :visible.sync="storageDialogVisible" title="操作库存" width="500px">
-        <el-form ref="dataForm" :model="storageForm" label-position="left" label-width="70px" style="width: 300px; margin-left:50px;">
+        <el-form
+          ref="dataForm"
+          :model="storageForm"
+          label-position="left"
+          label-width="70px"
+          style="width: 300px; margin-left:50px;"
+        >
           <el-form-item label="TRS编号">
             <el-input v-model="storageForm.trsNo" style="width: 300px" disabled />
           </el-form-item>
@@ -171,19 +184,14 @@
         :data="list"
         border
         row-key="id"
-        :header-cell-style="{background:'#e4e7f0'}"
+        :header-cell-style="{ background: '#e4e7f0' }"
         fit
         highlight-current-row
         style="width: 100%"
       >
         <el-table-column align="left" label="操作" width="400px">
           <template slot-scope="{row}">
-            <el-button
-              size="mini"
-              style="color: #244496; border: none"
-              icon="el-icon-edit"
-              @click="popEditDialog(row)"
-            >
+            <el-button size="mini" style="color: #244496; border: none" icon="el-icon-edit" @click="popEditDialog(row)">
               编辑
             </el-button>
             <el-button
@@ -212,23 +220,89 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="TRS编号" prop="trsNo" :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')" show-overflow-tooltip>
+        <el-table-column
+          align="left"
+          label="TRS编号"
+          prop="trsNo"
+          :min-width="flexColumnWidth(list, 'TRS编号', 'trsNo')"
+          show-overflow-tooltip
+        >
           <template slot-scope="scope">
             <el-link type="primary" @click="goToPage(scope.row)">
               {{ scope.row.trsNo }}
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="颜色代码" prop="colorCode" :min-width="flexColumnWidth(list, '颜色代码', 'colorCode')" show-overflow-tooltip />
-        <el-table-column align="left" label="颜色描述" prop="colorDescription" :min-width="flexColumnWidth(list, '颜色描述', 'colorDescription')" show-overflow-tooltip />
-        <el-table-column align="left" label="尺寸" prop="size" :min-width="flexColumnWidth(list, '尺寸', 'size')" show-overflow-tooltip />
-        <el-table-column align="left" label="单位" prop="unitName" :min-width="flexColumnWidth(list, '单位', 'unitName')" show-overflow-tooltip />
-        <el-table-column align="left" label="库存" prop="quantity" :min-width="flexColumnWidth(list, '库存', 'quantity')" show-overflow-tooltip />
-        <el-table-column align="left" label="预留库存" prop="preserveQuantity" :min-width="flexColumnWidth(list, '预留库存', 'preserveQuantity')" show-overflow-tooltip />
-        <el-table-column align="left" label="可用库存" prop="availableQuantity" :min-width="flexColumnWidth(list, '可用库存', 'availableQuantity')" show-overflow-tooltip />
-        <el-table-column align="left" label="安全库存" prop="safeQuantity" :min-width="flexColumnWidth(list, '安全库存', 'safeQuantity')" show-overflow-tooltip />
-        <el-table-column align="left" label="补货中库存" prop="buyingQuantity" :min-width="flexColumnWidth(list, '补货中库存', 'buyingQuantity')" show-overflow-tooltip />
-        <el-table-column align="left" label="生产中库存" prop="producingQuantity" :min-width="flexColumnWidth(list, '生产中库存', 'producingQuantity')" show-overflow-tooltip />
+        <el-table-column
+          align="left"
+          label="颜色代码"
+          prop="colorCode"
+          :min-width="flexColumnWidth(list, '颜色代码', 'colorCode')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="颜色描述"
+          prop="colorDescription"
+          :min-width="flexColumnWidth(list, '颜色描述', 'colorDescription')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="尺寸"
+          prop="size"
+          :min-width="flexColumnWidth(list, '尺寸', 'size')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="单位"
+          prop="unitName"
+          :min-width="flexColumnWidth(list, '单位', 'unitName')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="库存"
+          prop="quantity"
+          :min-width="flexColumnWidth(list, '库存', 'quantity')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="预留库存"
+          prop="preserveQuantity"
+          :min-width="flexColumnWidth(list, '预留库存', 'preserveQuantity')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="可用库存"
+          prop="availableQuantity"
+          :min-width="flexColumnWidth(list, '可用库存', 'availableQuantity')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="安全库存"
+          prop="safeQuantity"
+          :min-width="flexColumnWidth(list, '安全库存', 'safeQuantity')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="补货中库存"
+          prop="buyingQuantity"
+          :min-width="flexColumnWidth(list, '补货中库存', 'buyingQuantity')"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="left"
+          label="生产中库存"
+          prop="producingQuantity"
+          :min-width="flexColumnWidth(list, '生产中库存', 'producingQuantity')"
+          show-overflow-tooltip
+        />
       </el-table>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -275,7 +349,7 @@ export default {
       upLoading: false,
       page: 1,
       size: 10,
-      list: null,
+      list: [],
       total: null,
       listLoading: true,
       listQuery: {
@@ -285,6 +359,25 @@ export default {
         page: 1,
         size: 10
       },
+      bomTypeOptions: [{
+        value: '',
+        label: '全部'
+      }, {
+        value: '成品',
+        label: '成品'
+      }, {
+        value: '半成品',
+        label: '半成品'
+      }, {
+        value: '鞋底半成品',
+        label: '鞋底半成品'
+      }, {
+        value: '鞋面半成品',
+        label: '鞋面半成品'
+      }, {
+        value: '材料',
+        label: '材料'
+      }],
       titleMap: {
         create: '新增商品',
         update: '编辑商品'
@@ -302,7 +395,7 @@ export default {
     '$route.query.querys': {
       immediate: true,
       handler(newVal) {
-        console.log(newVal)
+        // console.log(newVal)
         this.listQuery.trsNo = newVal?.routerTrsNo ? newVal?.routerTrsNo : ''
         this.listQuery.sizeCode = newVal?.routerSize ? newVal?.routerSize : ''
         this.listQuery.colorCode = newVal?.routerColor ? newVal?.routerColor : ''
@@ -413,9 +506,7 @@ export default {
     },
 
     handleFileUploadSuccess(res) {
-      console.log('上传成功')
       if (res.data) {
-        console.log(res)
         this.$message.success('上传成功')
         this.upLoading = false
         this.load()
@@ -425,7 +516,6 @@ export default {
       }
     },
     handleFileUploadError() {
-      console.log('上传失败')
       this.$message.error('上传失败')
       this.upLoading = false
     },
@@ -455,8 +545,12 @@ export default {
       return index + 1 + (page - 1) * size
     },
     goToPage(row) {
+      // console.log(row)
+
       const query = {
-        trsNo: row.trsNo
+        trsNo: row.trsNo,
+        sizeCode: row.size,
+        colorCode: row.colorCode
       }
       // 库存详情
       this.$router.push({
@@ -491,14 +585,17 @@ export default {
     padding: 10px;
   }
 }
+
 .icon-star {
   margin-right: 2px;
 }
+
 .drag-handler {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
+
 .show-d {
   margin-top: 15px;
 }

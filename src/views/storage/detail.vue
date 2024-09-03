@@ -142,7 +142,7 @@ export default {
       componentTypeList: [],
       page: 1,
       size: 10,
-      list: null,
+      list: [],
       total: null,
       trsEnumList: [],
       listLoading: true,
@@ -158,16 +158,16 @@ export default {
   },
 
   watch: {
-    '$route.query.querys': {
+    '$route.query': {
       immediate: true,
       handler(newVal) {
-        console.log(newVal)
-        this.listQuery.trsNo = newVal?.routerTrsNo ? newVal?.routerTrsNo : ''
-        this.listQuery.sizeCode = newVal?.routerSize ? newVal?.routerSize : ''
-        this.listQuery.colorCode = newVal?.routerColor ? newVal?.routerColor : ''
+        this.listQuery.trsNo = newVal?.trsNo ? newVal?.trsNo : ''
+        this.listQuery.sizeCode = newVal?.sizeCode ? newVal?.sizeCode : ''
+        this.listQuery.colorCode = newVal?.colorCode ? newVal?.colorCode : ''
         this.getList(1)
-      },
-      deep: true // 深度监听
+      }
+      // ,
+      // deep: true // 深度监听
     }
   },
   async created() {
@@ -193,7 +193,6 @@ export default {
       })
     },
     async getList(page) {
-      console.log(this.page, this.size)
       this.listQuery.page = page
       this.listQuery.size = this.size
       this.listLoading = true

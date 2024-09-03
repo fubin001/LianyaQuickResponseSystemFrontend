@@ -19,6 +19,12 @@
         <el-col :span="11">
           <el-button type="primary" @click="lianYaSale()">更新联亚销售所有相关数据</el-button>
         </el-col>
+        <el-col :span="11">
+          <el-button type="primary" @click="lianYaBuy()">更新联亚采购所有相关数据</el-button>
+        </el-col>
+        <el-col :span="11">
+          <el-button type="primary" @click="M_PRODUCT_ALIAS()">M_PRODUCT_ALIAS表更新</el-button>
+        </el-col>
         <!-- <el-col :span="12">22
           2222
         </el-col>
@@ -33,7 +39,7 @@
 <script>
 import { apiVRetailBILLDATE } from '@/api/saleOrder'
 // import { refreshVRetail } from '@/api/sy'
-import { apiMProduct, lianYaSale } from '@/api/apiLianYa'
+import { apiMProduct, lianYaSale, lianYaBuy, M_PRODUCT_ALIAS } from '@/api/apiLianYa'
 export default {
   name: '',
   data() {
@@ -70,6 +76,8 @@ export default {
     /** 获取联亚商品数据 */
     apiMProduct,
     lianYaSale,
+    lianYaBuy,
+    M_PRODUCT_ALIAS,
     /** 指定时间范文刷新销售数据 */
     onapiVRetailBILLDATE() {
       apiVRetailBILLDATE(this.apiVRetailBILLDATEValue).then(res => {

@@ -85,11 +85,11 @@ const state = {
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.routes = constantRoutes.concat(routes)
-    console.log('90', state.routes)
+    // console.log('90', state.routes)
     // state.routes = constantRoutes
 
     state.menus = storesOverall(state.routes)
-    console.log('90', state.menus)
+    // console.log('90', state.menus)
 
     // console.log('89', routes)
     // console.log('99', storesOverall(constantRoutes))
