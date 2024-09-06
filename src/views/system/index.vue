@@ -14,6 +14,16 @@
           <el-button type="primary" @click="onapiVRetailBILLDATE()">拉取,指定销售时间的销售数据到本地</el-button>
         </el-col>
         <el-col :span="11">
+          <el-date-picker
+            v-model="pickerDate"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+          <el-button type="primary" @click="onsyncBuyOrder()">采购同步更新</el-button>
+        </el-col>
+        <el-col :span="11">
           <el-button type="primary" @click="apiMProduct()">更新联亚商品到本地</el-button>
         </el-col>
         <el-col :span="11">
@@ -24,6 +34,9 @@
         </el-col>
         <el-col :span="11">
           <el-button type="primary" @click="M_PRODUCT_ALIAS()">M_PRODUCT_ALIAS表更新</el-button>
+        </el-col>
+        <el-col :span="11">
+          <el-button type="primary" @click="weather15DaySY()">天气测试</el-button>
         </el-col>
         <!-- <el-col :span="12">22
           2222
@@ -38,8 +51,10 @@
 </template>
 <script>
 import { apiVRetailBILLDATE } from '@/api/saleOrder'
+import { weather15DaySY } from '@/api/city.js'
 // import { refreshVRetail } from '@/api/sy'
 import { apiMProduct, lianYaSale, lianYaBuy, M_PRODUCT_ALIAS } from '@/api/apiLianYa'
+import { syncBuyOrder } from '@/api/sync.js'
 export default {
   name: '',
   data() {
@@ -78,6 +93,12 @@ export default {
     lianYaSale,
     lianYaBuy,
     M_PRODUCT_ALIAS,
+    weather15DaySY,
+    onsyncBuyOrder() {
+      syncBuyOrder(this.apiVRetailBILLDATEValue).then(res => {
+
+      })
+    },
     /** 指定时间范文刷新销售数据 */
     onapiVRetailBILLDATE() {
       apiVRetailBILLDATE(this.apiVRetailBILLDATEValue).then(res => {
