@@ -231,8 +231,8 @@ export const asyncRoutes = [
       {
         path: '/system/index',
         component: () => import('@/views/system/index'),
-        name: '系统管理',
-        meta: { title: '系统管理', icon: 'password' }
+        name: 'SystemIndex',
+        meta: { title: '系统', icon: 'password' }
       }
     ]
   },

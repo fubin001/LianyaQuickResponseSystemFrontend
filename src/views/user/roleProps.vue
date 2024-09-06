@@ -1,30 +1,21 @@
 <template>
   <div>
-    <!-- <span>{{ propRoleID }}</span> -->
     <el-tree
       ref="tree"
       :data="data"
-
       show-checkbox
       node-key="path"
-      highlight-current
-      :check-strictly="true"
       :props="defaultProps"
       @check="handleCheck"
     >
+
       <template v-slot="{ node, data, store }">
         <span>
-          <span>{{ data.meta.title || data.path }}</span>
+          <span>{{ data.meta?data.meta.title : data.path }}</span>
         </span>
       </template>
     </el-tree>
-
     <div class="buttons">
-      <!-- <el-button @click="getCheckedNodes">通过 node 获取</el-button>
-      <el-button @click="getCheckedKeys">通过 key 获取</el-button>
-      <el-button @click="setCheckedNodes">通过 node 设置</el-button>
-      <el-button @click="setCheckedKeys">通过 key 设置</el-button>
-      <el-button @click="resetChecked">清空</el-button> -->
       <el-button @click="adds">保存</el-button>
     </div>
   </div>
@@ -36,7 +27,7 @@ import { addPermissionManu, getRoleIDPermission } from '@/api/permission'
 
 export default {
   props: {
-    propRoleID: 0
+    propRoleID: null
   },
   data() {
     return {
@@ -44,7 +35,8 @@ export default {
       defaultProps: {
         children: 'children',
         name: 'name'
-      }
+      },
+      paths: ['/data', '/data/buyOrder', '/data/saleOrder', '/data/materialOrder', '/data/bom', '/data/storage', '/data/storageDetail', '/data/color']
     }
   },
   created() {
@@ -52,21 +44,27 @@ export default {
     this.on_getRoleIDPermission()
   },
   methods: {
-    // renderContent(h, { node, data, store }) {
-    //   return (
-    //     <span>
-    //       <span>{data.name?data.name:data.path}</span>
-    //     </span>
-    //   );
-    // },
+    // 获取已有的权限
+    on_getRoleIDPermission() {
+      console.log(this.paths)
+      getRoleIDPermission({ id: this.propRoleID }).then((res) => {
+        this.paths = []
+        res.data.forEach(item => {
+          this.paths.push(item.path)
+        })
+        console.log(this.paths)
+        this.$refs.tree.setCheckedKeys(this.paths)
+      })
+    },
+    // 提交
     adds() {
       console.log(this.$refs.tree.getCheckedNodes())
       const a = this.$refs.tree.getCheckedNodes()
       const b = a.map(obj => ({
         ...obj,
-        'type': 1
+        'type': 1,
+        'name': obj.meta ? obj.meta.title : obj.path // 原name的值替换成原meta.title的值
       }))
-      // console.log(this.propRoleID);
       addPermissionManu({ roleID: this.propRoleID, permissionList: b }).then((res) => {}).finally(() => {
         this.emitCustomEvent()
       })
@@ -74,39 +72,6 @@ export default {
     emitCustomEvent() {
       // 触发自定义事件，传递数据给父组件
       this.$emit('custom-event', { message: 'Hello from child component' })
-    },
-    on_getRoleIDPermission() {
-      getRoleIDPermission({ id: this.propRoleID }).then((res) => {
-        this.$refs.tree.setCheckedNodes(res.data)
-      })
-    },
-    getCheckedNodes() {
-      console.log(this.$refs.tree.getCheckedNodes())
-    },
-    getCheckedKeys() {
-      console.log(this.$refs.tree.getCheckedKeys())
-    },
-    setCheckedNodes() {
-      this.$refs.tree.setCheckedNodes([
-        {
-          path: '/sy',
-          name: '二级 2-1'
-        },
-        {
-          path: 9,
-          name: '三级 1-1-1'
-        }
-      ])
-    },
-    setCheckedKeys() {
-      this.$refs.tree.setCheckedKeys([3])
-    },
-    resetChecked() {
-      this.$refs.tree.setCheckedKeys([])
-    },
-    handleCheck(checkedNodes, checkedKeys) {
-      console.log('Checked nodes:', checkedNodes)
-      console.log('Checked keys:', checkedKeys)
     }
   }
 

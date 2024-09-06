@@ -3,23 +3,39 @@
     <div class="filter-container">
       <span>
         查询名称：
-        <el-input v-model="search.userNo" placeholder="请输入查询名称" @input="on_getNewUsersList()"
-          style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+        <el-input
+          v-model="search.userNo"
+          placeholder="请输入查询名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+          @input="on_getNewUsersList()"
+        />
       </span>
       <span style="float: right">
 
-        <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496" @click="on_getNewUsersList()">
+        <el-button
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496"
+          @click="on_getNewUsersList()"
+        >
           搜索
         </el-button>
       </span>
     </div>
     <template>
-      <el-table :data="userList" row-key="id" :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row
-        style="width: 100%">
+      <el-table
+        :data="userList"
+        row-key="id"
+        :header-cell-style="{ background: '#e4e7f0' }"
+        fit
+        highlight-current-row
+        style="width: 100%"
+      >
         <el-table-column label="员工工号" width="180">
           <template slot-scope="scope">
-            <i class="el-icon-time"></i>
+            <i class="el-icon-time" />
             <span style="margin-left: 10px">{{ scope.row.userNo }}</span>
           </template>
         </el-table-column>
@@ -30,8 +46,14 @@
         </el-table-column>
         <el-table-column label="角色" width="700">
           <template slot-scope="scope">
-            <el-tag v-for="item in scope.row.roleList" :key="item.name" closable :type="item.name"
-              @close="on_delUserRoleRelations(scope.row.id, item.id)" style="margin: 0px 0px 5px 10px;">
+            <el-tag
+              v-for="item in scope.row.roleList"
+              :key="item.name"
+              closable
+              :type="item.name"
+              style="margin: 0px 0px 5px 10px;"
+              @close="on_delUserRoleRelations(scope.row.id, item.id)"
+            >
               {{ item.name }}
             </el-tag>
             <el-tag type="success" style="margin: 0px 0px 5px 10px;" @click="on_getRoleNotUserNoList(scope.row)">
@@ -40,7 +62,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="on_delNewUser(scope.row.id)">删除</el-button>
             <!-- <el-button size="mini" @click="on_newUserBecome(scope.row)">冻结</el-button> -->
@@ -48,13 +70,18 @@
         </el-table-column>
       </el-table>
     </template>
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="search.current"
-      :page-sizes="[10, 20, 30, 100]" :page-size="search.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="search.total">
-    </el-pagination>
+    <el-pagination
+      :current-page="search.current"
+      :page-sizes="[10, 20, 30, 100]"
+      :page-size="search.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="search.total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
     <el-dialog title="提示" :visible.sync="centerDialogVisible" width="30%" center>
       <el-checkbox-group v-model="submit.addUserRole.roleIDList">
-        <el-checkbox v-for="item in roleList" :label="item.id">{{ item.name }}</el-checkbox>
+        <el-checkbox v-for="item in roleList" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
       </el-checkbox-group>
       <el-button @click="on_addUserRoleRelations">保存</el-button>
     </el-dialog>
@@ -62,10 +89,10 @@
 </template>
 
 <script>
-import { delNewUser, addUserRoleRelations, delUserRoleRelations, getRoleNotUserNoList, getNewUsersList } from "@/api/user";
+import { delNewUser, addUserRoleRelations, delUserRoleRelations, getRoleNotUserNoList, getNewUsersList } from '@/api/user'
 
 export default {
-  name: "用户与角色权限",
+  name: 'UserRole',
   data() {
     return {
       centerDialogVisible: false,
@@ -76,84 +103,24 @@ export default {
         userNo: '',
         current: 0,
         size: 10,
-        total: 0,
+        total: 0
       },
       submit: {
         addUserRole: {
           uid: 0,
-          roleIDList: [],
+          roleIDList: []
         },
         delUserRole: {
           uid: 0,
-          roleIDList: [],
+          roleIDList: []
         },
         showNotUserNo: {
           roleName: '',
-          userNo: '',
+          userNo: ''
         }
       },
-      roleList: [],
-    };
-  },
-  created() {
-    this.on_getNewUsersList();
-  },
-  methods: {
-    //获取用户信息
-    on_getNewUsersList() {
-      getNewUsersList(this.search).then((res) => {
-        this.search.total = res.data.total
-        this.userList = res.data.usersList
-      })
-    },
-    //获取指定用户没有的角色
-    on_getRoleNotUserNoList(val) {
-      this.centerDialogVisible = true//打开弹窗
-      this.submit.showNotUserNo.userNo = val.userNo//确定角色工号
-      this.submit.addUserRole.uid = val.id
-      getRoleNotUserNoList(this.submit.showNotUserNo).then((res) => {
-        this.roleList = res.data
-      })
-    },
-    //指定用户绑定角色
-    on_addUserRoleRelations() {
-      addUserRoleRelations(this.submit.addUserRole).then((res) => {
-
-      }).finally(() => {
-        this.centerDialogVisible = false
-        this.on_getNewUsersList();
-      })
-    },
-    //指定用户删除绑定角色
-    on_delUserRoleRelations(uid, rid) {
-      this.submit.delUserRole.uid = uid
-      this.submit.delUserRole.roleIDList = [rid]
-      delUserRoleRelations(this.submit.delUserRole).then((res) => {
-
-      }).finally(() => {
-        this.centerDialogVisible = false
-        this.on_getNewUsersList();
-      })
-    },
-    //删除用户
-    on_delNewUser(id) {
-      delNewUser({ id: id }).then((res) => {
-
-      }).finally(() => {
-        this.on_getNewUsersList();
-      })
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-      this.search.size = val
-      this.on_getNewUsersList()
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-      this.search.current = val
-      this.on_getNewUsersList()
-      console.log(this.search_role);
-    },
+      roleList: []
+    }
   },
   watch: {
     centerDialogVisible: {
@@ -166,10 +133,69 @@ export default {
         }
       }
     }
-  }
-};
-</script>
+  },
+  created() {
+    this.on_getNewUsersList()
+  },
+  methods: {
+    // 获取用户信息
+    on_getNewUsersList() {
+      getNewUsersList(this.search).then((res) => {
+        this.search.total = res.data.total
+        this.userList = res.data.usersList
+      })
+    },
+    // 获取指定用户没有的角色
+    on_getRoleNotUserNoList(val) {
+      this.centerDialogVisible = true// 打开弹窗
+      this.submit.showNotUserNo.userNo = val.userNo// 确定角色工号
+      this.submit.addUserRole.uid = val.id
+      getRoleNotUserNoList(this.submit.showNotUserNo).then((res) => {
+        this.roleList = res.data
+      })
+    },
+    // 指定用户绑定角色
+    on_addUserRoleRelations() {
+      addUserRoleRelations(this.submit.addUserRole).then((res) => {
 
+      }).finally(() => {
+        this.centerDialogVisible = false
+        this.on_getNewUsersList()
+      })
+    },
+    // 指定用户删除绑定角色
+    on_delUserRoleRelations(uid, rid) {
+      this.submit.delUserRole.uid = uid
+      this.submit.delUserRole.roleIDList = [rid]
+      delUserRoleRelations(this.submit.delUserRole).then((res) => {
+
+      }).finally(() => {
+        this.centerDialogVisible = false
+        this.on_getNewUsersList()
+      })
+    },
+    // 删除用户
+    on_delNewUser(id) {
+      delNewUser({ id: id }).then((res) => {
+
+      }).finally(() => {
+        this.on_getNewUsersList()
+      })
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+      this.search.size = val
+      this.on_getNewUsersList()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.search.current = val
+      this.on_getNewUsersList()
+      console.log(this.search_role)
+    }
+  }
+}
+</script>
 
 <style>
 .sortable-ghost {

@@ -56,7 +56,7 @@ import { weather15DaySY } from '@/api/city.js'
 import { apiMProduct, lianYaSale, lianYaBuy, M_PRODUCT_ALIAS } from '@/api/apiLianYa'
 import { syncBuyOrder } from '@/api/sync.js'
 export default {
-  name: '',
+  name: 'SystemIndex',
   data() {
     return {
       activeName: 'first',
