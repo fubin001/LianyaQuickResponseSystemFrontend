@@ -78,7 +78,7 @@
     </el-dialog> -->
     <el-dialog title="提示" :visible.sync="centerDialogVisible_brand" width="30%" center>
       <el-checkbox-group v-model="addRoleBrand.brandList">
-        <el-checkbox v-for="item in brandList" :label="item.name">{{ item.name }}</el-checkbox>
+        <el-checkbox v-for="item in brandList" :key="item" :label="item.name">{{ item.name }}</el-checkbox>
       </el-checkbox-group>
       <el-button @click="on_addRoleBrandRelations">保存</el-button>
     </el-dialog>
@@ -86,7 +86,7 @@
       <el-input v-model="addRoles.role.name" placeholder="角色名称" />
       <el-button @click="on_addRoles()">新增</el-button>
     </el-dialog>
-    <el-dialog title="" :visible.sync="centerDialogVisible_perm" width="30%" center>
+    <el-dialog title="权限赋予" :visible.sync="centerDialogVisible_perm" width="30%" center>
       <roleProps v-if="centerDialogVisible_perm" :prop-role-i-d="propRoleID" @custom-event="on_getNewRole" />
     </el-dialog>
   </div>
