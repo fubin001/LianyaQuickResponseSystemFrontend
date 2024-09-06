@@ -3,8 +3,12 @@
     <div class="filter-container">
       <span>
         地区名称：
-        <el-input v-model="search.name" placeholder="请输入地区名称" style="width: 150px; margin: 5px 8px 5px 0"
-          class="filter-item" />
+        <el-input
+          v-model="search.name"
+          placeholder="请输入地区名称"
+          style="width: 150px; margin: 5px 8px 5px 0"
+          class="filter-item"
+        />
         <!-- <el-input v-model="search.name">
 
         </el-input> -->
@@ -21,17 +25,32 @@
       </span>
       <span style="float: right">
 
-        <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496" @click="getList">
+        <el-button
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496"
+          @click="getList"
+        >
           搜索
         </el-button>
-        <el-button @click="onupdWeatherCityData()" class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496">更新所有商铺天气</el-button>
+        <el-button
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          style="margin: 3px 5px; background-color: #244496"
+          @click="onupdWeatherCityData()"
+        >更新所有商铺天气</el-button>
       </span>
-      <el-button class="filter-item" type="primary" icon="el-icon-search"
-          style="margin: 3px 5px; background-color: #244496" @click="addDialogVisible=true">
-          新增
-        </el-button>
+      <el-button
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        style="margin: 3px 5px; background-color: #244496"
+        @click="addDialogVisible=true"
+      >
+        新增
+      </el-button>
     </div>
 
     <div class="table-list">
@@ -47,8 +66,15 @@
           </span>
         </span>
       </div> -->
-      <el-table :data="tableData" style="width: 100%" v-loading="listLoading" row-key="id"
-        :header-cell-style="{ background: '#e4e7f0' }" fit highlight-current-row>
+      <el-table
+        v-loading="listLoading"
+        :data="tableData"
+        style="width: 100%"
+        row-key="id"
+        :header-cell-style="{ background: '#e4e7f0' }"
+        fit
+        highlight-current-row
+      >
         <el-table-column label="城市" width="200">
           <template slot-scope="scope">
             <!-- <i class="el-icon-time"></i> -->
@@ -58,13 +84,15 @@
         </el-table-column>
         <el-table-column label="天气" width="150">
           <template slot-scope="scope">
-            <i class="el-icon-sunny" v-if="scope.row.conditionDay.indexOf('晴') > 0"></i>
-            <i class="el-icon-heavy-rain" v-else-if="scope.row.conditionDay.indexOf('雨') > 0"></i>
-            <i class="el-icon-lightning" v-else-if="scope.row.conditionDay.indexOf('雷') > 0"></i>
-            <i class="el-icon-cloudy"
-              v-else-if="scope.row.conditionDay.indexOf('云') > 0 || scope.row.conditionDay.indexOf('阴') > -1"></i>
-            <i class="el-icon-cloudy" v-else-if="scope.row.conditionDay.indexOf('阴') > 0"></i>
-            <i class="el-icon-sunny" v-else></i>
+            <i v-if="scope.row.conditionDay.indexOf('晴') > 0" class="el-icon-sunny" />
+            <i v-else-if="scope.row.conditionDay.indexOf('雨') > 0" class="el-icon-heavy-rain" />
+            <i v-else-if="scope.row.conditionDay.indexOf('雷') > 0" class="el-icon-lightning" />
+            <i
+              v-else-if="scope.row.conditionDay.indexOf('云') > 0 || scope.row.conditionDay.indexOf('阴') > -1"
+              class="el-icon-cloudy"
+            />
+            <i v-else-if="scope.row.conditionDay.indexOf('阴') > 0" class="el-icon-cloudy" />
+            <i v-else class="el-icon-sunny" />
 
             <span style="margin-left: 10px">{{ scope.row.conditionDay }}</span>
           </template>
@@ -78,14 +106,13 @@
         </el-table-column>
         <el-table-column label="时间" width="180">
           <template slot-scope="scope">
-            <i class="el-icon-time"></i>
+            <i class="el-icon-time" />
             <span style="margin-left: 10px">{{ scope.row.predictDate }}</span>
           </template>
         </el-table-column>
         <el-table-column label="关联商铺">
           <template slot-scope="scope">
-
-            <el-tag v-for="item in scope.row.stores">{{ item.storeName }}</el-tag>
+            <el-tag v-for="item in scope.row.stores" :key="item">{{ item.storeName }}</el-tag>
           </template>
         </el-table-column>
         <!-- <el-table-column label="操作">
@@ -96,17 +123,27 @@
         </el-table-column> -->
       </el-table>
 
-
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        :current-page="search.current" :page-sizes="[10, 20, 30, 100]" :page-size="search.size"
-        layout="total, sizes, prev, pager, next, jumper" :total="search.total">
-      </el-pagination>
+      <el-pagination
+        :current-page="search.current"
+        :page-sizes="[10, 20, 30, 100]"
+        :page-size="search.size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="search.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
     <el-dialog title="新增" :visible.sync="addDialogVisible" width="30%">
-      <el-form :model="fromData" :rules="rules" ref="fromData" :inline="true" label-width="80px">
+      <el-form ref="fromData" :model="fromData" :rules="rules" :inline="true" label-width="80px">
         <el-form-item label="地区" prop="cityId">
-          <el-cascader placeholder="试试搜索：安徽" v-model="fromData.cityId" :options="optionsCityt" filterable clearable
-            :props="{ emitPath: false }"></el-cascader>
+          <el-cascader
+            v-model="fromData.cityId"
+            placeholder="试试搜索：安徽"
+            :options="optionsCityt"
+            filterable
+            clearable
+            :props="{ emitPath: false }"
+          />
         </el-form-item>
         <br>
         <el-button type="primary" @click="submitForm('fromData')">立即创建</el-button>
@@ -117,22 +154,22 @@
 </template>
 
 <script>
-import { getAllByCityVoList, deleteStoreCityRelations, updWeatherCityData, getWeatherStoreCityList ,addCityData,getCityDataWeather} from '@/api/sy'
+import { getAllByCityVoList, deleteStoreCityRelations, updWeatherCityData, getWeatherStoreCityList, addCityData, getCityDataWeather } from '@/api/sy'
 export default {
-  name: '城市天气',
+  name: 'WeatherIndex',
   data() {
     return {
       fromData: {
-        cityId: null,
+        cityId: null
       },
-      addDialogVisible:false,
+      addDialogVisible: false,
       listLoading: false,
       search: {
         // storeID: '',
         name: '',
         current: 0,
         size: 10,
-        total: 0,
+        total: 0
       },
       rules: {
         cityId: [
@@ -144,33 +181,40 @@ export default {
         storeID: 2,
         storeName: '测试',
         cityId: '2',
-        detailedAddress: '一只蛆ei',
+        detailedAddress: '一只蛆ei'
       },
       optionsCityt: [],
       chart: null,
-      tableData: [],
-    };
+      tableData: []
+    }
   },
-
 
   async created() {
     // await this.getList();
-    await this.ongetAllByCityVoList();
+    await this.ongetAllByCityVoList()
     // await getCityDataWeather({});
     // await this.ongetAllByCityVoList();
   },
   mounted() {
     // this.initChart();
   },
+  // watch: {
+  //   search(newValue, preValue) {
+  //     this.getList()
+  //   },
+  // },
+  beforeDestroy() {
+
+  },
   methods: {
     onaddCityData() {
       addCityData(this.fromData).then((res) => {
         if (res.code == 0) {
-          this.resetForm("fromData")
+          this.resetForm('fromData')
           this.$message({
             message: '成功',
             type: 'success'
-          });
+          })
         }
       }).finally(() => {
         // this.getList()
@@ -179,7 +223,7 @@ export default {
     getList() {
       this.listLoading = true
       getWeatherStoreCityList(this.search).then((res) => {
-        console.log(res);
+        console.log(res)
         this.tableData = res.data.records
         this.search.total = res.data.total
       }).finally(() => {
@@ -194,7 +238,7 @@ export default {
         this.getList()
       })
     },
-    //获取城市数据
+    // 获取城市数据
     ongetAllByCityVoList() {
       getAllByCityVoList().then((res) => {
         this.optionsCityt = res.data
@@ -203,13 +247,11 @@ export default {
     },
     onupdWeatherCityData() {
       updWeatherCityData().then((res) => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             message: '成功',
             type: 'success'
-          });
-        } else {
-
+          })
         }
       }).finally(() => {
         // this.getList()
@@ -220,36 +262,27 @@ export default {
         if (valid) {
           this.onaddCityData()
         } else {
-          console.log('error submit!!');
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`)
       this.search.size = val
       this.getList()
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
       this.search.current = val
       this.getList()
-    },
-  },
-  // watch: {
-  //   search(newValue, preValue) {
-  //     this.getList()
-  //   },
-  // },
-  beforeDestroy() {
-
+    }
   }
-};
+}
 </script>
-
 
 <style>
 .sortable-ghost {
