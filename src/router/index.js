@@ -185,6 +185,12 @@ export const asyncRoutes = [
         component: () => import('@/views/weather/index'),
         name: 'WeatherIndex',
         meta: { title: '城市天气', icon: 'el-icon-s-grid' }
+      },
+      {
+        path: '/trs/index',
+        component: () => import('@/views/trs/index'),
+        name: 'TrsData',
+        meta: { title: 'TRS数据(正在制作)', icon: 'el-icon-s-grid' }
       }
     ]
   },

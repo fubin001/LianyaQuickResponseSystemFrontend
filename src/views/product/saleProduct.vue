@@ -247,11 +247,11 @@
         </el-table-column>
         <el-table-column prop="color" align="left" label="颜色" :width="flexColumnWidth('颜色', 'color')" fixed />
         <el-table-column prop="fullName" align="left" label="名称" :width="flexColumnWidth('名称', 'fullName')" fixed />
-        <el-table-column prop="feedback" align="left" label="是否快反" :width="flexColumnWidth('是否快反', 'feedback')" fixed>
+        <!-- <el-table-column prop="feedback" align="left" label="是否快反" :width="flexColumnWidth('是否快反', 'feedback')" fixed>
           <template slot-scope="{ row }">
             {{ row.feedback ? "是" : "否" }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column label="基础属性" align="center">
 
@@ -296,7 +296,7 @@
             align="left"
             label="ytd售罄率"
             sortable="custom"
-            :width="flexColumnWidth('预估售罄率', 'ytdSaleOutRate')"
+            :width="flexColumnWidth('ytd售罄率', 'ytdSaleOutRate')"
           >
 
             <template slot-scope="{ row }">
@@ -309,7 +309,7 @@
             align="left"
             label="首单售罄率"
             sortable="custom"
-            :width="flexColumnWidth('预估售罄率', 'firstOrderSaleOutRate')"
+            :width="flexColumnWidth('首单售罄率', 'firstOrderSaleOutRate')"
           >
 
             <template slot-scope="{ row }">
@@ -365,6 +365,7 @@
             :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
             sortable="custom"
           />
+          <el-table-column prop="additionalBuyOrder" align="left" label="追加数量" />
 
           <el-table-column prop="imageUrl" align="left" label="图" sortable="custom" width="120">
             <template slot-scope="{ row }">
