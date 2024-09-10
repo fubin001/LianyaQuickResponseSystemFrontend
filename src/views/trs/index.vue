@@ -1,59 +1,53 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      品牌名：
-      <el-input v-model="listQuery.name" placeholder="请输入品牌名" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" style="margin: 5px 8px 5px 0; background-color: #244496; float: right" @click="getList(1)">
+      面料编码：<el-input v-model="search.trsNo" placeholder="请输入面料编码" style="width: 150px; margin: 5px 8px 5px 0" class="filter-item" />
+
+      <el-button type="primary" icon="el-icon-search" style="margin: 5px 8px 5px 0; background-color: #244496; float: right" @click="onrefresh()">
+        更新
+      </el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" style="margin: 5px 8px 5px 0; background-color: #244496; float: right" @click="onsearch()">
         搜索
       </el-button>
+
     </div>
 
     <div class="table-list">
-      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row :header-cell-style="{ background: '#e4e7f0' }" style="width: 90%">
-        <el-table-column align="center" label="面料中文描述" width="110" type="index" :index="getIndex" />
-        <el-table-column align="center" label="面料编码" width="80" type="index" :index="getIndex" />
-        <el-table-column align="center" label="计划总订单" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="首单数量" width="80" type="index" :index="getIndex" />
-        <el-table-column align="center" label="计划追加数量" width="110" type="index" :index="getIndex" />
-        <el-table-column align="center" label="追加数量1" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="追加数量2" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="追加数量?" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="实际追加" width="80" type="index" :index="getIndex" />
-        <el-table-column align="center" label="实际数量" width="80" type="index" :index="getIndex" />
-        <el-table-column align="center" label="预计Sale Qty" width="120" type="index" :index="getIndex" />
-        <el-table-column align="center" label="实际季末 Qty" width="120" type="index" :index="getIndex" />
-        <el-table-column align="center" label="YTD" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="YTD ST%" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="首单 ST%" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="预计 ST%" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="实际 ST%" width="90" type="index" :index="getIndex" />
-        <el-table-column align="center" label="本周销量" width="80" type="index" :index="getIndex" />
-        <el-table-column align="center" label="上周销量" width="80" type="index" :index="getIndex" />
-        <el-table-column align="center" label="周环比%" width="80" type="index" :index="getIndex" />
-        <el-table-column prop="name" width="180px" align="center" label="test">
-          <template slot-scope="scope">
-            <el-link type="primary" @click="onDialog(scope.row.name)">
-              {{ scope.row.name }}
-            </el-link>
-          </template>
-        </el-table-column>
+      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row :header-cell-style="{ background: '#e4e7f0' }" style="width: 100%">
+        <el-table-column align="center" label="面料中文描述" width="120" prop="trsName" fixed="left" />
+        <el-table-column align="center" label="面料编码" width="120" prop="trsNo" fixed="left" />
+        <el-table-column align="center" label="计划总订单" width="90" prop="planSumOrder" />
+        <el-table-column align="center" label="首单数量" width="80" prop="firstOrderQty" />
+        <el-table-column align="center" label="计划追加数量" width="110" prop="planAddtoQty" />
+        <el-table-column align="center" label="实际追加" width="80" prop="practicalAddtoQty" />
+        <el-table-column align="center" label="实际数量" width="80" prop="practicalQty" />
+        <el-table-column align="center" label="预计Sale Qty" width="120" prop="predictSaleQty" />
+        <el-table-column align="center" label="实际季末 Qty" width="120" prop="practicalEosSaleQty" />
+        <el-table-column align="center" label="YTD" width="90" prop="ytd" />
+        <el-table-column align="center" label="YTD ST%" width="90" prop="ytdRatio" :formatter="formatPercentage" />
+        <el-table-column align="center" label="首单 ST%" width="90" prop="firstRatio" :formatter="formatPercentage" />
+        <el-table-column align="center" label="预计 ST%" width="90" prop="predictRatio" :formatter="formatPercentage" />
+        <el-table-column align="center" label="实际 ST%" width="90" prop="predictRatio" :formatter="formatPercentage" />
+        <el-table-column align="center" label="本周销量" width="80" prop="thisWeekSaleQty" />
+        <el-table-column align="center" label="上周销量" width="80" prop="lastWeekSaleQty" />
+        <el-table-column align="center" label="周环比%" width="80" prop="weekNoWeekRatio" :formatter="formatPercentage" />
       </el-table>
       <el-pagination
+        :current-page="search.current"
+        :page-sizes="[10, 20, 30, 100]"
+        :page-size="search.size"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        :page-sizes="[10, 20, 50, 100]"
-        :current-page="page"
-        :page-size="size"
-        align="center"
-        @size-change="getList(page)"
-        @current-change="getList(page)"
+        :total="search.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { query } from '@/api/brand'
+// import { query } from '@/api/brand'
+import { query, refresh } from '@/api/skuTrs.js'
 
 export default {
   name: 'TrsData',
@@ -61,37 +55,48 @@ export default {
     return {
       list: [],
       total: null,
-      page: 1,
-      size: 10,
       listLoading: true,
-      listQuery: {
+      search: {
+        trsNo: '',
         page: 1,
-        size: 10
-      },
-      sortable: null
+        size: 10,
+        total: 0
+      }
     }
   },
   created() {
-    this.getList(1)
+    this.getList()
   },
   methods: {
-    async getList(page) {
-      this.listQuery.page = page
-      this.listQuery.size = this.size
-      const { data, total } = await query(this.listQuery)
+    onsearch() {
+      this.search.page = 1
+      this.getList()
+    },
+    async getList() {
+      // this.listQuery.page = this.page
+      // this.listQuery.size = this.size
+      const { data, total } = await query(this.search)
       this.list = data
-      this.total = total
+      this.search.total = total
       this.listLoading = false
     },
-
-    getIndex(index) {
-      const page = this.page
-      const size = this.size
-      return index + 1 + (page - 1) * size
+    onrefresh() {
+      refresh()
     },
-
-    onDialog(brand) {
-      this.$router.push({ path: '/skuProduct/info', query: { brand: brand }})
+    formatPercentage(row, column, cellValue) {
+      // 将小数转换为百分比并保留两位小数!
+      // var ration= ( ? 1:2)
+      return cellValue != null ? `${(cellValue * 100).toFixed(2)}%` : null
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+      this.search.size = val
+      this.getList()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.search.page = val
+      this.getList()
     }
   }
 }

@@ -138,3 +138,11 @@ export function apiRel(query) {
     params: query
   })
 }
+
+export function apiDate(query) {
+  return request({
+    url: '/test/apiDate',
+    method: 'get',
+    params: query
+  })
+}

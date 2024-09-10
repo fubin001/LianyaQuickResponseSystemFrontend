@@ -24,7 +24,7 @@ export function addRoleBrandRelations(data) {
   })
 }
 
-//角色删除绑定指定的品牌
+// 角色删除绑定指定的品牌
 export function delRoleBrandRelations(data) {
   return request({
     url: '/newBrand/delRoleBrandRelations',
@@ -32,7 +32,7 @@ export function delRoleBrandRelations(data) {
     data: data
   })
 }
-//查询角色与品牌关联数据
+// 查询角色与品牌关联数据
 export function getRoleBrandRelations(data) {
   return request({
     url: '/newBrand/getRoleBrandRelations',
@@ -40,7 +40,7 @@ export function getRoleBrandRelations(data) {
     data: data
   })
 }
-//查询指定角色没有的品牌
+// 查询指定角色没有的品牌
 export function getBrandRoleNotIDList(data) {
   return request({
     url: '/newBrand/getBrandRoleNotIDList',
