@@ -13,7 +13,7 @@
     </div>
 
     <div class="table-list">
-      <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" fit highlight-current-row :header-cell-style="{ background: '#e4e7f0' }" style="width: 100%">
+      <el-table ref="dragTable" v-loading="listLoading" :data="list" header-cell-class-name="custom-header-cell" height="650px" style="width: 100%">
         <el-table-column align="center" label="面料中文描述" width="120" prop="trsName" fixed="left" />
         <el-table-column align="center" label="面料编码" width="120" prop="trsNo" fixed="left" />
         <el-table-column align="center" label="计划总订单" width="90" prop="planSumOrder" />
@@ -103,6 +103,14 @@ export default {
 </script>
 
   <style>
+
+  /* 在你的 CSS 文件或者 <style> 标签中定义这个样式 */
+  .custom-header-cell {
+    background-color:#409EFF !important;; /* 你想要的背景颜色 */
+    color: #333; /* 你想要的文字颜色 */
+    font-weight: bold; /* 其他样式 */
+    text-align: center; /* 文字居中 */
+  }
   .sortable-ghost {
     opacity: 0.8;
     color: #fff !important;
@@ -111,6 +119,7 @@ export default {
   </style>
 
   <style lang="scss" scoped>
+
   .app-container {
     background-color: #f7f8fc;
 

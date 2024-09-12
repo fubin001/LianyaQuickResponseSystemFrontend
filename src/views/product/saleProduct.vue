@@ -254,125 +254,51 @@
         </el-table-column> -->
 
         <el-table-column label="基础属性" align="center">
-
-          <el-table-column
-            prop="listingDate"
-            align="left"
-            label="上市日期"
-            :width="flexColumnWidth('上市日期', 'listingDate')"
-          />
-
-          <el-table-column prop="season" align="left" label="季节" :width="flexColumnWidth('季节', 'season')" />
-          <el-table-column
-            prop="subCategory"
-            align="left"
-            label="商品子类"
-            :width="flexColumnWidth('商品子类', 'subCategory')"
-          />
-          <el-table-column prop="fabricCode" align="left" label="面料编码" :width="flexColumnWidth('面料编码', 'fabricCode')" />
-          <el-table-column
-            prop="fabricComposition"
-            align="left"
-            label="面料成分"
-            :width="flexColumnWidth('面料成分', 'fabricComposition')"
-          />
-        </el-table-column>
-        <el-table-column label="预测" align="center" show-overflow-tooltip>
-          <el-table-column
-            prop="predictModel"
-            align="left"
-            label="预测模型"
-            :width="flexColumnWidth('预测模型', 'predictModel')"
-          />
+          <el-table-column prop="listingDate" align="left" label="上市日期" :width="flexColumnWidth('上市日期', 'listingDate')" />
           <el-table-column prop="endDate" align="left" label="下线日期" :width="flexColumnWidth('下线日期', 'endDate')" />
+          <el-table-column prop="predictModel" align="left" label="预测模型" :width="flexColumnWidth('预测模型', 'predictModel')" />
+          <el-table-column prop="season" align="left" label="季节" :width="flexColumnWidth('季节', 'season')" />
+          <el-table-column prop="subCategory" align="left" label="商品子类" :width="flexColumnWidth('商品子类', 'subCategory')" />
+          <el-table-column prop="fabricCode" align="left" label="面料编码" :width="flexColumnWidth('面料编码', 'fabricCode')" />
+          <el-table-column prop="fabricComposition" align="left" label="面料成分" :width="flexColumnWidth('面料成分', 'fabricComposition')" />
+        </el-table-column>
+
+        <el-table-column label="预测" align="center" show-overflow-tooltip>
           <el-table-column prop="predictCoe" align="left" label="预测系数" :width="flexColumnWidth('预测系数', 'predictCoe')" />
           <el-table-column prop="feedbackDay" align="left" label="反馈天数" />
           <el-table-column prop="feedbackDayBom" align="left" width="115px" label="BOM反馈天数" />
         </el-table-column>
+
         <el-table-column label="关联指标" width="90" align="center">
-
-          <el-table-column
-            prop="ytdSaleOutRate"
-            align="left"
-            label="ytd售罄率"
-            sortable="custom"
-            :width="flexColumnWidth('ytd售罄率', 'ytdSaleOutRate')"
-          >
-
+          <el-table-column prop="ytdSaleOutRate" align="left" label="ytd售罄率" sortable="custom" :width="flexColumnWidth('ytd售罄率', 'ytdSaleOutRate')">
             <template slot-scope="{ row }">
               {{ new Number(row.ytdSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
-
-          <el-table-column
-            prop="firstOrderSaleOutRate"
-            align="left"
-            label="首单售罄率"
-            sortable="custom"
-            :width="flexColumnWidth('首单售罄率', 'firstOrderSaleOutRate')"
-          >
-
+          <el-table-column prop="firstOrderSaleOutRate" align="left" label="首单售罄率" sortable="custom" :width="flexColumnWidth('首单售罄率', 'firstOrderSaleOutRate')">
             <template slot-scope="{ row }">
               {{ new Number(row.firstOrderSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
-
-          <el-table-column
-            prop="predictSaleOutRate"
-            align="left"
-            label="预估售罄率"
-            sortable="custom"
-            :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')"
-          >
-
+          <el-table-column prop="predictSaleOutRate" align="left" label="预估售罄率" sortable="custom" :width="flexColumnWidth('预估售罄率', 'predictSaleOutRate')">
             <template slot-scope="{ row }">
               {{ new Number(row.predictSaleOutRate * 100).toFixed(1) }}%
             </template>
           </el-table-column>
 
-          <el-table-column
-            prop="saleYtd"
-            align="left"
-            label="销售ytd"
-            :width="flexColumnWidth('销售ytd', 'saleYtd')"
-            sortable="custom"
-          />
-          <el-table-column
-            prop="storage"
-            align="left"
-            label="库存"
-            :width="flexColumnWidth('库存', 'storage')"
-            sortable="custom"
-          />
-          <el-table-column
-            prop="predictRestSale"
-            align="left"
-            label="预估剩余销售"
-            :width="flexColumnWidth('预估剩余销售', 'predictRestSale')"
-            sortable="custom"
-          />
-          <el-table-column
-            prop="predictFinalSale"
-            align="left"
-            label="预估最终销售"
-            :width="flexColumnWidth('预估最终销售', 'predictFinalSale')"
-            sortable="custom"
-          />
-          <el-table-column
-            prop="firstBuyOrder"
-            align="left"
-            label="首单采购量"
-            :width="flexColumnWidth('首单采购量', 'firstBuyOrder')"
-            sortable="custom"
-          />
+          <el-table-column prop="saleYtd" align="left" label="销售ytd" :width="flexColumnWidth('销售ytd', 'saleYtd')" sortable="custom" />
+          <el-table-column prop="storage" align="left" label="库存" :width="flexColumnWidth('库存', 'storage')" sortable="custom" />
+          <el-table-column prop="predictRestSale" align="left" label="预估剩余销售" :width="flexColumnWidth('预估剩余销售', 'predictRestSale')" sortable="custom" />
+          <el-table-column prop="predictFinalSale" align="left" label="预估最终销售" :width="flexColumnWidth('预估最终销售', 'predictFinalSale')" sortable="custom" />
+          <el-table-column prop="firstBuyOrder" align="left" label="首单采购量" :width="flexColumnWidth('首单采购量', 'firstBuyOrder')" sortable="custom" />
           <el-table-column prop="additionalBuyOrder" align="left" label="追加数量" />
-
           <el-table-column prop="imageUrl" align="left" label="图" sortable="custom" width="120">
             <template slot-scope="{ row }">
               <img :src="`https://omni.tristate.cn:90${row.imageUrl}`" alt="Image" style="width: 100px; height: auto;">
             </template>
           </el-table-column>
         </el-table-column>
+
         <el-table-column type="expand">
           <template slot-scope="{ row }">
             <el-table :data="[row]">
