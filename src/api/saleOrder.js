@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { downloadFile } from '@/api/util'
 
 export function querySaleOrder(param) {
   return request({
@@ -22,4 +23,8 @@ export function apiVRetailTest(data) {
     method: 'post',
     data: data
   })
+}
+
+export function exportSkuProduct(param) {
+  downloadFile('/saleOrder/export', param, '销售数据详情.xlsx')
 }
