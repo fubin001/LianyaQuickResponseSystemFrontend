@@ -571,7 +571,7 @@ export default {
         return {
           ...item,
 
-          imageUrl: item.imageUrl.replace('/Attach', '/Attach2')
+          imageUrl: item.imageUrl ? item.imageUrl.replace('/Attach', '/Attach2') : null
         }
       })
 
