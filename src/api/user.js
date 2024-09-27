@@ -54,7 +54,7 @@ export function getRoleBrand(data) {
     data: data
   })
 }
-//注册申请
+// 注册申请
 export function userApplyOfr(data) {
   return request({
     url: '/newUser/userApplyFor',
@@ -62,7 +62,7 @@ export function userApplyOfr(data) {
     data: data
   })
 }
-//查询注册申请
+// 查询注册申请
 export function getUserApplyOfrList(data) {
   return request({
     url: '/newUser/getUserApplyForList',
@@ -71,7 +71,7 @@ export function getUserApplyOfrList(data) {
   })
 }
 
-//修改注册申请
+// 修改注册申请
 export function updUserApplyFor(data) {
   return request({
     url: '/newUser/updUserApplyFor',
@@ -79,7 +79,7 @@ export function updUserApplyFor(data) {
     data: data
   })
 }
-//取下指定用户的申请
+// 取下指定用户的申请
 export function delUserApplyFor(data) {
   return request({
     url: '/newUser/delUserApplyFor',
@@ -88,7 +88,7 @@ export function delUserApplyFor(data) {
   })
 }
 
-//删除指定注册用户的申请权限
+// 删除指定注册用户的申请权限
 export function delUserApplyForRole(data) {
   return request({
     url: '/newUser/delUserApplyForRole',
@@ -96,7 +96,7 @@ export function delUserApplyForRole(data) {
     data: data
   })
 }
-//确定注册用户通过
+// 确定注册用户通过
 export function newUserBecome(data) {
   return request({
     url: '/newUser/newUserBecome',
@@ -105,7 +105,7 @@ export function newUserBecome(data) {
   })
 }
 
-//查询用户
+// 查询用户
 export function getNewUsersList(data) {
   return request({
     url: '/newUser/getNewUsersList',
@@ -114,7 +114,7 @@ export function getNewUsersList(data) {
   })
 }
 
-//删除用户
+// 删除用户
 export function delNewUser(data) {
   return request({
     url: '/newUser/delNewUser',
@@ -123,7 +123,7 @@ export function delNewUser(data) {
   })
 }
 
-//获取指定用户没有的角色
+// 获取指定用户没有的角色
 export function getRoleNotUserNoList(data) {
   return request({
     url: '/newUser/getRoleNotUserNoList',
@@ -132,7 +132,7 @@ export function getRoleNotUserNoList(data) {
   })
 }
 
-//删除指定用户与角色的绑定
+// 删除指定用户与角色的绑定
 export function delUserRoleRelations(data) {
   return request({
     url: '/newUser/delUserRoleRelations',
@@ -141,8 +141,7 @@ export function delUserRoleRelations(data) {
   })
 }
 
-
-//用户新增角色
+// 用户新增角色
 export function addUserRoleRelations(data) {
   return request({
     url: '/newUser/addUserRoleRelations',
