@@ -41,6 +41,9 @@
         <el-col :span="11">
           <el-button type="primary" @click="apiDate()">定时任务测试</el-button>
         </el-col>
+        <el-col :span="11">
+          <el-button type="primary" @click="dateSy()">时间测试</el-button>
+        </el-col>
         <!-- <el-col :span="12">22
           2222
         </el-col>
@@ -55,7 +58,7 @@
 <script>
 import { apiVRetailBILLDATE } from '@/api/saleOrder'
 import { weather15DaySY } from '@/api/city.js'
-import { apiDate } from '@/api/sy.js'
+import { apiDate, dateSy } from '@/api/sy.js'
 // import { refreshVRetail } from '@/api/sy'
 import { apiMProduct, lianYaSale, lianYaBuy, M_PRODUCT_ALIAS } from '@/api/apiLianYa'
 import { syncBuyOrder } from '@/api/sync.js'
@@ -99,6 +102,7 @@ export default {
     M_PRODUCT_ALIAS,
     weather15DaySY,
     apiDate,
+    dateSy,
     onsyncBuyOrder() {
       syncBuyOrder(this.apiVRetailBILLDATEValue).then(res => {
 

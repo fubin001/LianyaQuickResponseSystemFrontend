@@ -27,7 +27,7 @@
         <el-table-column align="center" label="YTD ST%" width="90" prop="ytdRatio" :formatter="formatPercentage" />
         <el-table-column align="center" label="首单 ST%" width="90" prop="firstRatio" :formatter="formatPercentage" />
         <el-table-column align="center" label="预计 ST%" width="90" prop="predictRatio" :formatter="formatPercentage" />
-        <el-table-column align="center" label="实际 ST%" width="90" prop="predictRatio" :formatter="formatPercentage" />
+        <el-table-column align="center" label="实际 ST%" width="90" prop="practicalRatio" :formatter="formatPercentage" />
         <el-table-column align="center" label="本周销量" width="80" prop="thisWeekSaleQty" />
         <el-table-column align="center" label="上周销量" width="80" prop="lastWeekSaleQty" />
         <el-table-column align="center" label="周环比%" width="80" prop="weekNoWeekRatio" :formatter="formatPercentage" />

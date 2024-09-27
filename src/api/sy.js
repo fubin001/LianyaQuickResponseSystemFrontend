@@ -146,3 +146,10 @@ export function apiDate(query) {
     params: query
   })
 }
+export function dateSy(query) {
+  return request({
+    url: '/skuTrs/sy',
+    method: 'post',
+    params: query
+  })
+}
