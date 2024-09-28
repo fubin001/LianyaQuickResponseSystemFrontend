@@ -36,9 +36,9 @@
         <el-table-column align="center" label="计划追加数量" width="110" prop="planAddtoQty" />
         <el-table-column align="center" label="实际追加" width="145">
           <template slot-scope="scope">
-            {{ scope.row.practicalQty }}
+            {{ scope.row.practicalAddtoQty }}
             <br>
-            <el-link type="primary" @click="practicalQtydialog(scope.row)">查看追加详情</el-link>
+            <el-link type="primary" @click="practicalAddtoQtydialog(scope.row)">查看追加详情</el-link>
           </template>
         </el-table-column>
         <!-- <el-table-column align="center" label="实际追加" width="80" prop="practicalAddtoQty" /> -->
@@ -69,14 +69,15 @@
         <div class="radio">
           排序：
           <el-radio-group v-model="reverse">
-            <el-radio :label="true">倒序</el-radio>
-            <el-radio :label="false">正序</el-radio>
+            <el-radio :label="true">降序</el-radio>
+            <el-radio :label="false">升序</el-radio>
           </el-radio-group>
         </div>
 
         <!-- 限定高度的滚动容器 -->
         <div class="scroll-container">
           <el-timeline :reverse="reverse" style="margin-top: 10px;">
+            <el-link v-if="activities.length<=0" adisabled type="info">无数据</el-link>
             <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
               追加数量：{{ activity.content }}
             </el-timeline-item>
@@ -89,7 +90,7 @@
 
 <script>
 // import { query } from '@/api/brand'
-import { query, refresh, refreshTrsNo, getPracticalQty } from '@/api/skuTrs.js'
+import { query, refresh, refreshTrsNo, getPracticalAddtoQty } from '@/api/skuTrs.js'
 
 export default {
   name: 'TrsData',
@@ -123,9 +124,9 @@ export default {
     this.getList()
   },
   methods: {
-    practicalQtydialog(value) {
+    practicalAddtoQtydialog(value) {
       console.log(value)
-      getPracticalQty(value).then(res => {
+      getPracticalAddtoQty(value).then(res => {
         this.activities = res.data
       }).finally(() => {
         this.dialogTableVisible = true
@@ -179,6 +180,7 @@ export default {
 
 /* 滚动容器样式 */
 .scroll-container {
+  min-height: 100px;
   max-height: 500px; /* 设定最大高度，超出时显示滚动条 */
   overflow-y: auto;  /* 启用垂直滚动 */
   border: 1px solid #e4e4e4; /* 可选：为容器添加边框 */

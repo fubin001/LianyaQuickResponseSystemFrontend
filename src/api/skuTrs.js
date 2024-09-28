@@ -21,9 +21,9 @@ export function refreshTrsNo(data) {
   })
 }
 
-export function getPracticalQty(data) {
+export function getPracticalAddtoQty(data) {
   return request({
-    url: '/skuTrs/getPracticalQty',
+    url: '/skuTrs/getPracticalAddtoQty',
     method: 'post',
     data: data
   })
