@@ -9,13 +9,13 @@
       <el-button v-loading="listLoading" class="filter-item" type="primary" icon="el-icon-search" style="margin: 5px 8px 5px 0; background-color: #244496; float: right" @click="onsearch()">
         搜索
       </el-button>
+
     </div>
 
     <div class="table-list">
       <el-table
         ref="dragTable"
         v-loading="listLoading"
-        show-summary
         element-loading-text="拼命加载中"
         element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.8)"
@@ -34,14 +34,7 @@
         <el-table-column align="center" label="计划总订单" width="90" prop="planSumOrder" />
         <el-table-column align="center" label="首单数量" width="80" prop="firstOrderQty" />
         <el-table-column align="center" label="计划追加数量" width="110" prop="planAddtoQty" />
-        <el-table-column align="center" label="实际追加" width="145">
-          <template slot-scope="scope">
-            {{ scope.row.practicalQty }}
-            <br>
-            <el-link type="primary" @click="practicalQtydialog(scope.row)">查看追加详情</el-link>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column align="center" label="实际追加" width="80" prop="practicalAddtoQty" /> -->
+        <el-table-column align="center" label="实际追加" width="80" prop="practicalAddtoQty" />
         <el-table-column align="center" label="实际数量" width="80" prop="practicalQty" />
         <el-table-column align="center" label="预计Sale Qty" width="120" prop="predictSaleQty" />
         <el-table-column align="center" label="实际季末 Qty" width="120" prop="practicalEosSaleQty" />
@@ -64,32 +57,12 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog title="追加详情" :visible.sync="dialogTableVisible" center width="30%">
-      <div class="block">
-        <div class="radio">
-          排序：
-          <el-radio-group v-model="reverse">
-            <el-radio :label="true">倒序</el-radio>
-            <el-radio :label="false">正序</el-radio>
-          </el-radio-group>
-        </div>
-
-        <!-- 限定高度的滚动容器 -->
-        <div class="scroll-container">
-          <el-timeline :reverse="reverse" style="margin-top: 10px;">
-            <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
-              追加数量：{{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 // import { query } from '@/api/brand'
-import { query, refresh, refreshTrsNo, getPracticalQty } from '@/api/skuTrs.js'
+import { query, refresh, refreshTrsNo } from '@/api/skuTrs.js'
 
 export default {
   name: 'TrsData',
@@ -98,19 +71,6 @@ export default {
       list: [],
       total: null,
       listLoading: true,
-      dialogTableVisible: false,
-
-      reverse: true,
-      activities: [{
-        content: '活动按期开始',
-        timestamp: '2018-04-15'
-      }, {
-        content: '通过审核',
-        timestamp: '2018-04-13'
-      }, {
-        content: '创建成功',
-        timestamp: '2018-04-11'
-      }],
       search: {
         trsNo: '',
         page: 1,
@@ -123,14 +83,6 @@ export default {
     this.getList()
   },
   methods: {
-    practicalQtydialog(value) {
-      console.log(value)
-      getPracticalQty(value).then(res => {
-        this.activities = res.data
-      }).finally(() => {
-        this.dialogTableVisible = true
-      })
-    },
     onsearch() {
       this.search.page = 1
       this.getList()
@@ -177,13 +129,6 @@ export default {
 
   <style>
 
-/* 滚动容器样式 */
-.scroll-container {
-  max-height: 500px; /* 设定最大高度，超出时显示滚动条 */
-  overflow-y: auto;  /* 启用垂直滚动 */
-  border: 1px solid #e4e4e4; /* 可选：为容器添加边框 */
-  padding-right: 10px; /* 避免滚动条遮挡内容 */
-}
   /* 在你的 CSS 文件或者 <style> 标签中定义这个样式 */
   .custom-header-cell {
     background-color:#409EFF !important;; /* 你想要的背景颜色 */

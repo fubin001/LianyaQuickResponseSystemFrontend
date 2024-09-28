@@ -13,3 +13,18 @@ export function refresh(data) {
     data: data
   })
 }
+export function refreshTrsNo(data) {
+  return request({
+    url: '/skuTrs/refreshTrsNo',
+    method: 'post',
+    data: data
+  })
+}
+
+export function getPracticalQty(data) {
+  return request({
+    url: '/skuTrs/getPracticalQty',
+    method: 'post',
+    data: data
+  })
+}
